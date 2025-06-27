@@ -47,6 +47,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_27_010436) do
     t.integer "user_id", null: false
     t.integer "amount_cents", default: 0, null: false
     t.string "amount_currency", default: "USD", null: false
+    t.integer "percentage"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["expense_id"], name: "index_expense_splits_on_expense_id"
@@ -57,20 +58,20 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_27_010436) do
     t.string "description", null: false
     t.integer "expense_type", null: false
     t.boolean "fixed", default: false, null: false
-    t.integer "amount_cents", default: 0, null: false
-    t.string "amount_currency", default: "USD", null: false
     t.date "expense_date", null: false
     t.integer "money_account_id", null: false
     t.integer "category_id"
-    t.integer "paid_by_id", null: false
+    t.integer "user_id", null: false
     t.string "type", default: "Expense", null: false
     t.integer "savings_plan_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "amount_cents", default: 0, null: false
+    t.string "amount_currency", default: "USD", null: false
     t.index ["category_id"], name: "index_expenses_on_category_id"
     t.index ["money_account_id"], name: "index_expenses_on_money_account_id"
-    t.index ["paid_by_id"], name: "index_expenses_on_paid_by_id"
     t.index ["savings_plan_id"], name: "index_expenses_on_savings_plan_id"
+    t.index ["user_id"], name: "index_expenses_on_user_id"
   end
 
   create_table "money_accounts", force: :cascade do |t|
@@ -110,7 +111,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_27_010436) do
     t.string "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer "percentage", null: false
+    t.integer "percentage"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["email"], name: "index_users_on_email", unique: true
@@ -123,7 +124,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_27_010436) do
   add_foreign_key "expense_splits", "expenses"
   add_foreign_key "expense_splits", "users"
   add_foreign_key "expenses", "money_accounts"
-  add_foreign_key "expenses", "users", column: "paid_by_id"
+  add_foreign_key "expenses", "users"
   add_foreign_key "money_accounts", "users"
   add_foreign_key "savings_plans", "money_accounts"
   add_foreign_key "user_savings_plans", "users"

@@ -9,7 +9,7 @@ class AddInitialModels < ActiveRecord::Migration[8.0]
       t.datetime :reset_password_sent_at
 
       t.datetime :remember_created_at
-      t.integer :percentage, null: false
+      t.integer :percentage
 
       ## Trackable
       # t.integer  :sign_in_count, default: 0, null: false
@@ -43,7 +43,6 @@ class AddInitialModels < ActiveRecord::Migration[8.0]
       t.string :description, null: false
       t.integer :expense_type, null: false
       t.boolean :fixed, null: false, default: false
-      t.monetize :amount, null: false
       t.date :expense_date, null: false
       t.references :money_account, null: false, foreign_key: true
       t.references :category
@@ -54,10 +53,13 @@ class AddInitialModels < ActiveRecord::Migration[8.0]
       t.timestamps
     end
 
+    add_monetize :expenses, :amount, null: false
+
     create_table :expense_splits do |t|
       t.references :expense, null: false, foreign_key: true
       t.references :user, null: false, foreign_key: true
       t.monetize :amount
+      t.integer :percentage
 
       t.timestamps
     end
