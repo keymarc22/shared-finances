@@ -6,7 +6,7 @@ class MoneyAccount < ApplicationRecord
   validates :name, presence: true
 
   def balance
-    incomings.sum(:amount) - expenses.sum(:amount)
+    incomings.sum(:amount_cents) - expenses.sum(:amount_cents)
   end
 
 end

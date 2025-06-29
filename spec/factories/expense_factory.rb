@@ -2,8 +2,8 @@ FactoryBot.define do
   factory :expense do
     description  { Faker::Lorem.sentence }
     amount_cents { Faker::Number.decimal(l_digits: 2, r_digits: 2) }
-    expense_date { Faker::Date.backward(days: 30) }
-    expense_type { :personal }
+    transaction_date { Faker::Date.backward(days: 30) }
+    transaction_type { :personal }
     association :user
     association :money_account
 

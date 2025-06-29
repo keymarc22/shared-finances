@@ -1,18 +1,11 @@
-class Expense < ApplicationRecord
-  monetize :amount_cents
+class Expense < Transaction
 
-  belongs_to :user
+  enum :transaction_type, { personal: 0, shared: 1 }
+
   belongs_to :category, optional: true
-  belongs_to :savings_plan, optional: true
-  belongs_to :money_account
 
-  has_many :expense_splits, dependent: :destroy
+  has_many :expense_splits, foreign_key: :expense_id, dependent: :destroy
   has_many :expense_participants, through: :expense_splits, source: :user
-
-  enum :expense_type, { personal: 0, shared: 1 }
-
-  validates :amount_cents, presence: true, numericality: { greater_than: 0 }
-  validates :expense_date, presence: true
 
   # validate :splits_sum_to_100_percent, if: -> { shared? && expense? }
 
@@ -36,14 +29,6 @@ class Expense < ApplicationRecord
         amount: (amount * split.percentage / 100.0).round(2)
       }
     end
-  end
-
-  def expense?
-    true
-  end
-
-  def incoming?
-    false
   end
 
   private

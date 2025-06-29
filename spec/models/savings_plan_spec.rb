@@ -20,7 +20,7 @@ RSpec.describe SavingsPlan, type: :model do
 
     it 'has many incomings and destroys them on delete' do
       savings_plan = create(:savings_plan, name: "Test", target_amount: 100, deadline: Date.tomorrow)
-      incoming = savings_plan.incomings.create!(amount: 10, description: 'test incoming', expense_date: Date.today, money_account:, user:)
+      incoming = savings_plan.incomings.create!(amount: 10, description: 'test incoming', transaction_date: Date.today, money_account:, user:)
       expect(savings_plan.incomings).to include(incoming)
       savings_plan.destroy
       expect(Incoming.where(id: incoming.id)).to be_empty
@@ -28,7 +28,7 @@ RSpec.describe SavingsPlan, type: :model do
 
     it 'has many expenses and destroys them on delete' do
       savings_plan = create(:savings_plan, name: "Test", target_amount: 100, deadline: Date.tomorrow)
-      expense = savings_plan.expenses.create!(amount: 10, description: 'test expense', expense_date: Date.today, money_account:, user:)
+      expense = savings_plan.expenses.create!(amount: 10, description: 'test expense', transaction_date: Date.today, money_account:, user:)
       expect(savings_plan.expenses).to include(expense)
       savings_plan.destroy
       expect(Expense.where(id: expense.id)).to be_empty

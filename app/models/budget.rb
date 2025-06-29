@@ -1,4 +1,6 @@
 class Budget < ApplicationRecord
+  monetize :amount_cents
+
   belongs_to :category
   has_many :budget_users, dependent: :destroy
   has_many :users, through: :budget_users
@@ -51,9 +53,9 @@ class Budget < ApplicationRecord
   def calculate_spent_amount
     expenses = if shared?
       user_ids = budget_users.pluck(:user_id)
-      Expense.where(user_id: user_ids, category: category, expense_date: start_date..end_date)
+      Expense.where(user_id: user_ids, category: category, transaction_date: start_date..end_date)
     else
-      user.expenses.where(category: category, expense_date: start_date..end_date)
+      user.expenses.where(category: category, transaction_date: start_date..end_date)
     end
 
     if shared?

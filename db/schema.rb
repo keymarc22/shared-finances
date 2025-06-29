@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_06_29_175547) do
+ActiveRecord::Schema[8.0].define(version: 2025_06_29_203534) do
   create_table "budget_users", force: :cascade do |t|
     t.integer "budget_id", null: false
     t.integer "user_id", null: false
@@ -54,27 +54,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_29_175547) do
     t.index ["user_id"], name: "index_expense_splits_on_user_id"
   end
 
-  create_table "expenses", force: :cascade do |t|
-    t.string "description", null: false
-    t.integer "expense_type", default: 0, null: false
-    t.boolean "fixed", default: false, null: false
-    t.date "expense_date", null: false
-    t.integer "money_account_id", null: false
-    t.integer "category_id"
-    t.integer "user_id", null: false
-    t.string "type", default: "Expense", null: false
-    t.integer "savings_plan_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer "amount_cents", default: 0, null: false
-    t.string "amount_currency", default: "USD", null: false
-    t.text "comment"
-    t.index ["category_id"], name: "index_expenses_on_category_id"
-    t.index ["money_account_id"], name: "index_expenses_on_money_account_id"
-    t.index ["savings_plan_id"], name: "index_expenses_on_savings_plan_id"
-    t.index ["user_id"], name: "index_expenses_on_user_id"
-  end
-
   create_table "money_accounts", force: :cascade do |t|
     t.string "name", null: false
     t.integer "user_id", null: false
@@ -94,6 +73,27 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_29_175547) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["money_account_id"], name: "index_savings_plans_on_money_account_id"
+  end
+
+  create_table "transactions", force: :cascade do |t|
+    t.string "description", null: false
+    t.integer "transaction_type", default: 0, null: false
+    t.boolean "fixed", default: false, null: false
+    t.date "transaction_date", null: false
+    t.integer "money_account_id", null: false
+    t.integer "category_id"
+    t.integer "user_id", null: false
+    t.string "type", default: "Expense", null: false
+    t.integer "savings_plan_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "amount_cents", default: 0, null: false
+    t.string "amount_currency", default: "USD", null: false
+    t.text "comment"
+    t.index ["category_id"], name: "index_transactions_on_category_id"
+    t.index ["money_account_id"], name: "index_transactions_on_money_account_id"
+    t.index ["savings_plan_id"], name: "index_transactions_on_savings_plan_id"
+    t.index ["user_id"], name: "index_transactions_on_user_id"
   end
 
   create_table "user_savings_plans", force: :cascade do |t|
@@ -122,11 +122,11 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_29_175547) do
 
   add_foreign_key "budget_users", "budgets"
   add_foreign_key "budget_users", "users"
-  add_foreign_key "expense_splits", "expenses"
+  add_foreign_key "expense_splits", "transactions", column: "expense_id"
   add_foreign_key "expense_splits", "users"
-  add_foreign_key "expenses", "money_accounts"
-  add_foreign_key "expenses", "users"
   add_foreign_key "money_accounts", "users"
   add_foreign_key "savings_plans", "money_accounts"
+  add_foreign_key "transactions", "money_accounts"
+  add_foreign_key "transactions", "users"
   add_foreign_key "user_savings_plans", "users"
 end
