@@ -11,7 +11,6 @@ class Expense < ApplicationRecord
 
   enum :expense_type, { personal: 0, shared: 1 }
 
-  validates :description, presence: true
   validates :amount_cents, presence: true, numericality: { greater_than: 0 }
   validates :expense_date, presence: true
 

@@ -1,33 +1,34 @@
 require 'rails_helper'
 
 RSpec.describe SavingsPlan, type: :model do
+  let(:user) { create(:user) }
+  let(:money_account) { create(:money_account, user:) }
   describe 'associations' do
     it 'has many user_savings_plans and destroys them on delete' do
-      savings_plan = SavingsPlan.create!(name: "Test", target_amount: 100, deadline: Date.tomorrow)
-      user_savings_plan = savings_plan.user_savings_plans.create!(user: User.create!(email: "test@example.com", password: "password"))
+      savings_plan = create(:savings_plan, name: "Test", target_amount: 100, deadline: Date.tomorrow)
+      user_savings_plan = savings_plan.user_savings_plans.create!(user: user)
       expect(savings_plan.user_savings_plans).to include(user_savings_plan)
       savings_plan.destroy
       expect(UserSavingsPlan.where(id: user_savings_plan.id)).to be_empty
     end
 
     it 'has many users through user_savings_plans' do
-      user = User.create!(email: "test2@example.com", password: "password")
-      savings_plan = SavingsPlan.create!(name: "Test", target_amount: 100, deadline: Date.tomorrow)
+      savings_plan = create(:savings_plan, name: "Test", target_amount: 100, deadline: Date.tomorrow)
       savings_plan.user_savings_plans.create!(user: user)
       expect(savings_plan.users).to include(user)
     end
 
     it 'has many incomings and destroys them on delete' do
-      savings_plan = SavingsPlan.create!(name: "Test", target_amount: 100, deadline: Date.tomorrow)
-      incoming = savings_plan.incomings.create!(amount: 10, date: Date.today)
+      savings_plan = create(:savings_plan, name: "Test", target_amount: 100, deadline: Date.tomorrow)
+      incoming = savings_plan.incomings.create!(amount: 10, description: 'test incoming', expense_date: Date.today, money_account:, user:)
       expect(savings_plan.incomings).to include(incoming)
       savings_plan.destroy
       expect(Incoming.where(id: incoming.id)).to be_empty
     end
 
     it 'has many expenses and destroys them on delete' do
-      savings_plan = SavingsPlan.create!(name: "Test", target_amount: 100, deadline: Date.tomorrow)
-      expense = savings_plan.expenses.create!(amount: 10, date: Date.today)
+      savings_plan = create(:savings_plan, name: "Test", target_amount: 100, deadline: Date.tomorrow)
+      expense = savings_plan.expenses.create!(amount: 10, description: 'test expense', expense_date: Date.today, money_account:, user:)
       expect(savings_plan.expenses).to include(expense)
       savings_plan.destroy
       expect(Expense.where(id: expense.id)).to be_empty
@@ -73,18 +74,6 @@ RSpec.describe SavingsPlan, type: :model do
   describe 'methods' do
     let(:savings_plan) { create(:savings_plan, target_amount: 1000) }
 
-    describe '#progress_percentage' do
-      it 'returns 0 if target_amount is zero' do
-        savings_plan.target_amount = 0
-        expect(savings_plan.progress_percentage).to eq(0)
-      end
-
-      it 'returns the progress percentage based on current_amount and target_amount' do
-        allow(savings_plan).to receive(:current_amount).and_return(500)
-        expect(savings_plan.progress_percentage).to eq(50.0)
-      end
-    end
-
     describe '#days_remaining' do
       it 'returns 0 if deadline is in the past' do
         savings_plan.deadline = Date.current - 1.day
@@ -100,13 +89,13 @@ RSpec.describe SavingsPlan, type: :model do
     describe '#monthly_target' do
       it 'returns 0 if days_remaining is zero or negative' do
         savings_plan.deadline = Date.current - 1.day
-        expect(savings_plan.monthly_target).to eq(0)
+        expect(savings_plan.monthly_target.cents).to eq(0)
       end
 
       it 'returns the monthly target amount based on remaining amount and months left' do
         allow(savings_plan).to receive(:current_amount).and_return(Money.new(200))
         savings_plan.deadline = Date.current + 60.days # Roughly 2 months
-        expect(savings_plan.monthly_target).to eq(400)
+        expect(savings_plan.monthly_target.cents).to eq(49900)
       end
     end
   end

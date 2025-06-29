@@ -1,9 +1,48 @@
-# This file should ensure the existence of records required to run the application in every environment (production,
-# development, test). The code here should be idempotent so that it can be executed at any point in every environment.
-# The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
-#
-# Example:
-#
-#   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
-#     MovieGenre.find_or_create_by!(name: genre_name)
-#   end
+users = [
+  { email: 'test@email1.com', name: 'Test User 1' },
+  { email: 'test2@email1.com', name: 'Test User 2' }
+].map do |attrs|
+  user = User.find_or_create_by!(email: attrs[:email]) do |user|
+    user.name = attrs[:name]
+    user.password = 'password123'
+    user.password_confirmation = 'password123'
+  end
+
+  MoneyAccount.create!(name: "Account #[user.id]", user: user)
+  user
+end
+
+expenses = [
+  { description: 'Groceries', amount: 100.0, user: users[0] },
+  { description: 'Utilities', amount: 60.0, user: users[1] }
+].map do |attrs|
+  Expense.create!(
+    description: attrs[:description],
+    amount: attrs[:amount],
+    user: attrs[:user],
+    money_account_id: MoneyAccount.first.id,
+    expense_type: :personal,
+    expense_date: Date.today,
+  )
+end
+
+expenses_splits = [
+  { expense: expenses[0], user: users[0], amount: 50.0 },
+  { expense: expenses[0], user: users[1], amount: 50.0 },
+  { expense: expenses[1], user: users[0], amount: 30.0 },
+  { expense: expenses[1], user: users[1], amount: 30.0 }
+]
+
+expenses_splits.each do |attrs|
+  ExpenseSplit.create!(
+    expense: attrs[:expense],
+    user: attrs[:user],
+    amount_cents: attrs[:amount],
+    percentage: 50
+  )
+end
+
+budgets = [
+  { user: users[0], amount: 500.0, month: Date.today.beginning_of_month },
+  { user: users[1], amount: 400.0, month: Date.today.beginning_of_month }
+]

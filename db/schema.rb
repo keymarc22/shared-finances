@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_06_27_010436) do
+ActiveRecord::Schema[8.0].define(version: 2025_06_29_175547) do
   create_table "budget_users", force: :cascade do |t|
     t.integer "budget_id", null: false
     t.integer "user_id", null: false
@@ -56,7 +56,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_27_010436) do
 
   create_table "expenses", force: :cascade do |t|
     t.string "description", null: false
-    t.integer "expense_type", null: false
+    t.integer "expense_type", default: 0, null: false
     t.boolean "fixed", default: false, null: false
     t.date "expense_date", null: false
     t.integer "money_account_id", null: false
@@ -68,6 +68,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_27_010436) do
     t.datetime "updated_at", null: false
     t.integer "amount_cents", default: 0, null: false
     t.string "amount_currency", default: "USD", null: false
+    t.text "comment"
     t.index ["category_id"], name: "index_expenses_on_category_id"
     t.index ["money_account_id"], name: "index_expenses_on_money_account_id"
     t.index ["savings_plan_id"], name: "index_expenses_on_savings_plan_id"

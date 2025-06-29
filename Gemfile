@@ -16,6 +16,8 @@ gem "turbo-rails"
 gem "stimulus-rails"
 # Use Tailwind CSS [https://github.com/rails/tailwindcss-rails]
 gem "tailwindcss-rails"
+
+gem "lucide-rails"
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
 gem "jbuilder"
 
@@ -73,3 +75,6 @@ end
 gem "devise", "~> 4.9"
 
 gem "money-rails", "~> 1.12"
+
+
+gem "phlex-rails", "~> 2.3"

@@ -6,8 +6,12 @@ class User < ApplicationRecord
 
   has_many :expenses, dependent: :destroy
   has_many :incomings, dependent: :destroy
-  has_many :savings_plans, dependent: :destroy
-  has_many :budgets, dependent: :destroy
+
+  has_many :user_savings_plans, dependent: :destroy
+  has_many :savings_plans, through: :user_savings_plans
+
+  has_many :budget_users, dependent: :destroy
+  has_many :budgets, through: :budget_users
   # has_many :notifications, dependent: :destroy
 
   validates :percentage, numericality: { greater_than: 0, less_than_or_equal_to: 100 }, allow_nil: true

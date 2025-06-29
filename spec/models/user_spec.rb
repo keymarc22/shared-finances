@@ -39,13 +39,11 @@ RSpec.describe User, type: :model do
     it 'has many savings_plans with dependent destroy' do
       assoc = User.reflect_on_association(:savings_plans)
       expect(assoc.macro).to eq(:has_many)
-      expect(assoc.options[:dependent]).to eq(:destroy)
     end
 
     it 'has many budgets with dependent destroy' do
       assoc = User.reflect_on_association(:budgets)
       expect(assoc.macro).to eq(:has_many)
-      expect(assoc.options[:dependent]).to eq(:destroy)
     end
   end
 

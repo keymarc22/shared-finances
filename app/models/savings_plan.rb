@@ -20,20 +20,14 @@ class SavingsPlan < ApplicationRecord
     cancelled: 3
   }
 
-  def progress_percentage
-    return 0 if target_amount.zero?
-
-    (current_amount / target_amount * 100).round(2)
-  end
-
   def days_remaining
-    return 0 if deadline < Date.current
+    return Money.new(0) if deadline < Date.current
 
     (deadline - Date.current).to_i
   end
 
   def monthly_target
-    return 0 if days_remaining <= 0
+    return Money.new(0) if days_remaining <= 0
 
     remaining_amount = target_amount - current_amount
     months_left = (days_remaining / 30.0).ceil
