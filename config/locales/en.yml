@@ -29,3 +29,7 @@
 
 en:
   hello: "Hello world"
+  alerts:
+    warning: Attention needed
+    errors: There were %{count} with your submission
+    notice: Action successful

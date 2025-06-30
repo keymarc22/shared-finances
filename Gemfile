@@ -76,5 +76,6 @@ gem "devise", "~> 4.9"
 
 gem "money-rails", "~> 1.12"
 
-
 gem "phlex-rails", "~> 2.3"
+
+gem "simple_form"

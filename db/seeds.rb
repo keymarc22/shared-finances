@@ -21,8 +21,8 @@ expenses = [
     amount: attrs[:amount],
     user: attrs[:user],
     money_account_id: MoneyAccount.first.id,
-    expense_type: :personal,
-    expense_date: Date.today,
+    transaction_type: :personal,
+    transaction_date: Date.today,
   )
 end
 
