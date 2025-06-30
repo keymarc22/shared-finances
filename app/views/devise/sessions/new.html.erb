@@ -1,26 +1,118 @@
-<h2>Log in</h2>
+<% content_for :title, "Iniciar Sesión" %>
+<% content_for :body_class, "auth-page" %>
 
-<%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
-  </div>
-
-  <div class="field">
-    <%= f.label :password %><br />
-    <%= f.password_field :password, autocomplete: "current-password" %>
-  </div>
-
-  <% if devise_mapping.rememberable? %>
-    <div class="field">
-      <%= f.check_box :remember_me %>
-      <%= f.label :remember_me %>
+<div class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
+  <div class="w-full max-w-md">
+    <!-- Header -->
+    <div class="text-center mb-8">
+      <div class="flex items-center justify-center gap-2 mb-4">
+        <div class="p-3 bg-blue-600 rounded-full">
+          <svg class="h-6 w-6 text-white" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+          </svg>
+        </div>
+        <h1 class="text-2xl font-bold text-gray-900">Finanzas en Pareja</h1>
+      </div>
+      <p class="text-gray-600">Gestiona tus finanzas junto a tu pareja</p>
     </div>
-  <% end %>
 
-  <div class="actions">
-    <%= f.submit "Log in" %>
+    <!-- Login Card -->
+    <div class="bg-white rounded-lg shadow-lg border border-gray-200 max-w-md" data-controller="login-form">
+      <div class="p-6 pb-4">
+        <h2 class="text-2xl font-semibold text-center text-gray-900 mb-2">Bienvenido</h2>
+        <p class="text-center text-gray-600">Inicia sesión en tu cuenta</p>
+      </div>
+
+      <div class="px-6 pb-6">
+        <!-- Error Messages -->
+        <% if alert %>
+          <div class="mb-4 p-4 bg-red-50 border border-red-200 rounded-lg" data-login-form-target="errorAlert">
+            <div class="flex">
+
+              <div class="text-sm text-red-700">
+                <%= alert %>
+              </div>
+            </div>
+          </div>
+        <% end %>
+
+        <!-- Login Form -->
+        <%= form_with(model: resource, as: resource_name, url: session_path(resource_name),
+                      local: true, class: "space-y-4",
+                      data: { action: "submit->login-form#handleSubmit", login_form_target: "form" }) do |form| %>
+
+          <!-- Email Field -->
+          <div class="space-y-2">
+            <%= form.label :email, "Correo Electrónico", class: "block text-sm font-medium text-gray-700" %>
+            <div class="relative">
+              <svg class="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+              </svg>
+              <%= form.email_field :email,
+                    autofocus: true,
+                    autocomplete: "email",
+                    placeholder: "tu@email.com",
+                    class: "w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 transition-colors",
+                    required: true %>
+            </div>
+          </div>
+
+          <!-- Password Field -->
+          <div class="space-y-2">
+            <%= form.label :password, "Contraseña", class: "block text-sm font-medium text-gray-700" %>
+            <div class="relative">
+              <svg class="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                <circle cx="12" cy="16" r="1"/>
+                <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+              </svg>
+              <%= form.password_field :password,
+                    autocomplete: "current-password",
+                    placeholder: "••••••••",
+                    class: "w-full pl-10 pr-10 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 transition-colors",
+                    required: true,
+                    data: { login_form_target: "passwordField" } %>
+              <button type="button"
+                      class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+                      data-action="click->login-form#togglePassword">
+                <svg class="h-4 w-4" data-login-form-target="eyeIcon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                </svg>
+                <svg class="h-4 w-4 hidden" data-login-form-target="eyeOffIcon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.878 9.878L3 3m6.878 6.878L21 21"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- Remember Me & Forgot Password -->
+          <div class="flex items-center justify-between">
+            <% if devise_mapping.rememberable? %>
+              <div class="flex items-center">
+                <%= form.check_box :remember_me, class: "h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded" %>
+                <%= form.label :remember_me, "Recordarme", class: "ml-2 block text-sm text-gray-700" %>
+              </div>
+            <% end %>
+
+            <% if devise_mapping.recoverable? %>
+              <%= link_to "¿Olvidaste tu contraseña?",
+                    new_password_path(resource_name),
+                    class: "text-sm text-blue-600 hover:text-blue-500 transition-colors" %>
+            <% end %>
+          </div>
+
+          <!-- Submit Button -->
+          <%= form.submit "Iniciar Sesión",
+                class: "w-full py-2 px-4 bg-blue-600 text-white font-medium rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors",
+                data: { login_form_target: "submitButton" } %>
+        <% end %>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="text-center mt-8 text-sm text-gray-500">
+      <p>&copy; 2024 Finanzas en Pareja. Todos los derechos reservados.</p>
+    </div>
   </div>
-<% end %>
-
-<%= render "devise/shared/links" %>
+</div>
