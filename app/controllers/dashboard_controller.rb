@@ -27,8 +27,8 @@ class DashboardController < ApplicationController
 
   def recent_expenses_data
     Expense.includes(:category, :user, :expense_splits).
-      order(transaction_date: :desc, created_at: :desc).
-      limit(10)
+      order(transaction_date: :desc, created_at: :desc)
+      # limit(10)
   end
 
   def savings_plans_data
