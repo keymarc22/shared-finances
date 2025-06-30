@@ -1,0 +1,15 @@
+<% f ||= SimpleForm::FormBuilder.new(:expense, @expense, self, {}) %>
+
+<p class="<%= label_classes %> text-md mb-5">Gasto compartido por porcentajes:</p>
+
+<div class="flex items-center gap-2">
+  <%= f.simple_fields_for :expense_splits do |s| %>
+    <div>
+      <span class="<%= label_classes %>"><%= s.object.user.name %></span>
+      <%= s.input :percentage, label: false, label_html: { style: 'margin:0'} %>
+      <%= s.input :user_id, as: :hidden %>
+    </div>
+
+    <%= s.input :_destroy, as: :hidden, value: false, input_html: { class: 'split-destroy' } %>
+  <% end %>
+</div>

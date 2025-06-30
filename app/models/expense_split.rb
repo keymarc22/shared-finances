@@ -1,11 +1,9 @@
 class ExpenseSplit < ApplicationRecord
-  belongs_to :expense
+  belongs_to :expense, optional: true # Optional to allow creation without an expense initially
   belongs_to :user
 
   validates :percentage, numericality: { greater_than: 0, less_than_or_equal_to: 100 }
   validates :user_id, uniqueness: { scope: :expense_id }
-  validates :pecentage, presence: true, unless: :amount
-  validates :amount, presence: true, unless: :percentage
 
   def amount
     if self[:amount].present?

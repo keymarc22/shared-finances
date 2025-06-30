@@ -7,12 +7,12 @@ class Expense < Transaction
   has_many :expense_splits, foreign_key: :expense_id, dependent: :destroy
   has_many :expense_participants, through: :expense_splits, source: :user
 
-  # validate :splits_sum_to_100_percent, if: -> { shared? && expense? }
+  accepts_nested_attributes_for :expense_splits, allow_destroy: true, reject_if: :all_blank
 
-  # after_create :create_default_splits, if: -> { shared? && expense? }
+  validate :splits_sum_to_100_percent, if: :shared?
 
   def total_splits_percentage
-    expense_splits.sum(:percentage)
+    expense_splits.sum(&:percentage)
   end
 
   def amount_for_user(user)
@@ -37,17 +37,7 @@ class Expense < Transaction
     return unless shared? && expense_splits.present?
 
     unless total_splits_percentage == 100
-      errors.add(:base, "Los porcentajes deben sumar exactamente 100%")
-    end
-  end
-
-  def create_default_splits
-    # TODO: scope users to those who are part of the shared budget
-    User.find_each do |user|
-      expense_splits.create!(
-        user: user,
-        percentage: user.percentage.to_f || 50.0
-      )
+      errors.add(:percentage, "Los porcentajes deben sumar exactamente 100%")
     end
   end
 end

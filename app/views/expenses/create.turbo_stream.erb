@@ -1,0 +1,11 @@
+<% if @expense.valid? %>
+  <%= turbo_stream.prepend "expenses" do %>
+    <%= render partial: "dashboard/expense", locals: { expense: @expense }%>
+  <% end %>
+
+  <%= turbo_stream.replace 'summary_cards' do %>
+    <%= render partial: "dashboard/summary_cards" %>
+  <% end %>
+<% end %>
+
+<%= render_turbo_stream_flash_messages %>
