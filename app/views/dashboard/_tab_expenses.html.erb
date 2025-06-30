@@ -1,0 +1,14 @@
+<div data-tabs-content="expenses" class="mt-6">
+  <%= render CardComponent.new do %>
+    <%= render CardComponent::Header.new do %>
+      <%= render CardComponent::Title.new { "Gastos Recientes" } %>
+      <%= render CardComponent::Description.new { "Últimos movimientos de gastos compartidos y personales" } %>
+    <% end %>
+
+    <%= render CardComponent::Content.new do %>
+      <div class="space-y-4">
+        <%= render partial: "expense", collection: @recent_expenses, as: :expense %>
+      </div>
+    <% end %>
+  <% end %>
+</div>

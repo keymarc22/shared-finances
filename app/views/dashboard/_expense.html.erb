@@ -1,0 +1,27 @@
+<%= turbo_frame_tag dom_id(expense) do %>
+  <div class="border border-gray-200 flex items-center justify-between p-4 shadow-sm rounded-lg hover:bg-gray-50 transition-colors mb-4">
+    <div class="flex-1">
+      <div class="flex items-center gap-2">
+        <h3 class="font-medium"><%= expense.description %></h3>
+        <%= render BadgeComponent.new(variant: expense.shared? ? :default : :secondary) do %>
+          <%= expense.category&.name %>
+        <% end %>
+        <% if expense.shared? %>
+          <%= render BadgeComponent.new(variant: :outline) { "Compartido" } %>
+        <% end %>
+      </div>
+      <p class="text-sm text-gray-600">
+        <%= expense.transaction_date.strftime("%d %b %Y") %>
+        <% if expense.shared? %>
+          • Pagado por <%= expense.user.name %>
+        <% end %>
+      </p>
+    </div>
+    <div class="text-right">
+      <p class="text-lg font-semibold">$<%= expense.amount %></p>
+      <% if expense.shared? %>
+        <p class="text-sm text-gray-600">$<%= expense.amount / 2 %> c/u</p>
+      <% end %>
+    </div>
+  </div>
+<% end %>
