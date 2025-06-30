@@ -1,0 +1,22 @@
+es:
+  simple_form:
+    "yes": 'Sí'
+    "no": 'No'
+    required:
+      text: 'requerido'
+      mark: '*'
+      # Puedes descomentar la línea de abajo si necesitas sobrescribir todo el html requerido.
+      # Cuando uses html, text y mark no serán usados.
+      # html: '<abbr title="requerido">*</abbr>'
+    error_notification:
+      default_message:
+        - "Por favor revisa los siguientes problemas:"
+
+    labels:
+      description: Descripción
+
+    placeholders:
+      defaults:
+        name: Nombre
+      expense:
+        description: 'Supermercado, Mascotas, etc'

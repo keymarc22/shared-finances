@@ -1,0 +1,37 @@
+<div class="flex justify-between items-center">
+  <div>
+    <h1 class="text-3xl font-bold text-gray-900">
+      <a href="<%= root_path %>">Dashboard</a>
+    </h1>
+    <p class="text-gray-600"><%= Date.current.strftime("%B %Y") %></p>
+  </div>
+
+  <div class="flex" style="gap: 10px">
+    <a href="<%= new_expense_path %>" data-turbo-frame="modal" class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-750 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-gray-950 text-white hover:bg-gray-800 h-10 px-4 py-2">
+      <%= lucide_icon 'plus' %>
+      Agregar Gasto
+    </a>
+
+    <div class="relative inline-block text-left">
+      <a data-action="click -> dropdown#toggle" data-controller="dropdown" class="cursor-pointer inline-flex w-full justify-center gap-x-1.5 rounded-md px-3 py-2 text-sm font-semibold text-gray-900" aria-expanded="true" aria-haspopup="true">
+        <%= lucide_icon 'more-vertical', class: 'w-6 h-6 text-gray-600' %>
+      </a>
+
+      <div class="hidden absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-hidden" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
+        <div class="py-1" role="none">
+          <!-- Active: "bg-gray-100 text-gray-900 outline-hidden", Not Active: "text-gray-700" -->
+          <%= link_to 'Cuentas', money_accounts_path,class: "block px-4 py-2 text-sm text-gray-700"  %>
+
+          <a href="#" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="menu-item-1">Support</a>
+          <a href="#" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="menu-item-2">License</a>
+          <form method="POST" action="#" role="none">
+            <button type="submit" class="block w-full px-4 py-2 text-left text-sm text-gray-700" role="menuitem" tabindex="-1" id="menu-item-3">Sign out</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div id="flash"></div>

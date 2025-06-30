@@ -1,0 +1,11 @@
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.bg-opacity-7{
+  opacity: 0.7;
+}
+
+.justify-end {
+  justify-content: flex-end
+}

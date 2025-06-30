@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title><%= content_for(:title) || "Couple Finances" %></title>
+    <title><%= content_for(:title) || "House Finances" %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
@@ -22,9 +22,31 @@
     <%= javascript_importmap_tags %>
   </head>
 
-  <body>
-    <main class="container mx-auto mt-28 px-5 flex">
+  <body class="font-sans text-gray-900 bg-gray-100 min-h-screen">
+    <% if current_user.present? %>
+
+      <main class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+        <%= yield %>
+      </main>
+
+    <% else %>
       <%= yield %>
-    </main>
+    <% end %>
+
+    <!-- Modal -->
+    <div class="fixed inset-0 z-50 flex items-center justify-center overlay-bg hidden"
+         data-controller="modal"
+         data-modal-target="modal"
+         data-action="turbo:frame-load->modal#open turbo:submit-end->modal#close">
+
+      <div class="bg-white rounded-lg shadow-lg max-w-md w-full p-6 relative">
+        <!-- Botón para cerrar el modal -->
+        <button data-action="click->modal#close" class="cursor-pointer absolute top-2 right-2 text-gray-500 hover:text-gray-800">
+          <%= lucide_icon 'x' %>
+        </button>
+        <%= turbo_frame_tag 'modal'%>
+      </div>
+    </div>
+
   </body>
 </html>

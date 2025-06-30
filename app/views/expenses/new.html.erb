@@ -1,0 +1,37 @@
+<%= turbo_frame_tag 'modal' do %>
+  <div class="mb-5 flex flex-col space-y-1.5 text-start sm:text-left">
+    <h2 class="text-lg font-semibold leading-none tracking-tight">Agregar nuevo gasto</h2>
+    <p class="text-xs text-muted-foreground">
+      Registra un nuevo gasto compartido o personal.
+    </p>
+  </div>
+
+  <%= simple_form_for @expense do |f| %>
+    <%= f.input :description %>
+    <%= f.input :amount_cents %>
+    <%= f.input :category_id, as: :select, collection: Category.all %>
+
+    <div class="grid gap-1 mb-6">
+      <label class="<%= label_classes %>">Tipo de gasto</label>
+      <%= f.collection_radio_buttons :transaction_type, [['personal', 'Personal'], ['shared', 'Compartido']], :first, :last %>
+    </div>
+
+    <div class="grid gap-1 mb-6">
+      <label class="<%= label_classes %>">Quien pago?</label>
+      <%= f.collection_radio_buttons :user_id, User.all.map { |user| [user.id, user.name] }, :first, :last %>
+    </div>
+
+    <%= f.input :money_account_id, as: :select, collection: MoneyAccount.all, prompt: 'Select an option' %>
+
+    <div class="flex justify-end gap-1">
+      <%= render ButtonComponent.new(variant: :secondary, "data-action": "click->modal#close") do %>
+        Cancelar
+      <% end %>
+
+      <%= render ButtonComponent.new(variant: :primary, type: 'submit') do %>
+        Crear gasto
+      <% end %>
+    </div>
+
+  <% end %>
+<% end %>
