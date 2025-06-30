@@ -61,86 +61,23 @@
   <!-- Tabs -->
   <nav class="bg-gray-200 p-1 rounded-xl shadow-lg sm:p-2 sm:rounded-2xl">
     <div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2 justify-between items-center">
-      <%= render ButtonComponent.new(variant: :pill, size: :default, class: 'bg-white', data: { action: "click->dashboard#openExpenseModal" }) do %>
+      <%= render LinkComponent.new(variant: :pill, class: params[:tab_content] == 'tab_expenses' ? 'bg-white' : '', href: root_path(tab_content: 'tab_expenses')) do %>
         Gastos compartidos
       <% end %>
 
       <% @summary[:users_summary].each do |user| %>
-        <%= render ButtonComponent.new(variant: :pill, size: :default, data: { action: "click->dashboard#openExpenseModal" }) do %>
+        <%= render LinkComponent.new(variant: :pill, class: params[:tab_content] == 'tab_user' && params[:user_id].present? && @user.present? && user[:id].to_s == params[:user_id] ? 'bg-white' : '', href: root_path(tab_content: 'tab_user', user_id: user[:id])) do %>
           Gastos <%= user[:name] %>
         <% end %>
       <% end %>
 
-      <%= render ButtonComponent.new(variant: :pill, size: :default, data: { action: "click->dashboard#openExpenseModal" }) do %>
+      <%= render LinkComponent.new(variant: :pill, class: params[:tab_content] == 'tab_savings' ? 'bg-white' : '', href: root_path(tab_content: 'tab_savings')) do %>
         Planes de ahorro
       <% end %>
     </div>
   </nav>
 
-  <!-- Expenses Tab -->
-  <div data-tabs-content="expenses" class="mt-6">
-    <%= render CardComponent.new do %>
-      <%= render CardComponent::Header.new do %>
-        <%= render CardComponent::Title.new { "Gastos Recientes" } %>
-        <%= render CardComponent::Description.new { "Últimos movimientos de gastos compartidos y personales" } %>
-      <% end %>
-
-      <%= render CardComponent::Content.new do %>
-        <div class="space-y-4">
-          <% @recent_expenses.each do |expense| %>
-            <div class="flex items-center justify-between p-4 shadow-sm rounded-lg hover:bg-gray-50 transition-colors">
-              <div class="flex-1">
-                <div class="flex items-center gap-2">
-                  <h3 class="font-medium"><%= expense.description %></h3>
-                  <%= render BadgeComponent.new(variant: expense.shared? ? :default : :secondary) do %>
-                    <%= expense.category&.name %>
-                  <% end %>
-                  <% if expense.shared? %>
-                    <%= render BadgeComponent.new(variant: :outline) { "Compartido" } %>
-                  <% end %>
-                </div>
-                <p class="text-sm text-gray-600">
-                  <%= expense.transaction_date.strftime("%d %b %Y") %>
-                  <% if expense.shared? %>
-                    • Pagado por <%= expense.user.name %>
-                  <% end %>
-                </p>
-              </div>
-              <div class="text-right">
-                <p class="text-lg font-semibold">$<%= expense.amount %></p>
-                <% if expense.shared? %>
-                  <p class="text-sm text-gray-600">$<%= expense.amount / 2 %> c/u</p>
-                <% end %>
-              </div>
-            </div>
-          <% end %>
-        </div>
-      <% end %>
-    <% end %>
-  </div>
-
-  <!-- Savings Tab -->
-  <div data-tabs-content="savings" class="mt-6 hidden">
-    <div class="flex justify-between items-center mb-6">
-      <div>
-        <h2 class="text-2xl font-bold">Planes de Ahorro</h2>
-        <p class="text-gray-600">Gestiona tus metas de ahorro personales y compartidas</p>
-      </div>
-      <%= render ButtonComponent.new(variant: :primary, data: { action: "click->dashboard#openSavingsModal" }) do %>
-        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
-        </svg>
-        Nuevo Plan
-      <% end %>
-    </div>
-
-    <!--
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <% @savings_plans.each do |plan| %>
-          <%= render SavingsPlanCardComponent.new(plan: plan) %>
-        <% end %>
-      </div>
-
-    -->
-  </div>
+  <%= turbo_frame_tag 'tab_content', data: { turbo_action: 'advance' } do %>
+    <%= render partial: "dashboard/#{params[:tab_content]}" %>
+  <% end %>
 </div>

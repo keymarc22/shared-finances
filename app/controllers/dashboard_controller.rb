@@ -5,6 +5,13 @@ class DashboardController < ApplicationController
     @recent_expenses = recent_expenses_data
     @savings_plans = []
 
+    params[:tab_content] ||= "tab_expenses"
+
+    if params[:tab_content] == "tab_user" && params[:user_id].present?
+      @user = User.find(params[:user_id])
+      @user_expenses = @user.expenses.includes(:category)
+    end
+
     # @balance = balance_data
     # @current_budgets = current_budgets_data
     # @balance_summary = balance_summary_data

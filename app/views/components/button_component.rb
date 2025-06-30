@@ -9,7 +9,7 @@ class ButtonComponent < Phlex::HTML
     ghost: "hover:bg-gray-100 hover:text-gray-900",
     link: "text-gray-900 underline-offset-4 hover:underline",
     primary: "bg-gray-950 text-white hover:bg-gray-800",
-    pill: "cursor-pointer flex-1 text-center px-4 py-2 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-300 transition-colors duration-200 ease-in-out whitespace-nowrap sm:text-base md:px-6 md:py-3"
+    pill: "flex-1 text-center px-4 py-2 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-300 transition-colors duration-200 ease-in-out whitespace-nowrap sm:text-base md:px-6 md:py-3"
   }.freeze
 
   SIZES = {
