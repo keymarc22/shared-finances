@@ -6,22 +6,8 @@
     </p>
   </div>
 
-  <%= simple_form_for @expense do |f| %>
-    <%= f.input :description %>
-    <%= f.input :amount_cents %>
-    <%= f.input :category_id, as: :select, collection: Category.all %>
-
-    <div class="grid gap-1 mb-6">
-      <label class="<%= label_classes %>">Tipo de gasto</label>
-      <%= f.collection_radio_buttons :transaction_type, [['personal', 'Personal'], ['shared', 'Compartido']], :first, :last %>
-    </div>
-
-    <div class="grid gap-1 mb-6">
-      <label class="<%= label_classes %>">Quien pago?</label>
-      <%= f.collection_radio_buttons :user_id, User.all.map { |user| [user.id, user.name] }, :first, :last %>
-    </div>
-
-    <%= f.input :money_account_id, as: :select, collection: MoneyAccount.all, prompt: 'Select an option' %>
+  <%= simple_form_for @expense, html: { data: { controller: 'expense-form' } } do |f| %>
+    <%= render partial: 'form', locals: { f: f }%>
 
     <div class="flex justify-end gap-1">
       <%= render ButtonComponent.new(variant: :secondary, "data-action": "click->modal#close") do %>
