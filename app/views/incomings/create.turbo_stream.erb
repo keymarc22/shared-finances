@@ -3,7 +3,7 @@
     <%= render partial: "money_accounts/transaction", locals: { transaction: @incoming } %>
   <% end %>
 
-  <%= turbo_stream.prepend 'transactions' do %>
+  <%= turbo_stream.replace dom_id(@money_account) do %>
     <%= render partial: "money_accounts/money_account", locals: { account: @money_account } %>
   <% end %>
 <% end %>

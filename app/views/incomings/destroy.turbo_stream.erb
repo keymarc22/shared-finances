@@ -1,1 +1,5 @@
 <%= turbo_stream.remove dom_id(@incoming) %>
+
+<%= turbo_stream.replace dom_id(@incoming.money_account) do %>
+  <%= render partial: "money_accounts/money_account", locals: { account: @incoming.money_account } %>
+<% end %>

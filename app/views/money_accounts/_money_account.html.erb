@@ -20,7 +20,7 @@
     <% end %>
 
     <%= render CardComponent::Content.new(class: 'flex align-items-end justify-between') do %>
-      <div class="text-2xl font-bold">$<%= account.balance %></div>
+      <div class="text-2xl font-bold"><%= to_money_format account.balance %></div>
       <a href="<%= new_money_account_incoming_path(account) %>" data-turbo-frame= "modal" >Add incoming</a>
     <% end %>
   <% end %>
