@@ -10,22 +10,23 @@
  *= require three
  */
 
- .collection_radio_buttons {
+.collection_radio_buttons {
   margin-left: 7px;
   font-size: .875rem;
- }
+}
 
- .overlay-bg {
+.overlay-bg {
   background-color: #242424bd;
- }
+}
 
- /* ACCOUNTS STYLES */
+/* ACCOUNTS STYLES */
 
- .accounts-card--container {
+.accounts-card--container {
   display: grid;
-  grid-template-columns: repeat(1000, 290px);
+  grid-template-columns: repeat(auto-fill, 290px);
   overflow: hidden;
-  overflow-x: scroll;
+  overflow-x: auto;
   padding-bottom: 1rem;
-  gap: 1rem;;
- }
+  gap: 1rem;
+  width: 100;
+}

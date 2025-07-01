@@ -1,0 +1,27 @@
+<%= turbo_frame_tag dom_id(account) do %>
+  <%= render CardComponent.new do %>
+    <%= render CardComponent::Header.new do %>
+      <div class="flex items-center justify-between">
+        <%= render CardComponent::Title.new(class: "text-sm font-medium") { account.name } %>
+
+        <div class="relative inline-block text-left">
+          <a data-action="click -> dropdown#toggle" data-controller="dropdown" class="p0 align-items-center cursor-pointer inline-flex w-full justify-center gap-x-1.5 rounded-md px-3 py-2 text-sm font-semibold text-gray-900" aria-expanded="true" aria-haspopup="true">
+            <%= lucide_icon 'more-vertical', class: 'w-6 h-6 text-gray-600' %>
+          </a>
+
+          <div class="hidden absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-hidden" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
+            <div class="py-1" role="none">
+              <%= link_to 'Editar', money_account_path(account), class: "block px-4 py-2 text-sm text-gray-700", 'data-turbo-frame': "modal"  %>
+              <%= link_to 'Eliminar', money_account_path(account), class: "block px-4 py-2 text-sm text-gray-700", data: { 'turbo-method': 'delete', "turbo-confirm": '¿Estas seguro? No se podrá revertir' }  %>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% end %>
+
+    <%= render CardComponent::Content.new(class: 'flex align-items-end justify-between') do %>
+      <div class="text-2xl font-bold">$<%= account.balance %></div>
+      <a href="<%= new_money_account_incoming_path(account) %>" data-turbo-frame= "modal" >Add incoming</a>
+    <% end %>
+  <% end %>
+<% end %>

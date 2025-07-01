@@ -1,0 +1,19 @@
+<%= f.input :name %>
+
+<div data-controller='nested-form'>
+  <div data-nested-form-target="addLink"></div>
+
+  <%= link_to 'Add Incoming', '#', class: 'add_fields', data: { turbo: "false", association: 'incomings', action: 'click->nested-form#add_association' } %>
+
+  <template data-nested-form-target="template">
+    <%= f.simple_fields_for :incomings, Incoming.build, child_index: 'NEW_RECORD' do |incoming_form| %>
+      <div class="nested-fields mb-6 card border border-gray-200 p-5" data-new-record="true">
+        <p class="mb-6">New incoming</p>
+        <%= incoming_form.input :amount %>
+        <%= incoming_form.input :description %>
+        <%= incoming_form.input :_destroy, as: :hidden %>
+        <%= link_to 'Remove', '#', class: 'remove_fields', data: { action: 'click->nested-form#remove_association' } %>
+      </div>
+    <% end %>
+  </template>
+</div>

@@ -9,3 +9,7 @@
 .justify-end {
   justify-content: flex-end
 }
+
+.p0 {
+  padding: 0;
+}

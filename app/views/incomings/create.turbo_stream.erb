@@ -1,0 +1,11 @@
+<% if @incoming.valid? %>
+  <%= turbo_stream.append 'expenses' do %>
+    <%= render partial: "money_accounts/transaction", locals: { transaction: @incoming } %>
+  <% end %>
+
+  <%= turbo_stream.prepend 'transactions' do %>
+    <%= render partial: "money_accounts/money_account", locals: { account: @money_account } %>
+  <% end %>
+<% end %>
+
+<%= render_turbo_stream_flash_messages %>

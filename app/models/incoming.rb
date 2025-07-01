@@ -1,4 +1,8 @@
-class Incoming < Expense
+class Incoming < Transaction
+
+  belongs_to :money_account
+  belongs_to :user
+  belongs_to :category, optional: true
 
   def expense?
     false

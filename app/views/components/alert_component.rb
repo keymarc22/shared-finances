@@ -1,5 +1,5 @@
 class AlertComponent < Phlex::HTML
-  BASE = "w-full p-6 card border rounded-sm relative".freeze
+  BASE = "w-full p-6 card border rounded-sm relative mb-6".freeze
 
   TYPES_CONTAINER = {
     notice: "border-blue-200 bg-blue-200",
