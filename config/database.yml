@@ -1,7 +1,6 @@
 default: &default
   adapter: postgresql
   encoding: unicode
-  url: <%= ENV['DATABASE_URL'] %>
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
 
 development:
@@ -14,11 +13,7 @@ development:
 
 production:
   <<: *default
-  database:  <%= Rails.application.credentials.production.dig(:production, :database, :db_name) %>
-  username: <%= Rails.application.credentials.production.dig(:production, :database, :db_username) %>
-  password: <%= Rails.application.credentials.production.dig(:production, :database, :db_password) %>
-  host: <%= Rails.application.credentials.production.dig(:production, :database, :db_host) %>
-  port: <%= Rails.application.credentials.production.dig(:production, :database, :db_port) %>
+  url: <%= ENV['DATABASE_URL'] %>
 
   # Configuración para ActionCable en producción
   cable:
@@ -29,6 +24,5 @@ production:
 test:
   <<: *default
   database: finances_test
-  username: admin
-  password: 1234
-
+  username: <%= Rails.application.credentials.dig(:development, :database, :db_username) %>
+  password: <%= Rails.application.credentials.dig(:development, :database, :db_password) %>
