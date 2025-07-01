@@ -31,7 +31,7 @@ queue:
   adapter: postgresql
   url: <%= ENV['DATABASE_URL'] %>
 
-Cache:
+cache:
   <<: *default
   adapter: postgresql
   url: <%= ENV['DATABASE_URL'] %>
