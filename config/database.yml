@@ -1,27 +1,27 @@
 default: &default
-  adapter: sqlite3
+  adapter: postgresql
+  encoding: unicode
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-  timeout: 5000
 
 development:
   <<: *default
-  database:  <%= Rails.application.credentials.dig(:database, :db_name) %>
-  username: <%= Rails.application.credentials.dig(:database, :db_username) %>
-  password: <%= Rails.application.credentials.dig(:database, :db_password) %>
-  host: <%= Rails.application.credentials.dig(:database, :db_host) %>
-  port: <%= Rails.application.credentials.dig(:database, :db_port) %>
+  database:  <%= Rails.application.credentials.development.dig(:database, :db_name) %>
+  username: <%= Rails.application.credentials.development.dig(:database, :db_username) %>
+  password: <%= Rails.application.credentials.development.dig(:database, :db_password) %>
+  host: <%= Rails.application.credentials.development.dig(:database, :db_host) %>
+  port: <%= Rails.application.credentials.development.dig(:database, :db_port) %>
 
 production:
   <<: *default
-  database:  <%= Rails.application.credentials.dig(:database, :db_name) %>
-  username: <%= Rails.application.credentials.dig(:database, :db_username) %>
-  password: <%= Rails.application.credentials.dig(:database, :db_password) %>
-  host: <%= Rails.application.credentials.dig(:database, :db_host) %>
-  port: <%= Rails.application.credentials.dig(:database, :db_port) %>
+  database:  <%= Rails.application.credentials.production.dig(:database, :db_name) %>
+  username: <%= Rails.application.credentials.production.dig(:database, :db_username) %>
+  password: <%= Rails.application.credentials.production.dig(:database, :db_password) %>
+  host: <%= Rails.application.credentials.production.dig(:database, :db_host) %>
+  port: <%= Rails.application.credentials.production.dig(:database, :db_port) %>
 
-# Warning: The database defined as "test" will be erased and
-# re-generated from your development database when you run "rake".
-# Do not set this db to the same as development or production.
 test:
   <<: *default
-  database: storage/test.sqlite3
+  database: finances_test
+  username: admin
+  password: 1234
+
