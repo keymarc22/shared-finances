@@ -2,13 +2,17 @@ class Expense < Transaction
 
   enum :transaction_type, { personal: 0, shared: 1 }
 
+  belongs_to :user
+  belongs_to :money_account
   belongs_to :category, optional: true
+  belongs_to :transaction_group, optional: true
 
   has_many :expense_splits, foreign_key: :expense_id, dependent: :destroy
   has_many :expense_participants, through: :expense_splits, source: :user
 
   accepts_nested_attributes_for :expense_splits, allow_destroy: true, reject_if: :all_blank
 
+  validates :transaction_date, :user, :money_account, presence: true
   validate :splits_sum_to_100_percent, if: :shared?
 
   def total_splits_percentage

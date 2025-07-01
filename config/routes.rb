@@ -5,6 +5,11 @@ Rails.application.routes.draw do
   root to: "dashboard#index"
 
   get "expenses/splits_fields", to: "expenses#expense_splits_fields", as: :expense_splits_fields
-  resources :money_accounts, only: :index
+
+  resources :money_accounts, except: :edit do
+    resources :incomings
+  end
+
   resources :expenses, except: :index
+  resources :incomings, expect: %i[new create]
 end

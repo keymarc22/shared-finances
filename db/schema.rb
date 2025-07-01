@@ -10,7 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_06_29_203534) do
+ActiveRecord::Schema[8.0].define(version: 2025_07_01_015748) do
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "pg_catalog.plpgsql"
+
   create_table "budget_users", force: :cascade do |t|
     t.integer "budget_id", null: false
     t.integer "user_id", null: false
@@ -75,14 +78,22 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_29_203534) do
     t.index ["money_account_id"], name: "index_savings_plans_on_money_account_id"
   end
 
+  create_table "transaction_groups", force: :cascade do |t|
+    t.string "name", null: false
+    t.bigint "transaction_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["transaction_id"], name: "index_transaction_groups_on_transaction_id"
+  end
+
   create_table "transactions", force: :cascade do |t|
     t.string "description", null: false
     t.integer "transaction_type", default: 0, null: false
     t.boolean "fixed", default: false, null: false
-    t.date "transaction_date", null: false
-    t.integer "money_account_id", null: false
+    t.date "transaction_date"
+    t.integer "money_account_id"
     t.integer "category_id"
-    t.integer "user_id", null: false
+    t.integer "user_id"
     t.string "type", default: "Expense", null: false
     t.integer "savings_plan_id"
     t.datetime "created_at", null: false
@@ -90,6 +101,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_29_203534) do
     t.integer "amount_cents", default: 0, null: false
     t.string "amount_currency", default: "USD", null: false
     t.text "comment"
+    t.integer "frequency", default: 1, null: false
+    t.integer "interval", default: 1, null: false
     t.index ["category_id"], name: "index_transactions_on_category_id"
     t.index ["money_account_id"], name: "index_transactions_on_money_account_id"
     t.index ["savings_plan_id"], name: "index_transactions_on_savings_plan_id"

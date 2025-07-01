@@ -1,0 +1,24 @@
+<%= turbo_frame_tag 'modal' do %>
+  <div class="mb-5 flex flex-col space-y-1.5 text-start sm:text-left">
+    <h2 class="text-lg font-semibold leading-none tracking-tight">Add incoming</h2>
+    <p class="text-xs text-muted-foreground">
+      Cuenta: <%= @money_account.name %>
+    </p>
+  </div>
+
+  <%= simple_form_for @incoming, url: money_account_incomings_path(@money_account) do |f| %>
+    <%= render 'form', f: f %>
+    <%= f.input :money_account_id, as: :hidden, input_html: { value: @money_account} %>
+
+    <div class="flex justify-end gap-1">
+      <%= render ButtonComponent.new(variant: :secondary, "data-action": "click->modal#close") do %>
+        Cancel
+      <% end %>
+
+      <%= render ButtonComponent.new(variant: :primary, type: 'submit') do %>
+        Add incoming
+      <% end %>
+    </div>
+
+  <% end %>
+<% end %>

@@ -1,0 +1,61 @@
+<%= turbo_frame_tag dom_id(transaction) do %>
+  <div class="flex items-center justify-between p-4 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors mb-6">
+    <div class="flex items-center gap-4">
+      <div class="flex-shrink-0">
+        <% if transaction.incoming? %>
+          <%= lucide_icon 'move-up-right', class: 'text-green-500' %>
+        <% else %>
+          <%= lucide_icon 'move-down-left', class: 'text-red-600' %>
+        <% end %>
+      </div>
+
+      <div class="flex-1 min-w-0">
+        <div class="flex items-center gap-2">
+          <p class="font-medium text-gray-900 truncate"><%= transaction.description %></p>
+          <%= render BadgeComponent.new(variant: :default) do %>
+            <%= transaction.transaction_type %>
+          <% end %>
+        </div>
+
+        <div>
+          <div class="flex items-center gap-4 text-sm text-gray-500">
+            <span><%= transaction.money_account.name %></span>
+            <span>•</span>
+              <span><%= transaction.transaction_date.strftime("%d/%m/%Y %I:%M %p") %></span>
+          </div>
+
+          <div class="flex items-center gap-2 mt-1">
+            <span class="relative flex shrink-0 overflow-hidden rounded-full h-6 w-6" >
+              <span class="flex h-full w-full items-center justify-center rounded-full bg-muted text-xs">JP</span>
+            </span>
+            <span class="text-xs text-gray-500">Realizado por <%= transaction.user.name %></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flex align-items-end">
+      <div class="font-semibold <%= transaction.incoming? ? 'text-green-500' : 'text-red-600' %>" style="padding-top: 7px"><%= transaction.amount.format %></div>
+
+      <div class="relative inline-block text-left">
+        <a data-action="click -> dropdown#toggle" data-controller="dropdown" class="cursor-pointer inline-flex w-full justify-center gap-x-1.5 rounded-md px-3 py-2 text-sm font-semibold text-gray-900" aria-expanded="true" aria-haspopup="true">
+          <%= lucide_icon 'more-vertical', class: 'w-6 h-6 text-gray-600' %>
+        </a>
+
+        <div class="hidden absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-hidden" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
+          <div class="py-1" role="none">
+            <!-- Active: "bg-gray-100 text-gray-900 outline-hidden", Not Active: "text-gray-700" -->
+
+            <% if transaction.expense? %>
+              <%= link_to 'Editar', edit_expense_path(transaction), class: "block px-4 py-2 text-sm text-gray-700", 'data-turbo-frame': "modal" %>
+              <%= link_to 'Eliminar', expense_path(transaction), class: "block px-4 py-2 text-sm text-gray-700", data: { 'turbo-method': 'delete', "turbo-confirm": '¿Estas seguro? No se podrá revertir' }  %>
+            <% else %>
+              <%= link_to 'Editar', edit_money_account_incoming_path(money_account_id: transaction.money_account_id, id: transaction.id),class: "block px-4 py-2 text-sm text-gray-700", 'data-turbo-frame': "modal"  %>
+              <%= link_to 'Eliminar', money_account_incoming_path(money_account_id: transaction.money_account_id, id: transaction.id), class: "block px-4 py-2 text-sm text-gray-700", data: { 'turbo-method': 'delete', "turbo-confirm": '¿Estas seguro? No se podrá revertir' }  %>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>

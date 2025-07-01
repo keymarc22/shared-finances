@@ -1,11 +1,14 @@
 class Transaction < ApplicationRecord
   monetize :amount_cents
 
-  belongs_to :user
-  belongs_to :money_account
+  enum :interval, {
+    weekly: 1,
+    monthly: 2,
+    yearly: 3
+  }
 
   validates :amount_cents, presence: true, numericality: { greater_than: 0 }
-  validates :transaction_date, presence: true
+  validates :frequency, :interval, presence: true
 
   def expense?
     is_a?(Expense)

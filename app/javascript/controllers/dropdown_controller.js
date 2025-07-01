@@ -4,14 +4,29 @@ import { Controller } from "@hotwired/stimulus"
 export default class extends Controller {
   connect() {
     console.log("Dropdown controller connected");
+    this.handleClickOutside = this.handleClickOutside.bind(this);
   }
 
   toggle(event) {
     event.preventDefault();
 
-    const menu = event.currentTarget.nextElementSibling;
-    if (menu) {
-      menu.classList.toggle('hidden');
+    this.menu = event.currentTarget.nextElementSibling;
+    if (this.menu) {
+      this.menu.classList.toggle('hidden');
+      if (!this.menu.classList.contains('hidden')) {
+        document.addEventListener('click', this.handleClickOutside);
+      } else {
+        document.removeEventListener('click', this.handleClickOutside);
+      }
+    }
+  }
+
+  handleClickOutside(event) {
+    if (!this.element.contains(event.target)) {
+      if (this.menu && !this.menu.classList.contains('hidden')) {
+        this.menu.classList.add('hidden');
+      }
+      document.removeEventListener('click', this.handleClickOutside);
     }
   }
 }
