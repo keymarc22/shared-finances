@@ -25,3 +25,7 @@ cable:
   adapter: postgresql
   url: <%= ENV['DATABASE_URL'] %>
   channel_prefix: shared_finances_production
+
+queue:
+  adapter: postgresql
+  url: <%= ENV['DATABASE_URL'] %>
