@@ -15,14 +15,13 @@ production:
   <<: *default
   url: <%= ENV['DATABASE_URL'] %>
 
-  # Configuración para ActionCable en producción
-  cable:
-    adapter: postgresql
-    url: <%= ENV['DATABASE_URL'] %>
-    pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-
 test:
   <<: *default
   database: finances_test
   username: <%= Rails.application.credentials.dig(:development, :database, :db_username) %>
   password: <%= Rails.application.credentials.dig(:development, :database, :db_password) %>
+
+cable:
+  adapter: postgresql
+  url: <%= ENV['DATABASE_URL'] %>
+  channel_prefix: shared_finances_production
