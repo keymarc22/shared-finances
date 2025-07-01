@@ -4,12 +4,6 @@ default: &default
   url: <%= ENV['DATABASE_URL'] %>
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
 
-  # Configuración para ActionCable en producción
-  cable:
-    adapter: postgresql
-    url: <%= ENV['DATABASE_URL'] %>
-    pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-
 development:
   <<: *default
   database:  <%= Rails.application.credentials.dig(:development,:database, :db_name) %>
@@ -25,6 +19,12 @@ production:
   password: <%= Rails.application.credentials.production.dig(:production, :database, :db_password) %>
   host: <%= Rails.application.credentials.production.dig(:production, :database, :db_host) %>
   port: <%= Rails.application.credentials.production.dig(:production, :database, :db_port) %>
+
+  # Configuración para ActionCable en producción
+  cable:
+    adapter: postgresql
+    url: <%= ENV['DATABASE_URL'] %>
+    pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
 
 test:
   <<: *default
