@@ -11,5 +11,6 @@ Rails.application.routes.draw do
   end
 
   resources :expenses, except: :index
-  resources :incomings, expect: %i[new create]
+  resources :incomings, except: %i[new create]
+  resources :budgets, except: :edit
 end

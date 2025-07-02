@@ -4,7 +4,7 @@ class Expense < Transaction
 
   belongs_to :user
   belongs_to :money_account
-  belongs_to :category, optional: true
+  belongs_to :budget, optional: true
   belongs_to :transaction_group, optional: true
 
   has_many :expense_splits, foreign_key: :expense_id, dependent: :destroy

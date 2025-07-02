@@ -1,8 +1,9 @@
 <%= f.input :description %>
 <%= f.input :amount_cents %>
-<%= f.input :money_account_id, as: :select, collection: MoneyAccount.all, prompt: 'Select an option' %>
+<%= f.input :money_account_id, as: :select, collection: current_account.money_accounts, prompt: 'Select an option' %>
 <%= f.input :comment, as: :text %>
 <%= f.input :transaction_date, as: :string, input_html: { type: 'date'} %>
+<%= f.input :budget_id, as: :select, collection: current_account.budgets, prompt: 'Select an option' %>
 
 <div class="grid gap-1 mb-6" data-controller="toggable">
   <label class="<%= label_classes %>">Tipo de gasto</label>

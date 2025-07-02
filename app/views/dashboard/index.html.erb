@@ -1,5 +1,12 @@
 <div class="space-y-6" data-controller="dashboard">
   <!-- Header -->
+  <%= content_for :header_button do %>
+    <a href="<%= new_expense_path %>" data-turbo-frame="modal" class="<%= link_as_button_classes %>">
+      <%= lucide_icon 'plus' %>
+      Agregar Gasto
+    </a>
+  <% end %>
+
   <%= render partial: 'layouts/header' %>
 
   <!-- Summary Cards -->

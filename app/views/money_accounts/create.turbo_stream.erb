@@ -1,0 +1,7 @@
+<% if @money_account.valid? %>
+  <%= turbo_stream.prepend 'money_accounts' do %>
+    <%= render partial: "money_accounts/money_account", locals: { account: @money_account } %>
+  <% end %>
+<% end %>
+
+<%= render_turbo_stream_flash_messages %>
