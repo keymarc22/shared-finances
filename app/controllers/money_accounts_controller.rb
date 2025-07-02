@@ -51,7 +51,7 @@ class MoneyAccountsController < ApplicationController
   end
 
   def transactions
-    Transaction.includes(:category, :user).
+    current_account.transactions.includes(:user).
       order(transaction_date: :desc, created_at: :desc)
   end
 end

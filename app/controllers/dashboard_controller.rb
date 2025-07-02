@@ -9,7 +9,7 @@ class DashboardController < ApplicationController
 
     if params[:tab_content] == "tab_user" && params[:user_id].present?
       @user = User.find(params[:user_id])
-      @user_expenses = @user.expenses.includes(:category)
+      @user_expenses = @user.expenses.includes(:budget)
     end
   end
 
@@ -17,7 +17,7 @@ class DashboardController < ApplicationController
 
   def recent_expenses_data
     current_account.expenses
-      .includes(:category, :user, :expense_splits)
+      .includes(:budget, :user, :expense_splits)
       .created_between(current_date_rage.first, current_date_rage.last)
       .order(transaction_date: :desc, created_at: :desc)
   end

@@ -3,8 +3,10 @@
     <div class="flex-1">
       <div class="flex items-center gap-2">
         <h3 class="font-medium"><%= expense.description %></h3>
-        <%= render BadgeComponent.new(variant: expense.shared? ? :default : :secondary) do %>
-          <%= expense.category&.name %>
+        <% if budget = expense.budget %>
+          <%= render BadgeComponent.new(variant: expense.shared? ? :default : :secondary) do %>
+            <%= expense.budget.name %>
+          <% end %>
         <% end %>
         <% if expense.shared? %>
           <%= render BadgeComponent.new(variant: :outline) { "Compartido" } %>

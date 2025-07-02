@@ -60,6 +60,6 @@ class DashboardSummaryService
   def calculate_percentage(part, total)
     return 0 if total.zero?
 
-    [(part.to_f / total * 100).round(1), 100].min
+    [(part.to_f / total.to_f * 100).round(1), 100].min
   end
 end
