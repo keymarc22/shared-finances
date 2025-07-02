@@ -10,32 +10,25 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_07_01_015748) do
+ActiveRecord::Schema[8.0].define(version: 2025_07_02_001840) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
-  create_table "budget_users", force: :cascade do |t|
-    t.integer "budget_id", null: false
-    t.integer "user_id", null: false
+  create_table "accounts", force: :cascade do |t|
+    t.string "name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["budget_id"], name: "index_budget_users_on_budget_id"
-    t.index ["user_id"], name: "index_budget_users_on_user_id"
   end
 
   create_table "budgets", force: :cascade do |t|
     t.string "name", null: false
-    t.integer "period", default: 0, null: false
-    t.integer "budget_type", default: 0, null: false
-    t.integer "status", default: 0, null: false
     t.integer "amount_cents", default: 0, null: false
     t.string "amount_currency", default: "USD", null: false
-    t.date "start_date", null: false
-    t.date "end_date", null: false
-    t.integer "category_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["category_id"], name: "index_budgets_on_category_id"
+    t.integer "budget_type", default: 0, null: false
+    t.bigint "account_id", null: false
+    t.index ["account_id"], name: "index_budgets_on_account_id"
   end
 
   create_table "categories", force: :cascade do |t|
@@ -62,6 +55,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_01_015748) do
     t.integer "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "account_id", null: false
+    t.index ["account_id"], name: "index_money_accounts_on_account_id"
     t.index ["user_id"], name: "index_money_accounts_on_user_id"
   end
 
@@ -75,6 +70,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_01_015748) do
     t.integer "plan_type", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "account_id", null: false
+    t.index ["account_id"], name: "index_savings_plans_on_account_id"
     t.index ["money_account_id"], name: "index_savings_plans_on_money_account_id"
   end
 
@@ -83,6 +80,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_01_015748) do
     t.bigint "transaction_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "account_id", null: false
+    t.index ["account_id"], name: "index_transaction_groups_on_account_id"
     t.index ["transaction_id"], name: "index_transaction_groups_on_transaction_id"
   end
 
@@ -92,7 +91,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_01_015748) do
     t.boolean "fixed", default: false, null: false
     t.date "transaction_date"
     t.integer "money_account_id"
-    t.integer "category_id"
     t.integer "user_id"
     t.string "type", default: "Expense", null: false
     t.integer "savings_plan_id"
@@ -103,7 +101,10 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_01_015748) do
     t.text "comment"
     t.integer "frequency", default: 1, null: false
     t.integer "interval", default: 1, null: false
-    t.index ["category_id"], name: "index_transactions_on_category_id"
+    t.bigint "account_id", null: false
+    t.bigint "budget_id"
+    t.index ["account_id"], name: "index_transactions_on_account_id"
+    t.index ["budget_id"], name: "index_transactions_on_budget_id"
     t.index ["money_account_id"], name: "index_transactions_on_money_account_id"
     t.index ["savings_plan_id"], name: "index_transactions_on_savings_plan_id"
     t.index ["user_id"], name: "index_transactions_on_user_id"
@@ -128,18 +129,26 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_01_015748) do
     t.integer "percentage"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "account_id", null: false
+    t.index ["account_id", "email"], name: "index_users_on_account_id_and_email", unique: true
+    t.index ["account_id"], name: "index_users_on_account_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["name"], name: "index_users_on_name", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
-  add_foreign_key "budget_users", "budgets"
-  add_foreign_key "budget_users", "users"
+  add_foreign_key "budgets", "accounts"
   add_foreign_key "expense_splits", "transactions", column: "expense_id"
   add_foreign_key "expense_splits", "users"
+  add_foreign_key "money_accounts", "accounts"
   add_foreign_key "money_accounts", "users"
+  add_foreign_key "savings_plans", "accounts"
   add_foreign_key "savings_plans", "money_accounts"
+  add_foreign_key "transaction_groups", "accounts"
+  add_foreign_key "transactions", "accounts"
+  add_foreign_key "transactions", "budgets"
   add_foreign_key "transactions", "money_accounts"
   add_foreign_key "transactions", "users"
   add_foreign_key "user_savings_plans", "users"
+  add_foreign_key "users", "accounts"
 end

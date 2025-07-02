@@ -1,21 +1,12 @@
 class Budget < ApplicationRecord
   monetize :amount_cents
 
-  belongs_to :category
-  has_many :budget_users, dependent: :destroy
-  has_many :users, through: :budget_users
-
-  enum :period, %i[weekly monthly quarterly yearly]
   enum :budget_type, %i[personal shared]
-  enum :status, %i[active paused completed]
+
+  belongs_to :account
 
   validates :name, presence: true
   validates :amount, presence: true, numericality: { greater_than: 0 }
-  validates :start_date, :end_date, presence: true
-  validate :end_date_after_start_date
-
-  scope :current, -> { where("start_date <= ? AND end_date >= ?", Date.current, Date.current) }
-  scope :for_month, ->(date) { where(period: :monthly).where("start_date <= ? AND end_date >= ?", date, date) }
 
   def spent_amount
     @spent_amount ||= calculate_spent_amount

@@ -1,4 +1,5 @@
 class MoneyAccount < ApplicationRecord
+  belongs_to :account
   belongs_to :user
 
   has_many :incomings
