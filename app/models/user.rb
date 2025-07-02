@@ -12,8 +12,6 @@ class User < ApplicationRecord
   has_many :user_savings_plans, dependent: :destroy
   has_many :savings_plans, through: :user_savings_plans
 
-  has_many :budget_users, dependent: :destroy
-  has_many :budgets, through: :budget_users
   # has_many :notifications, dependent: :destroy
 
   validates :email, presence: true, uniqueness: { scope: :account_id }
@@ -25,7 +23,7 @@ class User < ApplicationRecord
   private
 
   def total_percentage_must_be_100
-    total = User.sum(:percentage) + self.percentage.to_i
+    total = account.users.sum(:percentage) + self.percentage.to_i
 
     if total > 100
       errors.add(:percentage, "La suma de los porcentajes de todos los usuarios debe ser 100 (actual: #{total})")
