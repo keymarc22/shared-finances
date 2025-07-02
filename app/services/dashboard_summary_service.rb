@@ -1,17 +1,16 @@
 class DashboardSummaryService
   include ActionView::Helpers::NumberHelper
 
-  def initialize
+  def initialize(account)
+    @account = account
     @current_month_start = Date.current.beginning_of_month
     @current_month_end = Date.current.end_of_month
-    # @last_month_start = 1.month.ago.beginning_of_month
-    # @last_month_end = 1.month.ago.end_of_month
   end
 
   def call
-    shared_expenses = shared_expenses(Expense)
+    shared_expenses = shared_expenses(account.expenses)
     total_shared_expenses = to_money shared_expenses.sum(:amount_cents)
-    total_shared_budgets = to_money Budget.shared.sum(:amount_cents)
+    total_shared_budgets = to_money account.budgets.shared.sum(:amount_cents)
 
     {
       shared_expenses: shared_expenses,
@@ -24,7 +23,7 @@ class DashboardSummaryService
 
   private
 
-  attr_reader :current_month_start, :current_month_end
+  attr_reader :account, :current_month_start, :current_month_end
 
   def shared_expenses(scope)
     scope.shared.where(transaction_date: current_month_start..current_month_end)
@@ -36,7 +35,7 @@ class DashboardSummaryService
 
   def users_summary
     @users_summary ||= begin
-      User.find_each.map do |user|
+      account.users.find_each.map do |user|
         personal_expenses = personal_expenses(user.expenses)
         total_personal_expenses = to_money(personal_expenses.sum(:amount_cents))
         total_personal_budgets = to_money(user.budgets.personal.sum(:amount_cents))

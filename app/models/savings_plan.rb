@@ -1,6 +1,7 @@
 class SavingsPlan < ApplicationRecord
   monetize :target_amount_cents
 
+  belongs_to :account
   belongs_to :money_account
 
   has_many :user_savings_plans, dependent: :destroy

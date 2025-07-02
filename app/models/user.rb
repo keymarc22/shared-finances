@@ -4,6 +4,8 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
+  belongs_to :account
+
   has_many :expenses, dependent: :destroy
   has_many :incomings, dependent: :destroy
 
@@ -14,6 +16,8 @@ class User < ApplicationRecord
   has_many :budgets, through: :budget_users
   # has_many :notifications, dependent: :destroy
 
+  validates :email, presence: true, uniqueness: { scope: :account_id }
+  validates :email, format: { with: URI::MailTo::EMAIL_REGEXP, message: "no es un correo electrónico válido" }
   validates :percentage, numericality: { greater_than: 0, less_than_or_equal_to: 100 }, allow_nil: true
 
   # validate :total_percentage_must_be_100
