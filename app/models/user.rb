@@ -12,6 +12,7 @@ class User < ApplicationRecord
   has_many :user_savings_plans, dependent: :destroy
   has_many :savings_plans, through: :user_savings_plans
 
+  has_many :budgets, dependent: :destroy
   # has_many :notifications, dependent: :destroy
 
   validates :email, presence: true, uniqueness: { scope: :account_id }
