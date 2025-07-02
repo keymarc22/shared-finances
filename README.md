@@ -1,18 +1,14 @@
 # Couple Finances
 
-Couple Finances es una aplicación para gestionar y organizar las finanzas en pareja.
+Shared Finances es una aplicación para gestionar y organizar las finanzas en grupo.
+![image](https://github.com/user-attachments/assets/44f84b24-eefd-453b-b222-c958db46d2eb)
+
 
 ## Requisitos
 
-- **Ruby version:** 3.2.2
-- **Rails version:** 7.x
+- **Ruby version:** 3.3.1
+- **Rails version:** 8.0.2
 - **Base de datos:** PostgreSQL
-
-## Dependencias del sistema
-
-- Node.js >= 16.x
-- Yarn >= 1.22.x
-- Bundler
 
 ## Instalación
 
@@ -27,10 +23,10 @@ Couple Finances es una aplicación para gestionar y organizar las finanzas en pa
 
   ```bash
   bundle install
-  yarn install
+  rails tailwindcss:build
   ```
 
-3. Configura las variables de entorno en `.env`.
+3. Configura las credenciales de development.
 
 ## Creación e inicialización de la base de datos
 
@@ -55,11 +51,5 @@ Para ejecutar la suite de tests:
 ```bash
 bundle exec rspec
 ```
-
-## Servicios
-
-- Sidekiq (para colas de trabajo)
-- Redis (para caché y Sidekiq)
-
 
 ¡Contribuciones y sugerencias son bienvenidas!
