@@ -1,5 +1,5 @@
 class AlertComponent < Phlex::HTML
-  BASE = "w-full p-6 card border rounded-sm relative mb-6".freeze
+  BASE = "w-full p-6 card border rounded-sm relative mb-6 animate-fade-out".freeze
 
   TYPES_CONTAINER = {
     notice: "border-blue-200 bg-blue-200",
@@ -21,7 +21,8 @@ class AlertComponent < Phlex::HTML
     div(
       class: "#{BASE} #{TYPES_CONTAINER[type]}",
       role: type,
-      "data-controller": "removals", "data-action": "animationend->removals#remove"
+      "data-controller": "removals",
+      "data-action": "animationend->removals#remove",
     ) do
       h4 class: "font-semibold #{TYPE_TEXT[type]}" do
         I18n.t("alerts.#{type}")

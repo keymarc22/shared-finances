@@ -37,7 +37,12 @@ class IncomingsController < ApplicationController
   private
 
   def incoming_params
-    params.require(:incoming).permit(:amount, :description, :transaction_date, :money_account_id)
+    params.require(:incoming).permit(
+      :amount,
+      :description,
+      :transaction_date,
+      :money_account_id
+    ).merge(account_id: current_account.id)
   end
 
   def find_money_account

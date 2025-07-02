@@ -40,7 +40,10 @@ class MoneyAccountsController < ApplicationController
   private
 
   def money_account_params
-    params.require(:money_account).permit(:name, incomings_attributes: %i[amount description _destroy user_id transaction_date])
+    params.require(:money_account).permit(
+      :name,
+      incomings_attributes: %i[amount description _destroy user_id transaction_date]
+    ).merge(account_id: current_account.id)
   end
 
   def find_money_account
