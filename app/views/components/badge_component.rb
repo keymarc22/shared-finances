@@ -1,8 +1,7 @@
 class BadgeComponent < Phlex::HTML
   VARIANTS = {
-    default: "border-transparent bg-gray-900 text-gray-50 hover:bg-gray-900/80",
-    secondary: "border-transparent bg-gray-100 text-gray-900 hover:bg-gray-100/80",
-    destructive: "border-transparent bg-red-500 text-gray-50 hover:bg-red-500/80",
+    default: "border-transparent bg-blue-900 text-gray-100",
+    secondary: "border-transparent bg-gray-900 text-gray-100",
     outline: "text-gray-950 border-gray-200"
   }.freeze
 
