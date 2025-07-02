@@ -55,7 +55,7 @@ class ExpensesController < ApplicationController
       :description,
       :transaction_type,
       :transaction_date,
-      :category_id,
+      :budget_id,
       :user_id,
       :money_account_id,
       :comment,

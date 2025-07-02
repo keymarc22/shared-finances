@@ -1,0 +1,23 @@
+<%= turbo_frame_tag 'modal' do %>
+  <div class="mb-5 flex flex-col space-y-1.5 text-start sm:text-left">
+    <h2 class="text-lg font-semibold leading-none tracking-tight">Editar budget</h2>
+    <p class="text-xs text-muted-foreground">
+      Establece montos limites para tus gastos y mantén un control de tus finanzas.
+    </p>
+  </div>
+
+  <%= simple_form_for @budget do |f| %>
+    <%= render partial: 'form', locals: { f: f }%>
+
+    <div class="flex justify-end gap-1">
+      <%= render ButtonComponent.new(variant: :secondary, "data-action": "click->modal#close") do %>
+        Cancelar
+      <% end %>
+
+      <%= render ButtonComponent.new(variant: :primary, type: 'submit') do %>
+        Actualizar budget
+      <% end %>
+    </div>
+
+  <% end %>
+<% end %>

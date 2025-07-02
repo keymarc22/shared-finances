@@ -1,0 +1,7 @@
+<% if @budget.valid? %>
+  <%= turbo_stream.prepend 'budgets' do %>
+    <%= render partial: "budgets/budget", locals: { budget: @budget } %>
+  <% end %>
+<% end %>
+
+<%= render_turbo_stream_flash_messages %>
