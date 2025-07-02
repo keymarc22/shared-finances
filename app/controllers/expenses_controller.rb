@@ -10,7 +10,7 @@ class ExpensesController < ApplicationController
 
     if @expense.valid?
       flash.now[:notice] = "Gasto creado correctamente."
-      @summary = DashboardSummaryService.new.call
+      load_dashboard_summary_data
     else
       flash.now[:error] = @expense.errors.full_messages.to_sentence
     end
@@ -20,7 +20,7 @@ class ExpensesController < ApplicationController
     if @expense.update(expense_params) && @expense.valid?
       flash.now[:notice] = "Gasto actualizado correctamente."
       if @expense.valid?
-        @summary = DashboardSummaryService.new.call
+        load_dashboard_summary_data
       end
     else
       flash.now[:error] = @expense.errors.full_messages.to_sentence
@@ -30,7 +30,6 @@ class ExpensesController < ApplicationController
   def destroy
     if @expense.destroy
       flash.now[:notice] = "Gasto eliminado correctamente."
-      @summary = DashboardSummaryService.new.call
     else
       flash.now[:error] = @expense.errors.full_messages.to_sentence
     end
@@ -61,10 +60,14 @@ class ExpensesController < ApplicationController
       :money_account_id,
       :comment,
       expense_splits_attributes: %i[user_id percentage expense_id id _destroy]
-    )
+    ).merge(account_id: current_account.id)
   end
 
   def find_expense
     @expense = Expense.find(params[:id])
+  end
+
+  def load_dashboard_summary_data
+    @summary = DashboardSummaryService.new(current_account).call
   end
 end
