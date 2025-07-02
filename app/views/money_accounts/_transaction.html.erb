@@ -12,8 +12,10 @@
       <div class="flex-1 min-w-0">
         <div class="flex items-center gap-2">
           <p class="font-medium text-gray-900 truncate"><%= transaction.description %></p>
-          <%= render BadgeComponent.new(variant: :default) do %>
-            <%= transaction.transaction_type %>
+          <% if transaction.expense? %>
+            <%= render BadgeComponent.new(variant: :default) do %>
+              <%= transaction.transaction_type %>
+            <% end %>
           <% end %>
         </div>
 
@@ -25,9 +27,11 @@
           </div>
 
           <div class="flex items-center gap-2 mt-1">
+            <!--
             <span class="relative flex shrink-0 overflow-hidden rounded-full h-6 w-6" >
-              <span class="flex h-full w-full items-center justify-center rounded-full bg-muted text-xs">JP</span>
+              <span class="flex h-full w-full items-center justify-center rounded-full bg-muted text-xs"></span>
             </span>
+            -->
             <span class="text-xs text-gray-500">Realizado por <%= transaction.user.name %></span>
           </div>
         </div>
