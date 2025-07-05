@@ -17,7 +17,7 @@ class Budget < ApplicationRecord
   end
 
   def total_expenses
-    @total_expenses ||= expenses.sum(:amount_cents)
+    @total_expenses ||= expenses.no_fixed.sum(:amount_cents)
   end
 
   def percentage

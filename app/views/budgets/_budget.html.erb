@@ -21,7 +21,9 @@
 
     <%= render CardComponent::Content.new do %>
       <div class="text-2xl font-bold"><%= to_money_format budget.total_expenses %></div>
-      <p class="text-xs text-gray-500">de <%= budget.amount.format %> presupuestados</p>
+      <p class="text-xs text-gray-500">de <%= to_money_format budget.total_expenses %> presupuestados</p>
+      <p class="text-xs text-gray-500">Monto límite: <%= budget.amount.format %></p>
+
       <%= render ProgressComponent.new(value: budget.percentage, class: "mt-2") %>
     <% end %>
   <% end %>

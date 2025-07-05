@@ -6,3 +6,4 @@ pin "@hotwired/stimulus", to: "stimulus.min.js"
 pin "@hotwired/stimulus-loading", to: "stimulus-loading.js"
 pin "lucide", to: "https://unpkg.com/lucide@latest/dist/esm/lucide.js"
 pin_all_from "app/javascript/controllers", under: "controllers"
+pin "slim-select" # @2.12.1
