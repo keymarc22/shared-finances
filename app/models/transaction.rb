@@ -16,6 +16,8 @@ class Transaction < ApplicationRecord
   validates :amount_cents, presence: true, numericality: { greater_than: 0 }
   validates :frequency, :interval, presence: true
 
+  scope :no_fixed, -> { where(fixed: false) }
+
   def expense?
     is_a?(Expense)
   end

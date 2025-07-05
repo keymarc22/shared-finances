@@ -2,8 +2,17 @@ class Expense < Transaction
 
   enum :transaction_type, { personal: 0, shared: 1 }
 
-  belongs_to :user
-  belongs_to :money_account
+  enum :frequency, {
+    once: 0,
+    weekly: 1,
+    monthly: 2,
+    bimonthly: 3,
+    thrimonthly: 4,
+    annually: 5
+  }, default: :monthly
+
+  belongs_to :user, optional: true
+  belongs_to :money_account, optional: true
   belongs_to :budget, optional: true
   belongs_to :transaction_group, optional: true
 
@@ -12,8 +21,10 @@ class Expense < Transaction
 
   accepts_nested_attributes_for :expense_splits, allow_destroy: true, reject_if: :all_blank
 
-  validates :transaction_date, :user, :money_account, presence: true
+  validates :user_id, :money_account_id, :transaction_date, presence: true, unless: :budget_id
   validate :splits_sum_to_100_percent, if: :shared?
+
+  scope :fixed, -> { where(fixed: true) }
 
   def total_splits_percentage
     expense_splits.sum(&:percentage)
@@ -33,6 +44,10 @@ class Expense < Transaction
         amount: (amount * split.percentage / 100.0).round(2)
       }
     end
+  end
+
+  def amount_formatted
+    amount.format
   end
 
   private

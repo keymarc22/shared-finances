@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_07_02_011316) do
+ActiveRecord::Schema[8.0].define(version: 2025_07_04_220433) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -79,12 +79,11 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_02_011316) do
 
   create_table "transaction_groups", force: :cascade do |t|
     t.string "name", null: false
-    t.bigint "transaction_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "account_id", null: false
+    t.integer "expenses_count", default: 0, null: false
     t.index ["account_id"], name: "index_transaction_groups_on_account_id"
-    t.index ["transaction_id"], name: "index_transaction_groups_on_transaction_id"
   end
 
   create_table "transactions", force: :cascade do |t|
@@ -105,10 +104,12 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_02_011316) do
     t.integer "interval", default: 1, null: false
     t.bigint "account_id", null: false
     t.bigint "budget_id"
+    t.bigint "transaction_group_id"
     t.index ["account_id"], name: "index_transactions_on_account_id"
     t.index ["budget_id"], name: "index_transactions_on_budget_id"
     t.index ["money_account_id"], name: "index_transactions_on_money_account_id"
     t.index ["savings_plan_id"], name: "index_transactions_on_savings_plan_id"
+    t.index ["transaction_group_id"], name: "index_transactions_on_transaction_group_id"
     t.index ["user_id"], name: "index_transactions_on_user_id"
   end
 
