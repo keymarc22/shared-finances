@@ -2,7 +2,7 @@
   <!-- Header -->
   <%= render partial: 'layouts/header' %>
 
-  <div id="app" class="space-y-6">
+  <div id="app" class="space-y-6" style="margin-bottom: 8rem;">
     <div class="header flex gap-3 items-center mb-0">
       <input v-if="group.editing" type="text" v-model="groupName" class="border border-gray-300 hover:border-gray-400 rounded-sm px-5 py-2" />
       <h1 v-else class="text-xl mb-0">
@@ -111,12 +111,12 @@
       </table>
     </div>
 
-    <div class="absolute bottom-0 py-6 px-6 bg-white border-t border-gray-300 left-0 w-full flex justify-end">
+    <div class="fixed bottom-0 left-0 w-full py-6 px-6 bg-white border-t border-gray-300 z-50 flex justify-end">
       <div class="flex justify-end" style="max-width: 1200px;margin: auto;width: 100%;">
-        <%= render ButtonComponent.new('@click.prevent': "addExpense") do %>
-          <%= lucide_icon 'plus' %>
-          Nuevo gasto
-        <% end %>
+      <%= render ButtonComponent.new('@click.prevent': "addExpense") do %>
+        <%= lucide_icon 'plus' %>
+        Nuevo gasto
+      <% end %>
       </div>
     </div>
   </div>
