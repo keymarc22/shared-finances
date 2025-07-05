@@ -9,7 +9,7 @@ class DashboardController < ApplicationController
 
     if params[:tab_content] == "tab_user" && params[:user_id].present?
       @user = User.find(params[:user_id])
-      @user_expenses = @user.expenses.includes(:budget)
+      @user_expenses = @user.expenses.includes(:budget, :money_account, :expense_splits)
     end
   end
 
