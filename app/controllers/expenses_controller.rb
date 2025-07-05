@@ -26,12 +26,19 @@ class ExpensesController < ApplicationController
       flash.now[:error] = @expense.errors.full_messages.to_sentence
     end
   end
-
   def destroy
     if @expense.destroy
       flash.now[:notice] = "Gasto eliminado correctamente."
+      respond_to do |format|
+        format.turbo_stream
+        format.json { render json: { message: "Gasto eliminado correctamente." }, status: :ok }
+      end
     else
       flash.now[:error] = @expense.errors.full_messages.to_sentence
+      respond_to do |format|
+        format.turbo_stream
+        format.json { render json: { error: @expense.errors.full_messages.to_sentence }, status: :unprocessable_entity }
+      end
     end
   end
 
