@@ -4,6 +4,7 @@ class MoneyAccountsController < ApplicationController
   def index
     @money_accounts = MoneyAccount.all
     @transactions = transactions
+    @global_account = MoneyAccountsBalance.new(current_account)
   end
 
   def new
@@ -47,11 +48,14 @@ class MoneyAccountsController < ApplicationController
   end
 
   def find_money_account
-    @money_account = MoneyAccount.find(params[:id])
+    @money_account = current_account.money_accounts.find(params[:id])
   end
 
   def transactions
-    current_account.transactions.includes(:user).
-      order(transaction_date: :desc, created_at: :desc)
+    current_account
+      .transactions
+      .no_fixed
+      .includes(:user)
+      .order(transaction_date: :desc, created_at: :desc)
   end
 end

@@ -10,6 +10,8 @@
   <%= render partial: 'layouts/header' %>
 
   <div id="money_accounts" class="accounts-card--container">
+    <%= render partial: 'money_accounts/total_balance', locals: { account: @global_account } %>
+
     <% @money_accounts.each do |account| %>
       <%= render partial: 'money_accounts/money_account', locals: { account: account } %>
     <% end %>

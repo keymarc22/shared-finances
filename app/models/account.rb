@@ -7,4 +7,8 @@ class Account < ApplicationRecord
   has_many :transactions, dependent: :destroy
   has_many :incomings, class_name: "Incoming"
   has_many :expenses, class_name: "Expense"
+
+  def money_accounts_balance
+    money_accounts.sum(&:balance)
+  end
 end
