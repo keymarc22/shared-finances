@@ -1,0 +1,15 @@
+es:
+  hello: "Hola mundo"
+  alerts:
+    warning: Se necesita atención
+    errors: Hubo %{count} errores en tu envío
+    notice: Acción exitosa
+
+  expenses:
+    frequency:
+      once: "Una vez"
+      weekly: "Semanal"
+      monthly: "Mensual"
+      bimonthly: "Bimestral"
+      thrimonthly: "Trimestral"
+      annually: "Anual"

@@ -1,0 +1,313 @@
+<div class="space-y-6" data-controller="dashboard">
+  <!-- Header -->
+  <%= render partial: 'layouts/header' %>
+
+  <div id="app" class="space-y-6">
+    <div class="header flex gap-3 items-center mb-0">
+      <input v-if="group.editing" type="text" v-model="groupName" class="border border-gray-300 hover:border-gray-400 rounded-sm px-5 py-2" />
+      <h1 v-else class="text-xl mb-0">
+        Grupo de gastos: <strong>{{ group.name }}</strong>
+      </h1>
+      <a v-if="!group.editing" href="#" @click.prevent="toggleEditGroup">
+        <%= lucide_icon 'pencil' %>
+      </a>
+
+      <template v-else>
+        <a href="#" @click.prevent="saveGroup(index)" class="text-green-700">
+          <%= lucide_icon 'check' %>
+        </a>
+        <a href="#" @click.prevent="toggleEditGroup" class="text-green-700">
+          <%= lucide_icon 'undo' %>
+        </a>
+      </template>
+    </div>
+    <small>Balance: <strong>{{ totalBalance }}</strong></small>
+
+    <div class="relative w-full overflow-auto rounded-lg border border-gray-300 bg-card text-card-foreground shadow-sm mt-8">
+      <table class="w-full table-auto">
+        <thead class="transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted border-b border-gray-300">
+          <tr class="bg-gray-300">
+            <th></th>
+            <th class="h-12 px-4 py-2 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0" style="width: 200px">Nombre</th>
+            <th class="h-12 px-4 py-2 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0" style="width: 130px">Monto</th>
+            <th class="h-12 px-4 py-2 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0" style="width: 130px">Budget</th>
+            <th class="h-12 px-4 py-2 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0">Frecuencia</th>
+            <th class="h-12 px-4 py-2 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0">Día de pago</th>
+            <th class="h-12 px-4 py-2 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0">Próximo pago</th>
+            <th></th>
+          </tr>
+        </thead>
+
+        <tbody class="[&_tr:last-child]:border-0">
+          <tr v-if="expenses.length" v-for="(expense, index) in expenses" :key="expense.id">
+            <template v-if="expense._new || expense.editing">
+              <th class="py-2 px-1 pl-3">
+                <%= lucide_icon 'grip-vertical' %>
+              </th>
+              <td class="border-b border-gray-300 transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted py-2 px-1 w-40" >
+                <input type="text" v-model="expense.description" class="border border-gray-300 hover:border-gray-400 rounded-sm px-5 py-2 w-full"/>
+              </td>
+
+              <td class="border-b border-gray-300 transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted py-2 px-1 w-30">
+                <input type="number" v-model="expense.amount_cents" class="border border-gray-300 hover:border-gray-400 rounded-sm px-5 py-2 w-full"/>
+              </td>
+
+              <td class="border-b border-gray-300 transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted py-2 px-1 w-40">
+                <select v-slim-select v-model="expense.budget_id" class="border border-gray-300 hover:border-gray-400 rounded-sm w-full">
+                  <option value="">Select an option</option>
+                  <option v-for="budget in budgets" :key="budget.id" :value="budget.id">{{ budget.name }}</option>
+                </select>
+              </td>
+              <td class="border-b border-gray-300 transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted py-2 px-1">
+                <select v-model="expense.frequency" v-slim-select class="border border-gray-300 hover:border-gray-400 rounded-sm w-full">
+                  <% Expense.frequencies.keys.each do |f| %>
+                    <option value="<%= f %>"><%= t("expenses.frequency.#{f}") %></option>
+                  <% end %>
+                </select>
+              </td>
+              <td class="border-b border-gray-300 transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted py-2 px-1">
+                <input type="date" v-model="expense.transaction_date" class="border border-gray-300 hover:border-gray-400 rounded-sm px-5 py-2 w-full" />
+              </td>
+              <td class="border-b border-gray-300 transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted py-2 px-1">
+                <%# {{ next_payment }} %>
+              </td>
+              <td>
+                <div class="flex gap-1">
+                  <a href="#" @click.prevent="saveExpense(index)" class="text-green-700">
+                    <%= lucide_icon 'check' %>
+                  </a>
+                  <a href="#" @click.prevent="toggleEditExpense(index)" class="text-grey-500">
+                    <%= lucide_icon 'undo-2' %>
+                  </a>
+                </div>
+              </td>
+            </template>
+
+            <template v-else>
+              <th></th>
+              <td class="border-b border-gray-300 transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted px-4 py-2 ">{{ expense.description }}</td>
+              <td class="border-b border-gray-300 transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted px-4 py-2 ">{{ expense.amount_formatted }}</td>
+              <td class="border-b border-gray-300 transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted px-4 py-2 ">{{ budgetName(expense.budget_id) }}</td>
+              <td class="border-b border-gray-300 transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted px-4 py-2 ">{{ frequencyLabel(expense.frequency) }}</td>
+              <td class="border-b border-gray-300 transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted px-4 py-2 ">{{ expense.transaction_date || 'Sin fecha' }}</td>
+              <td class="border-b border-gray-300 transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted px-4 py-2 ">{{ expense.next_payment || '----' }}</td>
+              <td class="border-b border-gray-300 transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted px-4 py-2 ">
+                <div class="flex gap-1">
+                  <a @click.prevent="toggleEditExpense(index)" href="#">
+                    <%= lucide_icon 'pencil' %>
+                  </a>
+                  <a @click.prevent="removeExpense(index)" href="#" class="text-red-500">
+                    <%= lucide_icon 'trash-2' %>
+                  </a>
+                </div>
+              </td>
+            </template>
+          </tr>
+
+          <tr v-else>
+            <td colspan="9" class="text-center py-2">No se han agregado gatos. Agregar el primero <a @click.prevent="addExpense" href="#">aquí</a></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="absolute bottom-0 py-6 px-6 bg-white border-t border-gray-300 left-0 w-full flex justify-end">
+      <div class="flex justify-end" style="max-width: 1200px;margin: auto;width: 100%;">
+        <%= render ButtonComponent.new('@click.prevent': "addExpense") do %>
+          <%= lucide_icon 'plus' %>
+          Nuevo gasto
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<% content_for :head do %>
+  <link href="https://unpkg.com/slim-select@latest/dist/slimselect.css" rel="stylesheet"></link>
+<% end %>
+
+<% content_for :js do %>
+  <script src="https://unpkg.com/slim-select@latest/dist/slimselect.min.js"></script>
+  <%= vue3_script_tag %>
+
+  <script type="text/javascript">
+    var i18n = <%= raw t('expenses.frequency').to_json %>;
+    var app = Vue.createApp({
+      data: function() {
+        return {
+          groupName: '<%= @transaction_group.name %>',
+          account_id: <%= current_account.id %>,
+          group: <%= raw @transaction_group.to_json(include: { expenses: { methods: :amount_formatted } }) %>,
+          budgets: <%= raw @budgets.to_json %>
+        }
+      },
+      mounted() {
+        // debugger
+      },
+      computed: {
+        expenses: function() {
+          return this.group.expenses;
+        },
+        totalBalance: function() {
+          let total = this.expenses.reduce((sum, expense) => sum + (expense.amount_cents || 0), 0) / 100;
+          return total.toLocaleString('es-ES', {
+            style: 'currency',
+            currency: 'USD'
+          });
+        }
+      },
+      methods: {
+        budgetName(id) {
+          var budget = this.budgets.find(b => b.id === id);
+          return budget ? budget.name : 'Sin presupuesto';
+        },
+        frequencyLabel(frequency) {
+          return i18n[frequency] || frequency;
+        },
+        addExpense() {
+          this.group.expenses.push({
+            id: null,
+            name: '',
+            amount: 0,
+            budget: '',
+            frequency: 'monthly',
+            transaction_date: '',
+            next_payment: '',
+            monthly_total: 0,
+            _new: true,
+            editing: false
+          });
+        },
+        toggleEditGroup() {
+          this.group.editing = !this.group.editing;
+        },
+        toggleEditExpense(index) {
+          this.group.expenses[index].editing = !this.group.expenses[index].editing;
+          var expense = this.group.expenses[index];
+
+          if (expense.editing && !expense.original_data) {
+            this.group.expenses[index].original_data = { ...expense, editing: false };
+          } else if(!expense.editing) {
+            this.group.expenses[index] = { ...expense.original_data };
+          }
+        },
+        canSaveExpense(expense) {
+          if (!expense.description || !expense.amount_cents || !expense.budget_id || !expense.frequency) {
+            return false;
+          }
+
+          return true;
+        },
+        saveGroup() {
+          if (!this.group.name) {
+            return alert('El nombre no puede estar en blanco');
+          }
+
+          fetch(`/transaction_groups/${this.group.id}.json`, {
+            method: 'PATCH',
+            headers: {
+              'Content-Type': 'application/json',
+              'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            },
+            body: JSON.stringify({ transaction_group: { name: this.groupName } })
+          })
+          .then(response => response.json())
+          .then(data => {
+            if (data.group) {
+              this.group = {
+                ...data.group,
+                editing: false
+              };
+              this.groupName = data.group.name;
+            }
+          })
+          .catch(error => {
+            alert('Error al guardar el grupo');
+            console.error(error);
+          });
+        },
+        saveExpense(index) {
+          let expense = this.expenses[index];
+          if (!this.canSaveExpense(expense))
+            return alert('Por favor, completa todos los campos requeridos.');
+
+          var params = {
+            account_id: this.account_id,
+            description: expense.description,
+            amount_cents: expense.amount_cents,
+            budget_id: expense.budget_id,
+            frequency: expense.frequency,
+            transaction_date: expense.transaction_date,
+            fixed: true
+          }
+
+          if (expense.id) params.id = expense.id;
+
+          fetch(`/transaction_groups/${this.group.id}/add_expense.json`, {
+            method: 'PATCH',
+            headers: {
+              'Content-Type': 'application/json',
+              'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            },
+            body: JSON.stringify({ transaction_group: { expenses_attributes: [params] } })
+          })
+          .then(response => response.json())
+          .then(data => {
+
+            if (data.expense) {
+              this.group.expenses[index] = {
+                ...data.expense,
+                editing: false,
+                _new: false
+              }
+            }
+          })
+          .catch(error => {
+            alert('Error al guardar el gasto');
+            console.error(error);
+          });
+        },
+        removeExpense(index) {
+          var expense = this.expenses[index];
+          if (expense.id) {
+            var resp = confirm('¿Estás seguro de que deseas eliminar este gasto?');
+            if (!resp) return;
+
+            fetch(`/expenses/${expense.id}.json`, {
+              method: 'DELETE',
+              headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+              },
+            })
+            .then(response => response.json())
+            .then(data => {
+              this.group.expenses.splice(index, 1);
+            })
+            .catch(error => {
+              alert('Error al eliminar gasto');
+              console.error(error);
+            });
+          } else {
+            this.group.expenses.splice(index, 1);
+          }
+        }
+      }
+    })
+
+    app.directive('slim-select', {
+      mounted(el, binding) {
+        new SlimSelect({
+          select: el
+        })
+      },
+      unmounted(el) {
+        if (el.slim) {
+          el.slim.destroy();
+        }
+      }
+    })
+
+    app.mount('#app')
+  </script>
+<% end  %>
