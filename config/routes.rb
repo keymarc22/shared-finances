@@ -13,4 +13,9 @@ Rails.application.routes.draw do
   resources :expenses, except: :index
   resources :incomings, except: %i[new create]
   resources :budgets, except: :edit
+  resources :transaction_groups do
+    member do
+      patch :add_expense
+    end
+  end
 end
