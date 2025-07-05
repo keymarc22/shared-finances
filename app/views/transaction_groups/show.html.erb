@@ -26,20 +26,20 @@
     <div class="relative w-full overflow-auto rounded-lg border border-gray-300 bg-card text-card-foreground shadow-sm mt-8">
       <table class="w-full table-auto">
         <thead class="transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted border-b border-gray-300">
-          <tr class="bg-gray-300">
+          <tr class="bg-gray-200">
             <th></th>
-            <th class="h-12 px-4 py-2 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0" style="width: 200px">Nombre</th>
-            <th class="h-12 px-4 py-2 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0" style="width: 130px">Monto</th>
-            <th class="h-12 px-4 py-2 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0" style="width: 130px">Budget</th>
-            <th class="h-12 px-4 py-2 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0">Frecuencia</th>
-            <th class="h-12 px-4 py-2 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0">Día de pago</th>
-            <th class="h-12 px-4 py-2 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0">Próximo pago</th>
+            <th class="h-10 px-4 py-0 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0" style="width: 200px">Nombre</th>
+            <th class="h-10 px-4 py-0 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0" style="width: 130px">Monto</th>
+            <th class="h-10 px-4 py-0 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0" style="width: 130px">Budget</th>
+            <th class="h-10 px-4 py-0 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0">Frecuencia</th>
+            <th class="h-10 px-4 py-0 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0">Día de pago</th>
+            <th class="h-10 px-4 py-0 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0">Próximo pago</th>
             <th></th>
           </tr>
         </thead>
 
         <tbody class="[&_tr:last-child]:border-0">
-          <tr v-if="expenses.length" v-for="(expense, index) in expenses" :key="expense.id">
+          <tr v-if="expenses.length" v-for="(expense, index) in expenses" :key="expense.id" class="bg-white">
             <template v-if="expense._new || expense.editing">
               <th class="py-2 px-1 pl-3">
                 <%= lucide_icon 'grip-vertical' %>
@@ -122,10 +122,6 @@
   </div>
 </div>
 
-<% content_for :head do %>
-  <link href="https://unpkg.com/slim-select@latest/dist/slimselect.css" rel="stylesheet"></link>
-<% end %>
-
 <% content_for :js do %>
   <script src="https://unpkg.com/slim-select@latest/dist/slimselect.min.js"></script>
   <%= vue3_script_tag %>
@@ -140,9 +136,6 @@
           group: <%= raw @transaction_group.to_json(include: { expenses: { methods: :amount_formatted } }) %>,
           budgets: <%= raw @budgets.to_json %>
         }
-      },
-      mounted() {
-        // debugger
       },
       computed: {
         expenses: function() {

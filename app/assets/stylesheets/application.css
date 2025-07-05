@@ -10,6 +10,12 @@
  *= require three
  */
 
+:root {
+  --ss-main-height: 44px;
+  --ss-bg-color: #f3f4f6;
+  --ss-primary-color: #0b1222;
+}
+
 .collection_radio_buttons {
   margin-left: 7px;
   font-size: .875rem;

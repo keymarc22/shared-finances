@@ -17,6 +17,8 @@
         <% if expense.shared? %>
           • Pagado por <%= expense.user.name %>
         <% end %>
+
+          • Cuenta <%= expense.money_account.try(:name) %>
       </p>
     </div>
     <div class="text-right flex gap-1 items-center">
