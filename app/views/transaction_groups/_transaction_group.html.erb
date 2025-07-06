@@ -1,6 +1,6 @@
 <%= turbo_frame_tag dom_id(transaction_group) do %>
   <%= render CardComponent.new(class: 'relative border border-gray-300') do %>
-    <div class="absolute right-3 top-3">
+    <div class="hidden md:block absolute right-3 top-3">
       <a data-action="click -> dropdown#toggle" data-controller="dropdown" class="p0 align-items-center cursor-pointer inline-flex w-full justify-center gap-x-1.5 rounded-md px-3 py-2 text-sm font-semibold text-gray-900" aria-expanded="true" aria-haspopup="true">
         <%= lucide_icon 'more-vertical', class: 'w-6 h-6 text-gray-600' %>
       </a>
@@ -13,14 +13,26 @@
       </div>
     </div>
 
-    <%= render CardComponent::Header.new do %>
-      <%= render CardComponent::Title.new(class: "text-sm font-medium") { 'Grupo de gatos' } %>
-      <%= render CardComponent::Description.new { transaction_group.name } %>
+    <%= render CardComponent::Header.new(variant: :custom, class: "flex justify-between") do %>
+      <div class="flex flex-col gap-1">
+        <%= render CardComponent::Title.new(class: "text-sm font-medium") { 'Grupo de gatos' } %>
+        <%= render CardComponent::Description.new { transaction_group.name } %>
+      </div>
+
+      <div class="md:hidden flex gap-5">
+        <%= link_to transaction_group_path(transaction_group), class: "items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-750 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-gray-950 text-white hover:bg-gray-800 h-10 px-4 py-2", 'data-turbo-frame': "modal" do %>
+          <%= lucide_icon 'pencil', class: 'text-white', class: 'text-white', style: 'width: 20px; height: 20px; font-weight: 300' %>
+        <% end %>
+
+        <%= link_to transaction_group_path(transaction_group), class: "border border-red-500 items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-750 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:text-white hover:bg-red-800 h-10 px-4 py-2", data: { 'turbo-method': 'delete', "turbo-confirm": '¿Estas seguro? No se podrá revertir' } do %>
+          <%= lucide_icon 'trash-2', class: 'text-red-500', style: 'width: 20px; height: 20px; font-weight: 300' %>
+        <% end %>
+      </div>
     <% end %>
 
     <%= render CardComponent::Content.new(class: 'flex align-items-end justify-between') do %>
       <div class="text-2xl font-bold"><%= to_money_format transaction_group.monthly_expenses %></div>
-      <%= render BadgeComponent.new do %>
+      <%= render BadgeComponent.new(class: 'flex') do %>
         Gatos registrados: <%= transaction_group.expenses_count %>
       <% end %>
     <% end %>

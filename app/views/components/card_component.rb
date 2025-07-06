@@ -15,15 +15,21 @@ class CardComponent < Phlex::HTML
     )
   end
 
+  VARIANTS = {
+    default: "flex flex-col space-y-1.5 p-6",
+    custom: " space-y-1.5 p-6"
+  }
+
   class Header < Phlex::HTML
-    def initialize(class: nil, **attrs)
+    def initialize(variant: :default, class: nil, **attrs)
+      @variant = variant
       @class = binding.local_variable_get(:class)
       @attrs = attrs
     end
 
     def view_template(&block)
       div(
-        class: ["flex flex-col space-y-1.5 p-6", @class].compact.join(" "),
+        class: [VARIANTS[@variant], @class].compact.join(" "),
         **@attrs,
         &block
       )

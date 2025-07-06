@@ -1,9 +1,18 @@
 <div class="space-y-6" data-controller="dashboard">
   <!-- Header -->
   <%= content_for :header_button do %>
-    <a href="<%= new_transaction_group_path %>" data-turbo-frame="modal" class="<%= link_as_button_classes %>">
+    <a href="<%= new_transaction_group_path %>" data-turbo-frame="modal" class="flex <%= link_as_button_classes %>">
       <%= lucide_icon 'plus' %>
       Agregar grupo de gastos
+    </a>
+  <% end %>
+
+  <% content_for :mobile_primary_action do %>
+    <a href="<%= new_transaction_group_path %>"
+      data-turbo-frame="modal"
+      class="<%= mobile_primary_action_classes %>"
+      style="box-shadow: 0 4px 14px rgba(0,0,0,0.15);">
+      <%= lucide_icon 'plus', class: "w-7 h-7" %>
     </a>
   <% end %>
 

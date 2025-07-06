@@ -1,8 +1,43 @@
 <%= turbo_frame_tag dom_id(expense) do %>
   <div class="border border-gray-200 flex items-center justify-between p-4 shadow-sm rounded-lg hover:bg-gray-50 transition-colors mb-4">
     <div class="flex-1">
-      <div class="flex items-center gap-2">
-        <h3 class="font-medium"><%= expense.description %></h3>
+      <div class="flex items-center justify-between md:justify-start gap-2">
+        <h3 class="hidden md:block font-medium"><%= expense.description %></h3>
+        <% if budget = expense.budget %>
+          <%= render BadgeComponent.new(variant: expense.shared? ? :default : :secondary, class: 'hidden') do %>
+            <%= expense.budget.name %>
+          <% end %>
+        <% end %>
+        <% if expense.shared? %>
+          <%= render BadgeComponent.new(variant: :outline, class: 'hidden') { "Compartido" } %>
+        <% end %>
+
+        <div class="md:hidden">
+          <h3 class="font-medium"><%= expense.description %></h3>
+          <p class="text-lg font-semibold">$<%= expense.amount %></p>
+        </div>
+
+        <div class="md:hidden flex gap-5">
+          <%= link_to edit_expense_path(expense), class: "items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-750 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-gray-950 text-white hover:bg-gray-800 h-10 px-4 py-2", 'data-turbo-frame': "modal" do %>
+            <%= lucide_icon 'pencil', class: 'text-white', class: 'text-white', style: 'width: 20px; height: 20px; font-weight: 300' %>
+          <% end %>
+
+          <%= link_to expense_path(expense), class: "border border-red-500 items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-750 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:text-white hover:bg-red-800 h-10 px-4 py-2", data: { 'turbo-method': 'delete', "turbo-confirm": '¿Estas seguro? No se podrá revertir' } do %>
+            <%= lucide_icon 'trash-2', class: 'text-red-500', style: 'width: 20px; height: 20px; font-weight: 300' %>
+          <% end %>
+        </div>
+      </div>
+
+      <p class="text-sm text-gray-600 mt-1">
+        <%= expense.transaction_date.strftime("%d %b %Y") %>
+        <% if expense.shared? %>
+          • Pagado por <%= expense.user.name %>
+        <% end %>
+
+        • Cuenta <%= expense.money_account.try(:name) %>
+      </p>
+
+      <div class="flex md:hidden mt-3 gap-2">
         <% if budget = expense.budget %>
           <%= render BadgeComponent.new(variant: expense.shared? ? :default : :secondary) do %>
             <%= expense.budget.name %>
@@ -12,16 +47,9 @@
           <%= render BadgeComponent.new(variant: :outline) { "Compartido" } %>
         <% end %>
       </div>
-      <p class="text-sm text-gray-600">
-        <%= expense.transaction_date.strftime("%d %b %Y") %>
-        <% if expense.shared? %>
-          • Pagado por <%= expense.user.name %>
-        <% end %>
-
-          • Cuenta <%= expense.money_account.try(:name) %>
-      </p>
     </div>
-    <div class="text-right flex gap-1 items-center">
+
+    <div class="hidden text-right md:flex gap-1 items-center">
       <p class="text-lg font-semibold">$<%= expense.amount %></p>
       <div class="relative inline-block text-left">
         <a data-action="click -> dropdown#toggle" data-controller="dropdown" class="cursor-pointer inline-flex w-full justify-center gap-x-1.5 rounded-md px-3 py-2 text-sm font-semibold text-gray-900" aria-expanded="true" aria-haspopup="true">
