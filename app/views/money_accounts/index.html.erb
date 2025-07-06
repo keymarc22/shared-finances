@@ -1,15 +1,24 @@
 <div class="space-y-6" data-controller="dashboard">
   <!-- Header -->
   <%= content_for :header_button do %>
-    <a href="<%= new_money_account_path %>" data-turbo-frame="modal" class="<%= link_as_button_classes %>">
+    <a href="<%= new_money_account_path %>" data-turbo-frame="modal" class="flex <%= link_as_button_classes %>">
       <%= lucide_icon 'plus' %>
       Agregar Cuenta
     </a>
   <% end %>
 
+  <% content_for :mobile_primary_action do %>
+    <a href="<%= new_money_account_path %>"
+      data-turbo-frame="modal"
+      class="<%= mobile_primary_action_classes %>"
+      style="box-shadow: 0 4px 14px rgba(0,0,0,0.15);">
+      <%= lucide_icon 'plus', class: "w-7 h-7" %>
+    </a>
+  <% end %>
+
   <%= render partial: 'layouts/header' %>
 
-  <div id="money_accounts" class="accounts-card--container">
+  <div id="money_accounts" class="flex flex-col md:flex-row gap-3">
     <%= render partial: 'money_accounts/total_balance', locals: { account: @global_account } %>
 
     <% @money_accounts.each do |account| %>
@@ -52,13 +61,13 @@
 </div>
 
 <%= render CardComponent.new(class: 'mt-8') do %>
-  <%= render CardComponent::Header.new(class: 'justify-between', style: 'flex-direction: row') do %>
+  <%= render CardComponent::Header.new(variant: :custom, class: 'justify-between md:flex', style: 'flex-direction: row') do %>
     <div>
       <%= render CardComponent::Title.new { "Movimientos Recientes" } %>
       <%= render CardComponent::Description.new { "#{@transactions.count} movimientos encontrados" } %>
     </div>
 
-    <a href="<%= new_expense_path %>" data-turbo-frame="modal" class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-750 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-gray-950 text-white hover:bg-gray-800 h-10 px-4 py-2">
+    <a href="<%= new_expense_path %>" data-turbo-frame="modal" class="w-full md:w-auto mt-2 inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-750 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-gray-950 text-white hover:bg-gray-800 h-10 px-4 py-2">
       <%= lucide_icon 'plus' %>
       Agregar Gasto
     </a>

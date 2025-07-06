@@ -21,7 +21,7 @@
 
         <div>
           <div class="flex items-center gap-4 text-sm text-gray-500">
-            <span><%= transaction.money_account.name %></span>
+            <span><%= transaction.money_account.try(:name) %></span>
             <span>•</span>
               <span><%= transaction.transaction_date.strftime("%d/%m/%Y %I:%M %p") %></span>
           </div>

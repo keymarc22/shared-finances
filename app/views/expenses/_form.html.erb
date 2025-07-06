@@ -34,7 +34,7 @@
     </a>
   </div>
   <%= f.input :description, input_html: { data: { expense_form_target: 'description' } } %>
-  <%= f.input :amount_cents, input_html: { data: { expense_form_target: 'amount' } } %>
+  <%= f.input :amount, input_html: { data: { expense_form_target: 'amount' } } %>
   <%= f.input :money_account_id, as: :select, collection: current_account.money_accounts, prompt: 'Select an option', required: true %>
   <%= f.input :comment, as: :text %>
   <%= f.input :transaction_date, as: :string, input_html: { type: 'date', data: { expense_form_target: 'date' } } %>

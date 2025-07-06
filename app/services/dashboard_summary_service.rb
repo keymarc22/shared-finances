@@ -8,11 +8,23 @@ class DashboardSummaryService
   end
 
   def call
+    total_expenses = account
+      .expenses
+      .no_fixed
+      .where(transaction_date: current_month_start..current_month_end)
+      .sum(&:amount)
+
+    total_budgets = account
+      .budgets
+      .sum(&:amount)
+
     shared_expenses = shared_expenses(account.expenses)
     total_shared_expenses = to_money shared_expenses.sum(:amount_cents)
     total_shared_budgets = to_money account.budgets.shared.sum(:amount_cents)
 
     {
+      total_expenses: total_expenses,
+      total_budgets: total_budgets,
       shared_expenses: shared_expenses,
       total_shared_expenses: total_shared_expenses,
       total_shared_budgets: total_shared_budgets,

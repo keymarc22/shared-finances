@@ -1,5 +1,6 @@
 class ExpensesController < ApplicationController
   before_action :find_expense, only: %i[edit update destroy]
+  before_action :find_budgets, onlu: %i[update create destroy]
 
   def new
     @expense = Expense.new(user: current_user, transaction_date: Date.current)
@@ -58,7 +59,7 @@ class ExpensesController < ApplicationController
 
   def expense_params
     params.require(:expense).permit(
-      :amount_cents,
+      :amount,
       :description,
       :transaction_type,
       :transaction_date,
@@ -72,6 +73,10 @@ class ExpensesController < ApplicationController
 
   def find_expense
     @expense = Expense.find(params[:id])
+  end
+
+  def find_budgets
+    @budgets = current_account.budgets.includes(:user)
   end
 
   def load_dashboard_summary_data

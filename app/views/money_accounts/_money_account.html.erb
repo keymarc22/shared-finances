@@ -1,5 +1,5 @@
 <%= turbo_frame_tag dom_id(account) do %>
-  <%= render CardComponent.new(class: 'border border-gray-300') do %>
+  <%= render CardComponent.new(class: 'border border-gray-300 md:min-w-70') do %>
     <%= render CardComponent::Header.new(class: 'pb-2') do %>
       <div class="flex items-center justify-between">
         <%= render CardComponent::Title.new(class: "text-sm font-medium") { account.name } %>

@@ -1,40 +1,63 @@
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-  <%= render CardComponent.new do %>
-    <%= render CardComponent::Header.new do %>
-      <div class="flex items-center justify-between">
-        <%= render CardComponent::Title.new(class: "text-sm font-medium") { "Gastos Compartidos" } %>
-        <%= lucide_icon 'boxes' %>
-      </div>
-    <% end %>
 
-    <%= render CardComponent::Content.new do %>
-      <div class="text-2xl font-bold"><%= @summary[:total_shared_expenses].format %></div>
-      <p class="text-xs text-gray-500">de <%= @summary[:total_shared_budgets].format %> presupuestados</p>
-      <%= render ProgressComponent.new(value: @summary[:shared_expenses_percentage], class: "mt-2") %>
+  <%= turbo_frame_tag 'totals' do %>
+    <%= render CardComponent.new do %>
+      <%= render CardComponent::Header.new do %>
+        <div class="flex items-center justify-between">
+          <%= render CardComponent::Title.new(class: "text-sm font-medium") { "Total Gastos" } %>
+          <%= lucide_icon 'badge-dollar-sign' %>
+        </div>
+      <% end %>
+
+      <%= render CardComponent::Content.new do %>
+        <div class="text-2xl font-bold"><%= to_money_format @summary[:total_expenses] %></div>
+        <p class="text-xs text-gray-500">de <%= to_money_format @summary[:total_budgets] %> presupuestados</p>
+        <%= render ProgressComponent.new(value: @summary[:shared_expenses_percentage], class: "mt-2") %>
+      <% end %>
     <% end %>
   <% end %>
 
-  <%= render CardComponent.new do %>
-    <%= render CardComponent::Header.new do %>
-      <div class="flex items-center justify-between">
-        <%= render CardComponent::Title.new(class: "text-sm font-medium") { "Balance" } %>
-        <%= lucide_icon 'weight' %>
-      </div>
-    <% end %>
-    <%= render CardComponent::Content.new do %>
-      <div class="space-y-1">
-        <% @summary[:users_summary].each do |user| %>
-          <div class="flex justify-between items-center">
-            <span class="text-sm"><%= user[:name] %></span>
-            <span class="text-sm font-medium">
-              <%=  user[:total_expenses].format %>
-            </span>
-          </div>
-        <% end %>
-      </div>
+  <%= turbo_frame_tag 'shared_expenses' do %>
+    <%= render CardComponent.new do %>
+      <%= render CardComponent::Header.new do %>
+        <div class="flex items-center justify-between">
+          <%= render CardComponent::Title.new(class: "text-sm font-medium") { "Gastos Compartidos" } %>
+          <%= lucide_icon 'boxes' %>
+        </div>
+      <% end %>
+
+      <%= render CardComponent::Content.new do %>
+        <div class="text-2xl font-bold"><%= @summary[:total_shared_expenses].format %></div>
+        <p class="text-xs text-gray-500">de <%= @summary[:total_shared_budgets].format %> presupuestados</p>
+        <%= render ProgressComponent.new(value: @summary[:shared_expenses_percentage], class: "mt-2") %>
+      <% end %>
     <% end %>
   <% end %>
 
+  <%= turbo_frame_tag 'balance' do %>
+    <%= render CardComponent.new do %>
+      <%= render CardComponent::Header.new do %>
+        <div class="flex items-center justify-between">
+          <%= render CardComponent::Title.new(class: "text-sm font-medium") { "Balance" } %>
+          <%= lucide_icon 'weight' %>
+        </div>
+      <% end %>
+      <%= render CardComponent::Content.new do %>
+        <div class="space-y-1">
+          <% @summary[:users_summary].each do |user| %>
+            <div class="flex justify-between items-center">
+              <span class="text-sm"><%= user[:name] %></span>
+              <span class="text-sm font-medium">
+                <%=  user[:total_expenses].format %>
+              </span>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+    <% end %>
+  <% end %>
+
+  <!-- User-specific expenses cards
   <% @summary[:users_summary].each do |user_data| %>
     <%= render CardComponent.new do %>
       <%= render CardComponent::Header.new do %>
@@ -50,5 +73,15 @@
       <% end %>
     <% end %>
   <% end %>
+  -->
 
+</div>
+
+<hr class="border border-gray-200"/>
+<h2 class="text-xl font-bold text-gray-900 mb-4 mt-6">Budgets</h2>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+
+  <% @budgets.each do |budget| %>
+    <%= render partial: 'budgets/budget', locals: { budget: budget } %>
+  <% end %>
 </div>

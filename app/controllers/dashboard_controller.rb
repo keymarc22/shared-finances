@@ -4,6 +4,7 @@ class DashboardController < ApplicationController
     @summary = DashboardSummaryService.new(current_account).call
     @recent_expenses = recent_expenses_data
     @savings_plans = []
+    @budgets = current_account.budgets.includes(:user)
 
     params[:tab_content] ||= "tab_expenses"
 
@@ -11,7 +12,7 @@ class DashboardController < ApplicationController
       @user = User.find(params[:user_id])
       @user_expenses = @user.expenses.includes(:budget, :money_account, :expense_splits)
     end
-  end
+  end 
 
   private
 

@@ -14,7 +14,7 @@ class BadgeComponent < Phlex::HTML
   def view_template(&block)
     span(
       class: [
-        "inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-gray-950 focus:ring-offset-2",
+        "md:inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-gray-950 focus:ring-offset-2",
         VARIANTS[@variant],
         @class
       ].compact.join(" "),

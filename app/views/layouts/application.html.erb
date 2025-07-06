@@ -35,20 +35,22 @@
 
     <!-- Modal -->
     <div class="fixed inset-0 z-50 flex items-center justify-center overlay-bg hidden"
-         data-controller="modal"
-         data-modal-target="modal"
-         data-action="turbo:frame-load->modal#open turbo:submit-end->modal#close">
+       data-controller="modal"
+       data-modal-target="modal"
+       data-action="turbo:frame-load->modal#open turbo:submit-end->modal#close">
 
-      <div class="bg-white rounded-lg shadow-lg max-w-md w-full p-6 relative">
-        <!-- Botón para cerrar el modal -->
-        <button data-action="click->modal#close" class="cursor-pointer absolute top-2 right-2 text-gray-500 hover:text-gray-800">
-          <%= lucide_icon 'x' %>
-        </button>
-        <%= turbo_frame_tag 'modal'%>
+      <div class="bg-white rounded-lg shadow-lg max-w-md w-full p-6 relative max-h-[90vh] overflow-y-auto">
+      <!-- Botón para cerrar el modal -->
+      <button data-action="click->modal#close" class="cursor-pointer absolute top-2 right-2 text-gray-500 hover:text-gray-800">
+        <%= lucide_icon 'x' %>
+      </button>
+      <%= turbo_frame_tag 'modal'%>
       </div>
     </div>
 
     <%= yield :js %>
+
+    <%= yield :mobile_primary_action %>
 
   </body>
 </html>
