@@ -68,7 +68,7 @@ class TransactionGroupsController < ApplicationController
       expenses_attributes: %i[
         id
         account_id
-        amount_cents
+        amount
         description
         budget_id
         frequency
