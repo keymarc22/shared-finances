@@ -20,7 +20,7 @@
       </div>
 
       <div class="md:hidden flex gap-5">
-        <%= link_to transaction_group_path(transaction_group), class: "items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-750 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-gray-950 text-white hover:bg-gray-800 h-10 px-4 py-2", 'data-turbo-frame': "modal" do %>
+        <%= link_to transaction_group_path(transaction_group), class: "items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-750 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-gray-950 text-white hover:bg-gray-800 h-10 px-4 py-2", data: { turbo: false } do %>
           <%= lucide_icon 'pencil', class: 'text-white', class: 'text-white', style: 'width: 20px; height: 20px; font-weight: 300' %>
         <% end %>
 
