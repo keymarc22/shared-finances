@@ -1,5 +1,11 @@
 <%= f.input :name %>
-<%= f.input :amount %>
+
+<div class="flex gap-2">
+  <%= f.input :amount %>
+  <%= f.input :color, as: :color, input_html: { style: 'width: 4rem;' } %>
+</div>
+
+<%= f.input :icon, as: :select, collection: Budget::ICONS, include_blank: false, input_html: { class: 'w-full', data: { controller: 'slimselect' } } %>
 
 <div class="mb-6 gap-4 flex justify-center border border-gray-200 p-5">
   <%= f.collection_radio_buttons :budget_type, [['personal', 'Personal'], ['shared', 'Compartido']], :first, :last %>
