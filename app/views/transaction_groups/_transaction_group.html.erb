@@ -15,8 +15,7 @@
 
     <%= render CardComponent::Header.new(variant: :custom, class: "flex justify-between") do %>
       <div class="flex flex-col gap-1">
-        <%= render CardComponent::Title.new(class: "text-sm font-medium") { 'Grupo de gatos' } %>
-        <%= render CardComponent::Description.new { transaction_group.name } %>
+        <%= render CardComponent::Title.new(class: "text-lg font-medium") {  transaction_group.name } %>
       </div>
 
       <div class="md:hidden flex gap-5">
@@ -33,7 +32,7 @@
     <%= render CardComponent::Content.new(class: 'flex align-items-end justify-between') do %>
       <div class="text-2xl font-bold"><%= to_money_format transaction_group.monthly_expenses %></div>
       <%= render BadgeComponent.new(class: 'flex') do %>
-        Gatos registrados: <%= transaction_group.expenses_count %>
+        Gastos registrados: <%= transaction_group.expenses_count %>
       <% end %>
     <% end %>
   <% end %>

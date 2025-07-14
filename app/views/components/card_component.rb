@@ -7,7 +7,7 @@ class CardComponent < Phlex::HTML
   def view_template(&block)
     div(
       class: [
-        "rounded-lg bg-card text-card-foreground shadow-lg",
+        "rounded-lg bg-card text-card-foreground shadow-xl border border-gray-200x",
         @class
       ].compact.join(" "),
       **@attrs,

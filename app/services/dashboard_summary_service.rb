@@ -38,11 +38,11 @@ class DashboardSummaryService
   attr_reader :account, :current_month_start, :current_month_end
 
   def shared_expenses(scope)
-    scope.shared.where(transaction_date: current_month_start..current_month_end)
+    scope.shared.no_fixed.where(transaction_date: current_month_start..current_month_end)
   end
 
   def personal_expenses(scope)
-    scope.personal.where(transaction_date: current_month_start..current_month_end)
+    scope.personal.no_fixed.where(transaction_date: current_month_start..current_month_end)
   end
 
   def users_summary

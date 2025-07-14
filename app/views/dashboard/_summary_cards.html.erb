@@ -42,16 +42,25 @@
           <%= lucide_icon 'weight' %>
         </div>
       <% end %>
-      <%= render CardComponent::Content.new do %>
+      <%= render CardComponent::Content.new(style: 'padding: 10px') do %>
         <div class="space-y-1">
+          <% total = 0 %>
           <% @summary[:users_summary].each do |user| %>
             <div class="flex justify-between items-center">
               <span class="text-sm"><%= user[:name] %></span>
               <span class="text-sm font-medium">
-                <%=  user[:total_expenses].format %>
+                <%= user[:total_expenses].format %>
+                <% total += user[:total_expenses] %>
               </span>
             </div>
           <% end %>
+
+          <div class="flex justify-between items-center border-t pt-2 border-gray-200">
+            <span class="text-sm">Total</span>
+            <span class="text-sm font-medium">
+              <%= total.format %>
+            </span>
+          </div>
         </div>
       <% end %>
     <% end %>

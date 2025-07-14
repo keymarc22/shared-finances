@@ -17,7 +17,9 @@ class DashboardController < ApplicationController
   private
 
   def recent_expenses_data
-    current_account.expenses
+    current_account
+      .expenses
+      .no_fixed
       .includes(:budget, :user, :expense_splits)
       .created_between(current_date_rage.first, current_date_rage.last)
       .order(transaction_date: :desc, created_at: :desc)
