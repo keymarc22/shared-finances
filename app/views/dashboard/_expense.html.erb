@@ -4,12 +4,11 @@
       <div class="flex items-center justify-between md:justify-start gap-2">
         <h3 class="hidden md:block font-medium"><%= expense.description %></h3>
         <% if budget = expense.budget %>
-          <%= render BadgeComponent.new(variant: expense.shared? ? :default : :secondary, class: 'hidden') do %>
-            <%= expense.budget.name %>
-          <% end %>
+          <%= render_badge text: expense.budget.name, variant: expense.shared? ? :default : :secondary %>
         <% end %>
+
         <% if expense.shared? %>
-          <%= render BadgeComponent.new(variant: :outline, class: 'hidden') { "Compartido" } %>
+          <%= render_badge text: "Compartido", variant: :outline %>
         <% end %>
 
         <div class="md:hidden">
@@ -39,12 +38,10 @@
 
       <div class="flex md:hidden mt-3 gap-2">
         <% if budget = expense.budget %>
-          <%= render BadgeComponent.new(variant: expense.shared? ? :default : :secondary) do %>
-            <%= expense.budget.name %>
-          <% end %>
+          <%= render_badge text: expense.budget.name, variant: expense.shared? ? :default : :secondary %>
         <% end %>
         <% if expense.shared? %>
-          <%= render BadgeComponent.new(variant: :outline) { "Compartido" } %>
+          <%= render_badge text: "Compartido", variant: :outline %>
         <% end %>
       </div>
     </div>

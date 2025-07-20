@@ -83,3 +83,6 @@ gem "phlex-rails", "~> 2.3"
 gem "simple_form"
 
 gem "rack-cors"
+
+gem "shadcn-ui", "~> 0.0.15"
+

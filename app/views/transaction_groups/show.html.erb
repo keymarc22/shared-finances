@@ -2,7 +2,7 @@
   <!-- Header -->
   <%= render partial: 'layouts/header' %>
 
-  <div id="app" class="space-y-6" style="margin-bottom: 8rem;">
+  <div id="app" v-show="loaded" class="space-y-6" style="margin-bottom: 8rem;">
     <div class="header flex gap-3 items-center mb-0">
       <input v-if="group.editing" type="text" v-model="groupName" class="border border-gray-300 hover:border-gray-400 rounded-sm px-5 py-2" />
       <h1 v-else class="text-xl mb-0">
@@ -131,11 +131,15 @@
     var app = Vue.createApp({
       data: function() {
         return {
+          loaded: false,
           groupName: '<%= @transaction_group.name %>',
           account_id: <%= current_account.id %>,
           group: <%= raw @transaction_group.to_json(include: { expenses: { methods: :amount_formatted } }) %>,
           budgets: <%= raw @budgets.to_json %>
         }
+      },
+      mounted: function() {
+        this.loaded = true;
       },
       computed: {
         expenses: function() {

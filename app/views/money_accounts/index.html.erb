@@ -1,5 +1,5 @@
 <div class="space-y-6" data-controller="dashboard">
-  <!-- Header -->
+
   <%= content_for :header_button do %>
     <a href="<%= new_money_account_path %>" data-turbo-frame="modal" class="flex <%= link_as_button_classes %>">
       <%= lucide_icon 'plus' %>
@@ -18,7 +18,7 @@
 
   <%= render partial: 'layouts/header' %>
 
-  <div id="money_accounts" class="flex flex-col md:flex-row gap-3">
+  <div id="money_accounts" class="md:flex flex-col md:flex-row gap-3" style="overflow: hidden;overflow-x: auto;padding-bottom: 11px;">
     <%= render partial: 'money_accounts/total_balance', locals: { account: @global_account } %>
 
     <% @money_accounts.each do |account| %>
@@ -60,27 +60,17 @@
   </div>
 </div>
 
-<%= render CardComponent.new(class: 'mt-8') do %>
-  <%= render CardComponent::Header.new(variant: :custom, class: 'justify-between md:flex', style: 'flex-direction: row') do %>
-    <div>
-      <%= render CardComponent::Title.new { "Movimientos Recientes" } %>
-      <%= render CardComponent::Description.new { "#{@transactions.count} movimientos encontrados" } %>
-    </div>
+<%= render_card(title: "Movimientos recientes", subtitle: "#{@transactions.count} movimientos encontrados", class: 'relative w-full mt-6') do %>
+  <a href="<%= new_expense_path %>" data-turbo-frame="modal" style="top: 14px;right: 20px;" class="hidden absolute w-full md:w-auto mt-2 md:inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-750 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-gray-950 text-white hover:bg-gray-800 h-10 px-4 py-2">
+    <%= lucide_icon 'plus' %>
+    Agregar Gasto
+  </a>
 
-    <a href="<%= new_expense_path %>" data-turbo-frame="modal" class="w-full md:w-auto mt-2 inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-750 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-gray-950 text-white hover:bg-gray-800 h-10 px-4 py-2">
-      <%= lucide_icon 'plus' %>
-      Agregar Gasto
-    </a>
-  <% end %>
-
-  <%= render CardComponent::Content.new do %>
-    <div class="space-y-4">
-      <%= turbo_frame_tag 'expenses' do %>
-        <% @transactions.each do |transaction| %>
-          <%= render partial: 'money_accounts/transaction', locals: { transaction: } %>
-        <% end %>
+  <div class="space-y-4 px-6">
+    <%= turbo_frame_tag 'expenses' do %>
+      <% @transactions.each do |transaction| %>
+        <%= render partial: 'money_accounts/transaction', locals: { transaction: } %>
       <% end %>
-    </div>
-  <% end %>
+    <% end %>
+  </div>
 <% end %>
-

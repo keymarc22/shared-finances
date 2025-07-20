@@ -42,17 +42,13 @@ class Budget < ApplicationRecord
 
   validates :icon, inclusion: { in: ICONS }, allow_blank: true
 
-  def is_over_budget?
-    # spent_amount > amount
-  end
-
   def total_expenses
-    @total_expenses ||= expenses.no_fixed.sum(:amount_cents)
+    @total_expenses ||= expenses.no_fixed.sum(&:amount)
   end
 
   def percentage
     return 0 if amount.zero? || total_expenses.zero?
 
-    ((amount.to_f * 100 / total_expenses.to_f) * 100).round(2)
+    (total_expenses.to_f / amount.to_f * 100).round(1)
   end
 end

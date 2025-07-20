@@ -1,0 +1,8 @@
+<%= turbo_frame_tag dom_id(budget) do %>
+  <%= render_card(title: budget.name, icon: budget.icon, subtitle: "#{to_money_format(budget.amount)} presupuestados", footer: nil) do %>
+    <div class="p-6 pt-0">
+      <p class="text-xl mb-2"><%= budget.total_expenses.format %></p>
+      <%= render_progress value: budget.percentage, color: budget.color %>
+    </div>
+  <% end %>
+<% end %>
