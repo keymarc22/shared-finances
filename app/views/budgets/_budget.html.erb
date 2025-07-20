@@ -32,7 +32,7 @@
     </div>
 
     <div class="p-6 pt-0" style="margin-top: -24px;">
-      <p class="text-xl mb-2"><%= budget.total_expenses.format %></p>
+      <p class="text-xl mb-2"><%= budget.total_expenses %></p>
       <%= render_progress value: budget.percentage, color: budget.color %>
     </div>
   <% end %>
