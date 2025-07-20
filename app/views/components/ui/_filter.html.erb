@@ -1,4 +1,4 @@
-<%= search_form_for @q, html: { data: { controller: "ui--filter" } } do |f| %>
+<div data-controller="ui--filter">
   <%= render_card do %>
     <div class="flex items-center">
       <%= content_for :filter_icon %>
@@ -15,4 +15,4 @@
       <% end %>
     </div>
   <% end %>
-<% end %>
+</div>
