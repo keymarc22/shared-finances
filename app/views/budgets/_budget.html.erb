@@ -1,51 +1,39 @@
 <%= turbo_frame_tag dom_id(budget) do %>
-  <%= render CardComponent.new do %>
-    <%= render CardComponent::Header.new(class: 'flex justify-between pb-0', style: 'flex-direction: row;') do %>
-      <div>
-        <%= lucide_icon(budget.icon, class: "text-lg") %>
+  <%= render_card(
+      title: budget.name,
+      subtitle: "#{to_money_format(budget.amount)} presupuestados",
+      icon: budget.icon,
+      icon_classes: "pt-5 pr-6 md:pr-10",
+      footer: nil) do %>
 
-        <%= render BadgeComponent.new(variant: :dynamic_color, class: "md:hidden", style: "background-color: #{budget.color}; color: white;") do %>
-          <%= budget.name %>
-        <% end %>
-      </div>
+    <div class="hidden relative md:inline-block text-left" style="top: -74px;right: -314px;">
+      <a data-action="click -> dropdown#toggle" data-controller="dropdown" class="p0 align-items-center cursor-pointer inline-flex w-full justify-center gap-x-1.5 rounded-md px-3 py-2 text-sm font-semibold text-gray-900 align-middle" aria-expanded="true" aria-haspopup="true">
+        <%= lucide_icon 'more-vertical', class: 'w-6 h-6 text-gray-600' %>
+      </a>
 
-      <div class="flex items-center justify-between">
-
-        <%= render BadgeComponent.new(variant: :dynamic_color, class: "hidden md:block", style: "background-color: #{budget.color}; color: white;") do %>
-          <%= budget.name %>
-        <% end %>
-
-        <div class="hidden relative md:inline-block text-left">
-          <a data-action="click -> dropdown#toggle" data-controller="dropdown" class="p0 align-items-center cursor-pointer inline-flex w-full justify-center gap-x-1.5 rounded-md px-3 py-2 text-sm font-semibold text-gray-900 align-middle" aria-expanded="true" aria-haspopup="true">
-            <%= lucide_icon 'more-vertical', class: 'w-6 h-6 text-gray-600' %>
-          </a>
-
-          <div class="hidden absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-hidden" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
-            <div class="py-1" role="none">
-              <%= link_to 'Editar', budget_path(budget), class: "block px-4 py-2 text-sm text-gray-700", 'data-turbo-frame': "modal"  %>
-              <%= link_to 'Eliminar', budget_path(budget), class: "block px-4 py-2 text-sm text-gray-700", data: { 'turbo-method': 'delete', "turbo-confirm": '¿Estas seguro? No se podrá revertir' }  %>
-            </div>
-          </div>
-        </div>
-
-        <div class="md:hidden flex gap-5">
-          <%= link_to budget_path(budget), class: "items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-750 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-gray-950 text-white hover:bg-gray-800 h-10 px-4 py-2", 'data-turbo-frame': "modal" do %>
-            <%= lucide_icon 'pencil', class: 'text-white', class: 'text-white', style: 'width: 20px; height: 20px; font-weight: 300' %>
-          <% end %>
-
-          <%= link_to budget_path(budget), class: "border border-red-500 items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-750 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:text-white hover:bg-red-800 h-10 px-4 py-2", data: { 'turbo-method': 'delete', "turbo-confirm": '¿Estas seguro? No se podrá revertir' } do %>
-            <%= lucide_icon 'trash-2', class: 'text-red-500', style: 'width: 20px; height: 20px; font-weight: 300' %>
-          <% end %>
+      <div class="hidden absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-hidden" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
+        <div class="py-1" role="none">
+          <%= link_to 'Editar', budget_path(budget), class: "block px-4 py-2 text-sm text-gray-700", 'data-turbo-frame': "modal"  %>
+          <%= link_to 'Eliminar', budget_path(budget), class: "block px-4 py-2 text-sm text-gray-700", data: { 'turbo-method': 'delete', "turbo-confirm": '¿Estas seguro? No se podrá revertir' }  %>
         </div>
       </div>
-    <% end %>
+    </div>
 
-    <%= render CardComponent::Content.new do %>
-      <div class="text-2xl font-bold"><%= to_money_format budget.total_expenses %></div>
-      <p class="text-xs text-gray-500">de <%= to_money_format budget.total_expenses %> presupuestados</p>
-      <p class="text-xs text-gray-500">Monto límite: <%= budget.amount.format %></p>
+    <div class="flex items-center justify-end pr-6">
+      <div class="md:hidden flex gap-5">
+        <%= link_to budget_path(budget), class: "items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-750 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-gray-950 text-white hover:bg-gray-800 h-10 px-4 py-2", 'data-turbo-frame': "modal" do %>
+          <%= lucide_icon 'pencil', class: 'text-white', class: 'text-white', style: 'width: 20px; height: 20px; font-weight: 300' %>
+        <% end %>
 
-      <%= render ProgressComponent.new(value: budget.percentage, class: "mt-2", color: budget.color) %>
-    <% end %>
+        <%= link_to budget_path(budget), class: "border border-red-500 items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-750 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:text-white hover:bg-red-800 h-10 px-4 py-2", data: { 'turbo-method': 'delete', "turbo-confirm": '¿Estas seguro? No se podrá revertir' } do %>
+          <%= lucide_icon 'trash-2', class: 'text-red-500', style: 'width: 20px; height: 20px; font-weight: 300' %>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="p-6 pt-0" style="margin-top: -24px;">
+      <p class="text-xl mb-2"><%= budget.total_expenses.format %></p>
+      <%= render_progress value: budget.percentage, color: budget.color %>
+    </div>
   <% end %>
 <% end %>

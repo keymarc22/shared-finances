@@ -1,13 +1,7 @@
 <%= turbo_frame_tag 'total_balance' do %>
-  <%= render CardComponent.new(class: 'bg-blue-500 text-white pb-5 md:min-w-70') do %>
-    <%= render CardComponent::Header.new(class: 'pb-2') do %>
-      <div class="flex items-center justify-between">
-        <%= render CardComponent::Title.new(class: "text-sm font-medium") { account.name } %>
-      </div>
-    <% end %>
-
-    <%= render CardComponent::Content.new(class: 'flex align-items-end justify-between') do %>
-      <div class="text-2xl font-bold"><%= to_money_format account.balance %></div>
-    <% end %>
+  <%= render_card(title: account.name, class: 'bg-blue-500 text-white') do %>
+    <div class="text-2xl font-bold px-6 pb-6">
+      <%= to_money_format account.balance %>
+    </div>
   <% end %>
 <% end %>

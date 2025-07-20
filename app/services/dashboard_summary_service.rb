@@ -25,6 +25,7 @@ class DashboardSummaryService
     {
       total_expenses: total_expenses,
       total_budgets: total_budgets,
+      total_expenses_percentage: calculate_percentage(total_expenses, total_budgets),
       shared_expenses: shared_expenses,
       total_shared_expenses: total_shared_expenses,
       total_shared_budgets: total_shared_budgets,
@@ -72,6 +73,6 @@ class DashboardSummaryService
   def calculate_percentage(part, total)
     return 0 if total.zero?
 
-    [(part.to_f / total.to_f * 100).round(1), 100].min
+    (part.to_f / total.to_f * 100).round(1)
   end
 end

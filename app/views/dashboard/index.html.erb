@@ -18,30 +18,49 @@
 
   <%= render partial: 'layouts/header' %>
 
-  <!-- Summary Cards -->
-  <%= turbo_frame_tag 'summary_cards' do %>
-    <%= render partial: 'dashboard/summary_cards' %>
+  <%= render_accordion(container: 'summary_cards_content', initial_state: 'open') do %>
+    <%= accordion_title do %>
+      <h3 class="text-lg font-semibold">Resumen de gastos</h3>
+    <% end %>
+
+    <%= accordion_description do %>
+      <%= turbo_frame_tag 'summary_cards' do %>
+        <%= render partial: 'dashboard/summary_cards' %>
+      <% end %>
+    <% end %>
   <% end %>
 
-  <!-- Tabs
-  <nav class="bg-gray-200 p-1 rounded-xl shadow-lg sm:p-2 sm:rounded-2xl">
-    <div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2 justify-between items-center">
-      <%= render LinkComponent.new(variant: :pill, class: params[:tab_content] == 'tab_expenses' ? 'bg-white' : '', href: root_path(tab_content: 'tab_expenses')) do %>
-        Gastos compartidos
-      <% end %>
+  <%
+    items = [
+      {
+        name: "Gastos recientes",
+        value: "tab_expenses",
+        selected: params[:tab_content] == 'tab_expenses'
+      },
+      {
+        name: "Mis gastos",
+        value: "tab_user",
+        selected: params[:tab_content] == 'tab_user'
+      }
+    ]
 
-      <% @summary[:users_summary].each do |user| %>
-        <%= render LinkComponent.new(variant: :pill, class: params[:tab_content] == 'tab_user' && params[:user_id].present? && @user.present? && user[:id].to_s == params[:user_id] ? 'bg-white' : '', href: root_path(tab_content: 'tab_user', user_id: user[:id])) do %>
-          Gastos <%= user[:name] %>
-        <% end %>
-      <% end %>
+    @budgets.each do |budget|
+      items << {
+        name: budget.name,
+        value: "tab_budget",
+        selected: params[:tab_content] == "tab_budget"
+      }
+    end
+  %>
 
-      <%= render LinkComponent.new(variant: :pill, class: params[:tab_content] == 'tab_savings' ? 'bg-white' : '', href: root_path(tab_content: 'tab_savings')) do %>
-        Planes de ahorro
+  <div class="flex justify-end">
+    <%= render_combobox items do %>
+      <%= combobox_trigger do %>
+        <%= (items.find { |item| item[:value] == params[:tab_content] } || items.first)[:name] %>
       <% end %>
-    </div>
-  </nav>
-  -->
+    <% end %>
+  </div>
+
 
   <%= turbo_frame_tag 'tab_content', data: { turbo_action: 'advance' } do %>
     <%= render partial: "dashboard/#{params[:tab_content]}" %>
