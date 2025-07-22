@@ -53,7 +53,7 @@
       </div>
     </div>
 
-    <div class="md:hidden flex items-center justify-between gap-1">
+    <div class="md:hidden mt-2 flex items-center gap-1">
       <% if budget = expense.budget %>
         <%= render_badge text: expense.budget.name, variant: expense.shared? ? :default : :secondary %>
       <% end %>

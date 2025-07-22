@@ -1,11 +1,11 @@
 <%= render_card(title: "Gastos recientes", subtitle: 'Últimos movimientos de gastos compartidos y personales', class: 'w-full') do %>
-  <%= turbo_frame_tag 'expenses' do %>
-    <div class="space-y-4 px-6">
+  <div class="space-y-4 px-6">
+    <%= turbo_frame_tag 'expenses' do %>
       <% if @recent_expenses.any? %>
         <%= render partial: "expense", collection: @recent_expenses, as: :expense %>
       <% else %>
         <p class="text-center">No hay gatos este mes</p>
       <% end %>
-    </div>
-  <% end %>
+    <% end %>
+  </div>
 <% end %>
