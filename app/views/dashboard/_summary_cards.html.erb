@@ -4,6 +4,7 @@
     <%= render_card(
         title: 'Balance total',
         icon: 'badge-dollar-sign',
+        class: 'w-full',
         subtitle: "#{to_money_format(@summary[:total_budgets])} presupuestados") do %>
 
       <div class="p-6 pt-0">
@@ -18,6 +19,7 @@
     <%= render_card(
         title: 'Gastos Compartidos',
         icon: 'boxes',
+        class: 'w-full',
         subtitle: "#{@summary[:total_shared_budgets].format} presupuestados") do %>
 
       <div class="p-6 pt-0">
@@ -29,7 +31,7 @@
   <% end %>
 
   <%= turbo_frame_tag 'balance' do %>
-    <%= render_card do %>
+    <%= render_card(class: 'w-full',) do %>
       <div class="p-6">
         <h3 class="text-2xl font-semibold leading-none tracking-tight mb-2">Balance</h3>
         <p class="mb-2 text-sm text-muted-foreground">Gastos efectivos de cada usuario</p>

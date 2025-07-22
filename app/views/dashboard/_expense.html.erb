@@ -2,48 +2,40 @@
   <div class="border border-gray-200 flex items-center justify-between p-4 shadow-sm rounded-lg hover:bg-gray-50 transition-colors mb-4">
     <div class="flex-1">
       <div class="flex items-center justify-between md:justify-start gap-2">
-        <h3 class="hidden md:block font-medium"><%= expense.description %></h3>
-        <% if budget = expense.budget %>
-          <%= render_badge text: expense.budget.name, variant: expense.shared? ? :default : :secondary %>
-        <% end %>
+        <h3 class="font-medium"><%= expense.description %></h3>
 
-        <% if expense.shared? %>
-          <%= render_badge text: "Compartido", variant: :outline %>
-        <% end %>
-
-        <div class="md:hidden">
-          <h3 class="font-medium"><%= expense.description %></h3>
-          <p class="text-lg font-semibold">$<%= expense.amount %></p>
-        </div>
-
-        <div class="md:hidden flex gap-5">
-          <%= link_to edit_expense_path(expense), class: "items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-750 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-gray-950 text-white hover:bg-gray-800 h-10 px-4 py-2", 'data-turbo-frame': "modal" do %>
-            <%= lucide_icon 'pencil', class: 'text-white', class: 'text-white', style: 'width: 20px; height: 20px; font-weight: 300' %>
+        <div flex items-center justify-between>
+          <% if budget = expense.budget %>
+            <%= render_badge text: expense.budget.name, variant: expense.shared? ? :default : :secondary %>
           <% end %>
 
-          <%= link_to expense_path(expense), class: "border border-red-500 items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-750 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:text-white hover:bg-red-800 h-10 px-4 py-2", data: { 'turbo-method': 'delete', "turbo-confirm": '¿Estas seguro? No se podrá revertir' } do %>
-            <%= lucide_icon 'trash-2', class: 'text-red-500', style: 'width: 20px; height: 20px; font-weight: 300' %>
+          <% if expense.shared? %>
+            <%= render_badge text: "Compartido", variant: :outline %>
           <% end %>
         </div>
+
       </div>
 
-      <p class="text-sm text-gray-600 mt-1">
+      <div class="flex justify-between">
+        <p class="text-sm text-gray-600 mt-1">
         <%= expense.transaction_date.strftime("%d %b %Y") %>
         <% if expense.shared? %>
           • Pagado por <%= expense.user.name %>
         <% end %>
 
-        • Cuenta <%= expense.money_account.try(:name) %>
-      </p>
+        • <%= expense.money_account.try(:name) %>
+        </p>
+        <div class="md:hidden flex gap-5">
+          <%= link_to edit_expense_path(expense), class: "flex items-center justify-center rounded-md hover:bg-gray-100 text-red-600 h-10 w-10 p-2 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-700 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50", 'data-turbo-frame': "modal" do %>
+            <%= lucide_icon 'pencil', class: 'w-5 h-5 text-gray-600 group-hover:text-red-800', style: 'width: 20px; height: 20px; font-weight: 300' %>
+          <% end %>
 
-      <div class="flex md:hidden mt-3 gap-2">
-        <% if budget = expense.budget %>
-          <%= render_badge text: expense.budget.name, variant: expense.shared? ? :default : :secondary %>
-        <% end %>
-        <% if expense.shared? %>
-          <%= render_badge text: "Compartido", variant: :outline %>
-        <% end %>
+          <%= link_to expense_path(expense), class: "flex items-center justify-center rounded-md hover:bg-gray-100 text-red-600 h-10 w-10 p-2 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-700 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50", data: { 'turbo-method': 'delete', "turbo-confirm": '¿Estas seguro? No se podrá revertir' } do %>
+            <%= lucide_icon 'trash-2', class: 'w-5 h-5 text-red-600 group-hover:text-red-800' %>
+          <% end %>
+        </div>
       </div>
+
     </div>
 
     <div class="hidden text-right md:flex gap-1 items-center">
