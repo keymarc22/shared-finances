@@ -56,4 +56,10 @@ export default class UIPopover extends Controller {
       this.hide();
     }
   }
+
+  updateText(ev) {
+    const name = ev.currentTarget.dataset.name;
+    this.triggerTarget.querySelector('span').innerHTML = name;
+    this.hide();
+  }
 }
