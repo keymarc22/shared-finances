@@ -34,21 +34,29 @@
     items = [
       {
         name: "Gastos recientes",
-        value: "tab_expenses",
-        selected: params[:tab_content] == 'tab_expenses'
+        value: "recent",
+        selected: params[:filter] == 'recent'
       },
       {
         name: "Mis gastos",
-        value: "tab_user",
-        selected: params[:tab_content] == 'tab_user'
+        value: "by_user:#{current_user.id}",
+        selected: params[:filter] == 'by_user'
       }
     ]
 
     @budgets.each do |budget|
       items << {
         name: budget.name,
-        value: "tab_budget",
-        selected: params[:tab_content] == "tab_budget"
+        value: "by_budget:#{budget.id}",
+        selected: params[:filter] == "by_budget"
+      }
+    end
+
+    @money_accounts.each do |account|
+      items << {
+        name: account.name,
+        value: "by_money_account:#{account.id}",
+        selected: params[:filter] == "by_money_account"
       }
     end
   %>
@@ -56,13 +64,12 @@
   <div class="flex justify-end">
     <%= render_combobox items do %>
       <%= combobox_trigger do %>
-        <%= (items.find { |item| item[:value] == params[:tab_content] } || items.first)[:name] %>
+        <span><%= (items.find { |item| item[:value] == params[:filter] } || items.first)[:name] %></span>
       <% end %>
     <% end %>
   </div>
 
-
-  <%= turbo_frame_tag 'tab_content', data: { turbo_action: 'advance' } do %>
-    <%= render partial: "dashboard/#{params[:tab_content]}" %>
+  <%= turbo_frame_tag 'expenses', data: { turbo_action: 'advance' } do %>
+    <%= render partial: "dashboard/expenses" %>
   <% end %>
 </div>

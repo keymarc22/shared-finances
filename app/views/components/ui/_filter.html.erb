@@ -6,11 +6,9 @@
     </div>
     <%= render_separator %>
     <div class="<%= options[:class] %>">
-      <%= content_tag :div, role: "group" do %>
+      <%= content_tag :div, role: "group", class: 'grid grid-cols-1' do %>
         <% items.each do |item| %>
-          <div data-ui--filter-target="item" class="py-2 px-4">
-            <%= list_item(value: item[:value], name: item[:name], selected: item[:selected]) %>
-          </div>
+          <%= list_item(value: item[:value], name: item[:name], selected: item[:selected], action: "click->ui--filter#selectItem click->ui--popover#updateText", turbo_frame: options[:turbo_frame]) %>
         <% end %>
       <% end %>
     </div>
