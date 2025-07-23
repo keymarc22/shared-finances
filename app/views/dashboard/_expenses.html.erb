@@ -1,0 +1,9 @@
+<%= render_card(title: expenses_title, subtitle: expenses_subtitle, class: 'w-full') do %>
+  <div class="space-y-4 px-6">
+    <% if @expenses.any? %>
+      <%= render partial: "expense", collection: @expenses, as: :expense %>
+    <% else %>
+      <p class="text-center">No hay gatos este mes</p>
+    <% end %>
+  </div>
+<% end %>

@@ -13,7 +13,7 @@
       </a>
 
       <template v-else>
-        <a href="#" @click.prevent="saveGroup(index)" class="text-green-700">
+        <a href="#" @click.prevent="saveGroup()" class="text-green-700">
           <%= lucide_icon 'check' %>
         </a>
         <a href="#" @click.prevent="toggleEditGroup" class="text-green-700">
@@ -23,55 +23,52 @@
     </div>
     <small>Balance: <strong>{{ totalBalance }}</strong></small>
 
-    <div class="relative w-full overflow-auto rounded-lg border border-gray-300 bg-card text-card-foreground shadow-sm mt-8">
-      <table class="w-full table-auto">
-        <thead class="transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted border-b border-gray-300">
-          <tr class="bg-gray-200">
-            <th></th>
-            <th class="h-10 px-4 py-0 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0" style="width: 200px">Nombre</th>
-            <th class="h-10 px-4 py-0 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0" style="width: 130px">Monto</th>
-            <th class="h-10 px-4 py-0 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0" style="width: 130px">Budget</th>
-            <th class="h-10 px-4 py-0 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0">Frecuencia</th>
-            <th class="h-10 px-4 py-0 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0">Día de pago</th>
-            <th class="h-10 px-4 py-0 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0">Próximo pago</th>
-            <th></th>
-          </tr>
-        </thead>
+    <%= render_separator %>
+    <%= render_table do %>
+      <%= table_head do %>
+        <%= table_header "Nombre" %>
+        <%= table_header "Monto" %>
+        <%= table_header "Budget" %>
+        <%= table_header "Frecuencia" %>
+        <%= table_header "Día de pago" %>
+        <%= table_header "Próximo pago" %>
+        <%= table_header "" %>
 
-        <tbody class="[&_tr:last-child]:border-0">
-          <tr v-if="expenses.length" v-for="(expense, index) in expenses" :key="expense.id" class="bg-white">
+        <%= table_body do %>
+          <%= table_row('v-if': "expenses.length", 'v-for': "(expense, index) in expenses", ':key': "expense.id", class: "bg-white") do %>
             <template v-if="expense._new || expense.editing">
-              <th class="py-2 px-1 pl-3">
-                <%= lucide_icon 'grip-vertical' %>
-              </th>
-              <td class="border-b border-gray-300 transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted py-2 px-1 w-40" >
+              <%= table_column  do %>
                 <input type="text" v-model="expense.description" class="border border-gray-300 hover:border-gray-400 rounded-sm px-5 py-2 w-full"/>
-              </td>
+              <% end %>
 
-              <td class="border-b border-gray-300 transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted py-2 px-1 w-30">
+              <%= table_column  do %>
                 <input type="number" v-model="expense.amount_cents" class="border border-gray-300 hover:border-gray-400 rounded-sm px-5 py-2 w-full"/>
-              </td>
+              <% end %>
 
-              <td class="border-b border-gray-300 transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted py-2 px-1 w-40">
+              <%= table_column  do %>
                 <select v-slim-select v-model="expense.budget_id" class="border border-gray-300 hover:border-gray-400 rounded-sm w-full">
                   <option value="">Select an option</option>
                   <option v-for="budget in budgets" :key="budget.id" :value="budget.id">{{ budget.name }}</option>
                 </select>
-              </td>
-              <td class="border-b border-gray-300 transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted py-2 px-1">
+              <% end %>
+
+              <%= table_column  do %>
                 <select v-model="expense.frequency" v-slim-select class="border border-gray-300 hover:border-gray-400 rounded-sm w-full">
                   <% Expense.frequencies.keys.each do |f| %>
                     <option value="<%= f %>"><%= t("expenses.frequency.#{f}") %></option>
                   <% end %>
                 </select>
-              </td>
-              <td class="border-b border-gray-300 transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted py-2 px-1">
+              <% end %>
+
+              <%= table_column  do %>
                 <input type="date" v-model="expense.transaction_date" class="border border-gray-300 hover:border-gray-400 rounded-sm px-5 py-2 w-full" />
-              </td>
-              <td class="border-b border-gray-300 transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted py-2 px-1">
+              <% end %>
+
+              <%= table_column  do %>
                 <%# {{ next_payment }} %>
-              </td>
-              <td>
+              <% end %>
+
+              <%= table_column  do %>
                 <div class="flex gap-1">
                   <a href="#" @click.prevent="saveExpense(index)" class="text-green-700">
                     <%= lucide_icon 'check' %>
@@ -80,18 +77,36 @@
                     <%= lucide_icon 'undo-2' %>
                   </a>
                 </div>
-              </td>
+              <% end %>
+
             </template>
 
             <template v-else>
-              <th></th>
-              <td class="border-b border-gray-300 transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted px-4 py-2 ">{{ expense.description }}</td>
-              <td class="border-b border-gray-300 transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted px-4 py-2 ">{{ expense.amount_formatted }}</td>
-              <td class="border-b border-gray-300 transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted px-4 py-2 ">{{ budgetName(expense.budget_id) }}</td>
-              <td class="border-b border-gray-300 transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted px-4 py-2 ">{{ frequencyLabel(expense.frequency) }}</td>
-              <td class="border-b border-gray-300 transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted px-4 py-2 ">{{ expense.transaction_date || 'Sin fecha' }}</td>
-              <td class="border-b border-gray-300 transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted px-4 py-2 ">{{ expense.next_payment || '----' }}</td>
-              <td class="border-b border-gray-300 transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted px-4 py-2 ">
+              <%= table_column  do %>
+                {{ expense.description }}
+              <% end %>
+
+              <%= table_column  do %>
+                {{ expense.amount_formatted }}
+              <% end %>
+
+              <%= table_column  do %>
+                {{ budgetName(expense.budget_id) }}
+              <% end %>
+
+              <%= table_column  do %>
+                {{ frequencyLabel(expense.frequency) }}
+              <% end %>
+
+              <%= table_column  do %>
+                {{ expense.transaction_date || 'Sin fecha' }}
+              <% end %>
+
+              <%= table_column  do %>
+                {{ expense.next_payment || '----' }}
+              <% end %>
+
+              <%= table_column  do %>
                 <div class="flex gap-1">
                   <a @click.prevent="toggleEditExpense(index)" href="#">
                     <%= lucide_icon 'pencil' %>
@@ -100,16 +115,18 @@
                     <%= lucide_icon 'trash-2' %>
                   </a>
                 </div>
-              </td>
+              <% end %>
             </template>
-          </tr>
+          <% end %>
 
-          <tr v-else>
-            <td colspan="9" class="text-center py-2">No se han agregado gatos. Agregar el primero <a @click.prevent="addExpense" href="#">aquí</a></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+          <%= table_row('v-if': '!expenses.length') do %>
+            <%= table_column do %>
+              No se han agregado gatos. Agregar el primero <a @click.prevent="addExpense" href="#">aquí</a>
+            <% end %>
+          <% end %>
+        <% end %>
+      <% end %>
+    <% end %>
 
     <div class="fixed bottom-0 left-0 w-full py-6 px-6 bg-white border-t border-gray-300 z-50 flex justify-end">
       <div class="flex justify-end" style="max-width: 1200px;margin: auto;width: 100%;">
