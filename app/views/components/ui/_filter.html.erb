@@ -8,7 +8,15 @@
     <div class="<%= options[:class] %>">
       <%= content_tag :div, role: "group", class: 'grid grid-cols-1' do %>
         <% items.each do |item| %>
-          <%= list_item(value: item[:value], name: item[:name], selected: item[:selected], action: "click->ui--filter#selectItem click->ui--popover#updateText", turbo_frame: options[:turbo_frame]) %>
+          <%= list_item(
+              name: item[:name],
+              value: item[:value],
+              selected: item[:selected],
+              action: "click->ui--filter#selectItem click->ui--popover#updateText",
+              turbo_frame: options[:turbo_frame],
+              link: "#{options[:link]}?filter=#{item[:value]}"
+            )
+          %>
         <% end %>
       <% end %>
     </div>

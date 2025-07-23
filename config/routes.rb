@@ -6,6 +6,8 @@ Rails.application.routes.draw do
 
   get "expenses/splits_fields", to: "expenses#expense_splits_fields", as: :expense_splits_fields
 
+  resources :dashboard, only: :index
+
   resources :money_accounts, except: :edit do
     resources :incomings
   end

@@ -62,7 +62,7 @@
   %>
 
   <div class="flex justify-end">
-    <%= render_combobox items do %>
+    <%= render_combobox items, class: 'w-full md:w-auto', turbo_frame: 'expenses', link: dashboard_index_path do %>
       <%= combobox_trigger do %>
         <span><%= (items.find { |item| item[:value] == params[:filter] } || items.first)[:name] %></span>
       <% end %>
