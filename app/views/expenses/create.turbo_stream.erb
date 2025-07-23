@@ -1,5 +1,5 @@
 <% if @expense.valid? %>
-  <%= turbo_stream.prepend "expenses" do %>
+  <%= turbo_stream.prepend "expenses_list" do %>
     <%= render partial: "dashboard/expense", locals: { expense: @expense }%>
   <% end %>
 
