@@ -50,17 +50,12 @@ class DashboardSummaryService
     @users_summary ||= begin
       account.users.find_each.map do |user|
         personal_expenses = personal_expenses(user.expenses)
-        total_personal_expenses = to_money(personal_expenses.sum(:amount_cents))
-        total_personal_budgets = to_money(user.budgets.personal.sum(:amount_cents))
+        shared_expenses = shared_expenses(user.expenses)
 
         {
           id: user.id,
-          total_expenses: to_money(user.expenses.sum(:amount_cents)),
           name: user.name,
-          total_personal_expenses: total_personal_expenses,
-          total_personal_budgets: total_personal_budgets,
-          percentage: calculate_percentage(total_personal_expenses, total_personal_budgets),
-          all: personal_expenses
+          total_expenses: to_money(personal_expenses.sum(:amount_cents) + shared_expenses.sum(:amount_cents))
         }
       end
     end
