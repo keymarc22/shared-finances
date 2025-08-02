@@ -27,7 +27,7 @@ export default class extends Controller {
           videoElement,
           (result, err, controls) => {
             if (result && result.getBarcodeFormat() === 'EAN_13') {
-              outputElement.value = result.getText();
+              outputElement.innerHTML = result.getText();
               controls.stop();
             }
           }
