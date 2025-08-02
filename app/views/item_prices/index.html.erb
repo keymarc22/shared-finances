@@ -1,0 +1,45 @@
+<script src="https://cdn.jsdelivr.net/npm/@zxing/library@0.21.3/umd/index.min.js"></script>
+
+<div class="space-y-6" data-controller="dashboard">
+  <!-- Header -->
+  <%= content_for :header_button do %>
+    <a href="<%= new_store_item_path %>" data-turbo-frame="modal" class="flex <%= link_as_button_classes %>">
+      <%= lucide_icon 'plus' %>
+      Agregar producto
+    </a>
+  <% end %>
+
+  <% content_for :mobile_primary_action do %>
+    <a href="<%= new_store_item_path %>"
+      data-turbo-frame="modal"
+      class="<%= mobile_primary_action_classes %>"
+      style="box-shadow: 0 4px 14px rgba(0,0,0,0.15);">
+      <%= lucide_icon 'plus', class: "w-7 h-7" %>
+    </a>
+  <% end %>
+
+  <%= render partial: 'layouts/header' %>
+
+  <h1 class="text-xl">Precios de productos</h1>
+  <%= search_form_for @q do |f| %>
+    <div class="flex items-center gap-2 mb-4">
+      <%= render_input name: 'q[store_item_name_cont]', id: 'q_store_item_name_cont', placeholder: 'Buscar producto' %>
+      <%= link_to barcode_reader_item_prices_path, "data-turbo-frame": "modal" do %>
+        <%= lucide_icon 'scan-barcode', class: 'w-6 h-6 text-gray-500' %>
+      <% end %>
+    </div>
+  <% end %>
+
+  <div class="text-center">
+    <%= turbo_frame_tag 'item_prices' do %>
+      <% if @item_prices.empty? %>
+        <%= turbo_frame_tag 'empty_state' do %>
+          <p class="text-gray-500">No hay precios de productos disponibles.</p>
+        <% end %>
+      <% else %>
+        <%= render @item_prices %>
+      <% end %>
+    <% end %>
+  </div>
+</div>
+

@@ -1,0 +1,15 @@
+<%= f.input :amount, as: :float, placeholder: '10.00' %>
+
+<% if @store.present? %>
+  <%= f.simple_fields_for :store do |s| %>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 items-center">
+      <%= render 'store_fields', f: s %>
+      <%= link_to 'Cancelar', new_store_item_path, class: link_as_button_classes(:secondary), style: 'width: fit-content;' if @stores.any? %>
+    </div>
+  <% end %>
+<% else %>
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4 items-center">
+    <%= f.input :store_id, as: :select, collection: @stores, prompt: 'Selecciona una tienda' %>
+    <%= link_to 'Agregar nueva tienda', new_store_item_path(add_store: true), class: link_as_button_classes(:secondary) %>
+  </div>
+<% end %>

@@ -1,0 +1,12 @@
+<%= turbo_frame_tag 'modal' do %>
+  <div class="mb-5 flex flex-col space-y-1.5 text-start sm:text-left">
+    <h2 class="text-lg font-semibold leading-none tracking-tight">Buscar o crear producto</h2>
+  </div>
+
+  <div data-controller="barcode-scanner" class="w-full">
+    <video id="video" width="320" height="240" style="border:1px solid black"></video>
+    <input type="text" id="output" readonly>
+  </div>
+
+  <p id="output">AQUI EL CODIGO</p>
+<% end %>
