@@ -39,7 +39,7 @@
         <!-- Login Form -->
         <%= form_with(model: resource, as: resource_name, url: session_path(resource_name),
                       local: true, class: "space-y-4",
-                      data: { action: "submit->login-form#handleSubmit", login_form_target: "form" }) do |form| %>
+                      data: { turbo: "false", login_form_target: "form" }) do |form| %>
 
           <!-- Email Field -->
           <div class="space-y-2">
@@ -71,7 +71,7 @@
                     placeholder: "••••••••",
                     class: "w-full pl-10 pr-10 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 transition-colors",
                     required: true,
-                    data: { login_form_target: "passwordField" } %>
+                    data: { login_form_target: "password_field" } %>
               <button type="button"
                       class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
                       data-action="click->login-form#togglePassword">

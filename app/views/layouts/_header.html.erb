@@ -20,7 +20,9 @@
           <%= link_to 'Inicio', root_path, class: "block px-4 py-2 text-sm text-gray-700"  %>
           <%= link_to 'Cuentas', money_accounts_path, class: "block px-4 py-2 text-sm text-gray-700"  %>
           <%= link_to 'Budgets', budgets_path,class: "block px-4 py-2 text-sm text-gray-700"  %>
-          <%= link_to 'Grupos de gastos', transaction_groups_path,class: "block px-4 py-2 text-sm text-gray-700"  %>
+          <%= link_to 'Grupos de gastos', transaction_groups_path, class: "block px-4 py-2 text-sm text-gray-700"  %>
+          <span class="separator"></span>
+          <%= link_to 'Cerrar sesión', destroy_user_session_path, method: :delete, data: { turbo_method: :delete }, class: "block px-4 py-2 text-sm text-gray-700" %>
         </div>
       </div>
     </div>
