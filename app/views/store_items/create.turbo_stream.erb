@@ -1,0 +1,6 @@
+<% if @store_item.valid? %>
+  <%= turbo_stream.remove 'empty_state' %>
+  <%= turbo_stream.prepend 'item_prices', partial: 'item_prices/item_price', locals: { item_price: @item_price } %>
+<% end %>
+
+<%= render_turbo_stream_flash_messages %>

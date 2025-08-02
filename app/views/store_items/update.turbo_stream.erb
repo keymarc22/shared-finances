@@ -1,0 +1,4 @@
+<%= turbo_stream.remove 'empty_state' %>
+<%= turbo_stream.replace dom_id(@item_price), partial: 'item_prices/item_price', locals: { item_price: @item_price } %>
+
+<%= render_turbo_stream_flash_messages %>

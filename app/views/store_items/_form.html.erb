@@ -1,0 +1,5 @@
+<%= f.input :name, required: true %>
+
+<%= f.input :package, collection: StoreItem::PACKAGES, required: true, prompt: 'Seleccione una opción' %>
+
+<%= f.input :barcode, as: :hidden %>

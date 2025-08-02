@@ -12,6 +12,11 @@ Rails.application.routes.draw do
     resources :incomings
   end
 
+  resources :item_prices, only: :index do
+    get :barcode_reader, on: :collection
+    resources :store_items, only: %i[edit update]
+  end
+  resources :store_items, except: [:index, :edit]
   resources :expenses, except: :index
   resources :incomings, except: %i[new create]
   resources :budgets, except: :edit

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_07_06_141351) do
+ActiveRecord::Schema[8.0].define(version: 2025_08_02_141834) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -54,6 +54,18 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_06_141351) do
     t.index ["user_id"], name: "index_expense_splits_on_user_id"
   end
 
+  create_table "item_prices", force: :cascade do |t|
+    t.bigint "store_item_id", null: false
+    t.bigint "store_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "amount_cents", default: 0, null: false
+    t.string "amount_currency", default: "USD", null: false
+    t.index ["store_id", "store_item_id"], name: "index_item_prices_on_store_and_item", unique: true
+    t.index ["store_id"], name: "index_item_prices_on_store_id"
+    t.index ["store_item_id"], name: "index_item_prices_on_store_item_id"
+  end
+
   create_table "money_accounts", force: :cascade do |t|
     t.string "name", null: false
     t.integer "user_id", null: false
@@ -77,6 +89,28 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_06_141351) do
     t.bigint "account_id", null: false
     t.index ["account_id"], name: "index_savings_plans_on_account_id"
     t.index ["money_account_id"], name: "index_savings_plans_on_money_account_id"
+  end
+
+  create_table "store_items", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "package", null: false
+    t.string "barcode"
+    t.bigint "account_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["account_id", "barcode"], name: "index_store_items_on_account_id_and_barcode", unique: true, where: "((barcode IS NOT NULL) AND ((barcode)::text <> ''::text))"
+    t.index ["account_id", "name"], name: "index_store_items_on_account_id_and_name", unique: true
+    t.index ["account_id"], name: "index_store_items_on_account_id"
+  end
+
+  create_table "stores", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "address"
+    t.bigint "account_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["account_id", "name"], name: "index_stores_on_account_id_and_name", unique: true
+    t.index ["account_id"], name: "index_stores_on_account_id"
   end
 
   create_table "transaction_groups", force: :cascade do |t|
@@ -146,6 +180,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_06_141351) do
   add_foreign_key "budgets", "users"
   add_foreign_key "expense_splits", "transactions", column: "expense_id"
   add_foreign_key "expense_splits", "users"
+  add_foreign_key "item_prices", "store_items"
+  add_foreign_key "item_prices", "stores"
   add_foreign_key "money_accounts", "accounts"
   add_foreign_key "money_accounts", "users"
   add_foreign_key "savings_plans", "accounts"

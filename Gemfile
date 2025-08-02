@@ -86,3 +86,5 @@ gem "rack-cors"
 
 gem "shadcn-ui", "~> 0.0.15"
 
+
+gem "ransack", "~> 4.3"
