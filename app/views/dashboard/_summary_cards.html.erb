@@ -8,7 +8,7 @@
         subtitle: "#{to_money_format(@summary[:total_budgets])} presupuestados") do %>
 
       <div class="p-6 pt-0">
-        <p class="text-2xl mb-2"><%= @summary[:total_expenses].format %></p>
+        <p class="text-2xl mb-2"><%= to_money_format @summary[:total_expenses] %></p>
         <%= render_progress value: @summary[:total_expenses_percentage] %>
       </div>
 
