@@ -7,6 +7,8 @@ export default class extends Controller {
   connect() {
     console.log("Barcode scanner controller connected");
     this.start();
+
+    document.addEventListener("modal:closed", this.disconnect.bind(this));
   }
 
   start() {
@@ -34,6 +36,7 @@ export default class extends Controller {
 
   disconnect() {
     if (this.html5QrcodeScanner) {
+      this.html5QrcodeScanner.pause(true);
       this.html5QrcodeScanner.clear().catch(() => {});
     }
 

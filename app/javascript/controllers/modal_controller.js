@@ -10,5 +10,6 @@ export default class extends Controller {
 
   close() {
     this.modalTarget.classList.add("hidden")
+    this.element.dispatchEvent(new CustomEvent("modal:closed", { bubbles: true }))
   }
 }
