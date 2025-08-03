@@ -6,3 +6,24 @@
 #html5-qrcode-button-camera-start {
   margin-bottom: 1rem;
 }
+
+#reader__dashboard_section_csr {
+  display: flex;
+
+}
+
+#html5-qrcode-select-camera {
+  padding: 8px 7px;
+  border: 1px solid #bcbcbc;
+  border-radius: 8px;
+  margin-bottom: 12px;
+}
+
+#html5-qrcode-button-camera-start {
+  opacity: 1;
+  display: inline-block;
+  padding: 10px 16px;
+  border-radius: 14px;
+  background-color: #030c21;
+  color: white;
+}
