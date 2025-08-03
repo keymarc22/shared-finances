@@ -1,0 +1,7 @@
+<%= simple_form_for @store_item do |f| %>
+  <%= f.simple_fields_for :item_prices do |item_price_fields| %>
+    <%= turbo_frame_tag 'store_fields' do %>
+      <%= render partial: 'store_fields', locals: { f: f } %>
+    <% end %>
+  <% end %>
+<% end %>

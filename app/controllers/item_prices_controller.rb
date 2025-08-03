@@ -5,4 +5,10 @@ class ItemPricesController < ApplicationController
   end
 
   def barcode_reader; end
+
+  def destroy
+    @item_price = current_account.item_prices.find(params[:id])
+    @item_price.destroy
+    flash.now[:notice] = "Item was successfully deleted."
+  end
 end
