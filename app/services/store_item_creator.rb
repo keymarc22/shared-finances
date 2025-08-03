@@ -5,9 +5,14 @@ class StoreItemCreator
 
   def _build
     store_item = account.store_items.by_name(attributes[:name]).first_or_initialize
-    @attributes.delete(:package) if attributes[:package].blank?
-    store_item.assign_attributes(attributes)
+    store_data = attributes.delete(:store)
 
+    if store_data.present?
+      store_data[:account_id] ||= account.id
+      attributes[:item_prices_attributes]["0"][:store_attributes] = store_data
+    end
+
+    store_item.assign_attributes(attributes)
     store_item
   end
 
@@ -17,6 +22,6 @@ class StoreItemCreator
 
   def initialize(account, attributes)
     @account = account
-    @attributes = attributes
+    @attributes = attributes.to_unsafe_hash
   end
 end

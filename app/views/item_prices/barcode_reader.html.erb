@@ -1,12 +1,10 @@
-<%= turbo_frame_tag 'modal' do %>
+<%= turbo_frame_tag params[:turbo_frame] do %>
   <div class="mb-5 flex flex-col space-y-1.5 text-start sm:text-left">
     <h2 class="text-lg font-semibold leading-none tracking-tight">Buscar o crear producto</h2>
   </div>
 
-  <div data-controller="barcode-scanner" class="w-full">
-    <video id="video" width="320" height="240" style="border:1px solid black"></video>
-    <input type="text" id="output" readonly>
+  <div class="w-full" data-controller="barcode-scanner">
+    <div id="reader" data-barcode-scanner-target="scanner" data-input="<%= params[:input_id] %>" data-submit="<%= params[:submit] %>" class="viewport"></div>
+    <p data-barcode-scanner-target="output" class="text-center w-full mt-2"></p>
   </div>
-
-  <input readonly type="text" id="output">AQUI EL CODIGO</input>
 <% end %>

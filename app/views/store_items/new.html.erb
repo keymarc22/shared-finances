@@ -4,10 +4,18 @@
   </div>
 
   <%= simple_form_for @store_item do |f| %>
-    <%= render partial: 'form', locals: { f: f } %>
+    <% if @store_item.barcode.present? %>
+      <%= render partial: 'form', locals: { f: f } %>
 
-    <%= f.simple_fields_for :item_prices do |item_price_fields| %>
-      <%= render partial: 'item_price_fields', locals: { f: item_price_fields } %>
+      <%= f.simple_fields_for :item_prices do |item_price_fields| %>
+        <%= render partial: 'item_price_fields', locals: { f: item_price_fields } %>
+      <% end %>
+    <% else %>
+      <input type="hidden" name="barcode" id="store_item_barcode">
+      <div class="w-full" data-controller="barcode-scanner">
+        <div id="reader" data-barcode-scanner-target="scanner" data-input="store_item_barcode" data-submit="true" class="viewport"></div>
+        <p data-barcode-scanner-target="output" class="text-center w-full mt-2"></p>
+      </div>
     <% end %>
 
     <div class="flex justify-end gap-1 mt-6">
