@@ -2,4 +2,4 @@
 
 <%= f.input :package, collection: StoreItem::PACKAGES, required: true, prompt: 'Seleccione una opción' %>
 
-<%= f.input :barcode, as: :hidden %>
+<%= f.input :barcode, input_html: { readonly: true } %>

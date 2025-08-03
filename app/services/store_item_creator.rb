@@ -4,7 +4,7 @@ class StoreItemCreator
   end
 
   def _build
-    store_item = account.store_items.by_name(attributes[:name]).first_or_initialize
+    store_item = account.store_items.by_barcode(attributes[:barcode]).first_or_initialize
     store_data = attributes.delete(:store)
 
     if store_data.present?
