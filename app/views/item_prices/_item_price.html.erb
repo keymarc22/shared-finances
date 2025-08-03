@@ -15,7 +15,7 @@
             <%= lucide_icon 'pencil', class: 'text-white', class: 'text-white', style: 'width: 20px; height: 20px; font-weight: 300' %>
           <% end %>
 
-          <%= link_to store_item_path(item_price.store_item), class: "border border-red-500 items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-750 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:text-white hover:bg-red-800 h-10 px-4 py-2", data: { 'turbo-method': 'delete', "turbo-confirm": '¿Estas seguro? No se podrá revertir' } do %>
+          <%= link_to item_price_path(item_price), class: "border border-red-500 items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-750 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:text-white hover:bg-red-800 h-10 px-4 py-2", data: { 'turbo-method': 'delete', "turbo-confirm": '¿Estas seguro? No se podrá revertir' } do %>
             <%= lucide_icon 'trash-2', class: 'text-red-500', style: 'width: 20px; height: 20px; font-weight: 300' %>
           <% end %>
         </div>

@@ -1,18 +1,25 @@
 class StoreItemsController < ApplicationController
-  before_action :find_store_item, only: %i[edit update destroy]
+  before_action :find_store_item, only: %i[edit update]
 
   def new
-    @store_item = StoreItem.new
-    @item_price = @store_item.item_prices.build
-    load_form_data
+    new_store
   end
 
   def create
-    @store_item = StoreItemCreator.build(current_account, store_item_params)
-    if @store_item.save
-      flash.now[:notice] = "Store item was successfully created."
+    if params[:barcode].present?
+      params[:store_item] ||= {}
+      params[:store_item][:barcode] = params[:barcode]
+      new_store
+
+      render :new
     else
-      flash.now[:alert] = "Failed to create store item."
+      @store_item = StoreItemCreator.build(current_account, store_item_params)
+      if @store_item.save
+        @item_price = @store_item.item_prices.last # map element in list
+        flash.now[:notice] = "Store item was successfully created."
+      else
+        flash.now[:alert] = "Failed to create store item."
+      end
     end
   end
 
@@ -31,18 +38,18 @@ class StoreItemsController < ApplicationController
     end
   end
 
-  def destroy
-    @store_item.destroy
-    flash.now[:notice] = "Store item was successfully deleted."
+  def store_fields
+    new_store
   end
 
   private
 
   def store_item_params
-    params.require(:store_item).permit(
+    params.fetch(:store_item, {}).permit(
       :name,
       :package,
       :barcode,
+      store: [:name, :account_id],
       item_prices_attributes: [
         :id,
         :amount,
@@ -59,5 +66,11 @@ class StoreItemsController < ApplicationController
   def load_form_data
     @stores = current_account.stores.order(:name)
     @store = @item_price.build_store if params[:add_store].present? || @stores.empty?
+  end
+
+  def new_store
+    @store_item = StoreItem.new(store_item_params)
+    @item_price = @store_item.item_prices.build
+    load_form_data
   end
 end

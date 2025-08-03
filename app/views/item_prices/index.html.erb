@@ -1,4 +1,4 @@
-<script src="https://cdn.jsdelivr.net/npm/@zxing/library@0.21.3/umd/index.min.js"></script>
+<script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
 
 <div class="space-y-6" data-controller="dashboard">
   <!-- Header -->
@@ -23,15 +23,19 @@
   <h1 class="text-xl">Precios de productos</h1>
   <%= search_form_for @q do |f| %>
     <div class="flex items-center gap-2 mb-4">
-      <%= render_input name: 'q[store_item_name_cont]', id: 'q_store_item_name_cont', placeholder: 'Buscar producto' %>
-      <%= link_to barcode_reader_item_prices_path, "data-turbo-frame": "modal" do %>
+      <%= render_input name: 'q[store_item_name_or_store_item_barcode_cont]',
+                       id: 'q_store_item_name_or_store_item_barcode_cont',
+                       placeholder: 'Buscar producto',
+                       value: params.dig(:q, :store_item_name_or_store_item_barcode_cont),
+                       oninput: "this.form.requestSubmit()" %>
+      <%= link_to barcode_reader_item_prices_path(turbo_frame: 'modal', input_id: "q_store_item_name_or_store_item_barcode_cont", submit: "true"), "data-turbo-frame": "modal" do %>
         <%= lucide_icon 'scan-barcode', class: 'w-6 h-6 text-gray-500' %>
       <% end %>
     </div>
   <% end %>
 
   <div class="text-center">
-    <%= turbo_frame_tag 'item_prices' do %>
+    <%= turbo_frame_tag 'item_prices', turbo: { action: "advance"} do %>
       <% if @item_prices.empty? %>
         <%= turbo_frame_tag 'empty_state' do %>
           <p class="text-gray-500">No hay precios de productos disponibles.</p>

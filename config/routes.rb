@@ -12,11 +12,13 @@ Rails.application.routes.draw do
     resources :incomings
   end
 
-  resources :item_prices, only: :index do
+  resources :item_prices, only: %i[index destroy] do
     get :barcode_reader, on: :collection
     resources :store_items, only: %i[edit update]
   end
-  resources :store_items, except: [:index, :edit]
+  resources :store_items, except: %i[index edit destroy] do
+    get :store_fields, on: :collection
+  end
   resources :expenses, except: :index
   resources :incomings, except: %i[new create]
   resources :budgets, except: :edit
