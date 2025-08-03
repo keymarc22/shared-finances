@@ -5,10 +5,13 @@
       <div class="">
         <h3 class="text-xl font-semibold leading-none tracking-tight"><%= item_price.store_item.name %> (<%= item_price.store_item.package %>)</h3>
         <p class="text-sm text-muted-foreground"><%= item_price.store.name %></p>
+        <div class="md:hidden text-2xl font-semibold">
+          <%= item_price.amount.format %>
+        </div>
       </div>
       <div class="grid justify-end gap-4">
         <div class="flex justify-end gap-4">
-          <div class="text-2xl text-end font-semibold">
+          <div class="hidden md:block text-2xl text-end font-semibold">
             <%= item_price.amount.format %>
           </div>
           <%= link_to edit_item_price_store_item_path(id: item_price.store_item, item_price_id: item_price.id), "data-turbo-frame": "modal", class: "items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-750 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-gray-950 text-white hover:bg-gray-800 h-10 px-4 py-2", 'data-turbo-frame': "modal" do %>
