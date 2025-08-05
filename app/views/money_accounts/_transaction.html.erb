@@ -20,8 +20,12 @@
         <div>
           <div class="flex items-center gap-4 text-sm text-gray-500">
             <span><%= transaction.money_account.try(:name) %></span>
-            <span>•</span>
+            <% if transaction.transaction_date %>
+              <span>•</span>
               <span><%= transaction.transaction_date.strftime("%d/%m/%Y %I:%M %p") %></span>
+            <% end %>
+            <span>•</span>
+            <%= transaction.money_account.try(:name) %>
           </div>
 
           <div class="flex items-center gap-2 mt-1">
@@ -30,7 +34,9 @@
               <span class="flex h-full w-full items-center justify-center rounded-full bg-muted text-xs"></span>
             </span>
             -->
-            <span class="text-xs text-gray-500">Realizado por <%= transaction.user.name %></span>
+            <% if transaction.user %>
+              <span class="text-xs text-gray-500">Realizado por <%= transaction.user.name %></span>
+            <% end %>
           </div>
         </div>
       </div>

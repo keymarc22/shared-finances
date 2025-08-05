@@ -19,11 +19,15 @@
   margin-bottom: 12px;
 }
 
-#html5-qrcode-button-camera-start {
+#html5-qrcode-button-camera-start,
+.barcode-cancel-btn {
   opacity: 1;
   display: inline-block;
   padding: 10px 16px;
   border-radius: 14px;
+}
+
+#html5-qrcode-button-camera-start {
   background-color: #030c21;
   color: white;
 }

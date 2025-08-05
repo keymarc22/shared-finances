@@ -1,31 +1,32 @@
 <%= turbo_frame_tag 'modal' do %>
+
   <div class="mb-5 flex flex-col space-y-1.5 text-start sm:text-left">
     <h2 class="text-lg font-semibold leading-none tracking-tight">Agregar producto</h2>
   </div>
 
-  <%= simple_form_for @store_item do |f| %>
-    <% if @store_item.barcode.present? %>
-      <%= render partial: 'form', locals: { f: f } %>
+  <div data-controller="barcode-scanner">
+    <div id="reader" data-barcode-scanner-target="scanner" data-input="store_item_barcode" data-submit="false" class="grid justify-center viewport hidden"></div>
 
-      <%= f.simple_fields_for :item_prices do |item_price_fields| %>
-        <%= render partial: 'item_price_fields', locals: { f: item_price_fields } %>
-      <% end %>
-    <% else %>
-      <input type="hidden" name="barcode" id="store_item_barcode">
-      <div class="w-full" data-controller="barcode-scanner">
-        <div id="reader" data-barcode-scanner-target="scanner" data-input="store_item_barcode" data-submit="true" class="viewport"></div>
-        <p data-barcode-scanner-target="output" class="text-center w-full mt-2"></p>
-      </div>
-    <% end %>
+    <div data-barcode-scanner-target="toggable">
+      <%= simple_form_for @store_item do |f| %>
+        <%= render partial: 'form', locals: { f: f } %>
 
-    <div class="flex justify-end gap-1 mt-6">
-      <%= render ButtonComponent.new(variant: :secondary, "data-action": "click->modal#close") do %>
-        Cancelar
-      <% end %>
+        <%= f.simple_fields_for :item_prices do |item_price_fields| %>
+          <%= render partial: 'item_price_fields', locals: { f: item_price_fields } %>
+        <% end %>
 
-      <%= render ButtonComponent.new(variant: :primary, type: 'submit') do %>
-        Agregar
+        <div class="flex justify-end gap-1 mt-6">
+          <%= render ButtonComponent.new(variant: :secondary, "data-action": "click->modal#close") do %>
+            Cancelar
+          <% end %>
+
+          <%= render ButtonComponent.new(variant: :primary, type: 'submit') do %>
+            Agregar
+          <% end %>
+        </div>
       <% end %>
     </div>
-  <% end %>
+  </div>
+
+
 <% end %>

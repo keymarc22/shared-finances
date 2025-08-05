@@ -7,9 +7,12 @@ class StoreItemCreator
     store_item = account.store_items.by_barcode(attributes[:barcode]).first_or_initialize
     store_data = attributes.delete(:store)
 
-    if store_data.present?
-      store_data[:account_id] ||= account.id
+    if store_data.present? # new store
       attributes[:item_prices_attributes]["0"][:store_attributes] = store_data
+    end
+
+    if attributes[:item_prices_attributes]["0"][:store_attributes]
+      attributes[:item_prices_attributes]["0"][:store_attributes][:account_id] = account.id
     end
 
     store_item.assign_attributes(attributes)

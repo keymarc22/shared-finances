@@ -28,7 +28,7 @@
                        placeholder: 'Buscar producto',
                        value: params.dig(:q, :store_item_name_or_store_item_barcode_cont),
                        oninput: "this.form.requestSubmit()" %>
-      <%= link_to barcode_reader_item_prices_path(turbo_frame: 'modal', input_id: "q_store_item_name_or_store_item_barcode_cont", submit: "true"), "data-turbo-frame": "modal" do %>
+      <%= link_to barcode_reader_item_prices_path(turbo_frame: 'modal', auto_start: true, input_id: "q_store_item_name_or_store_item_barcode_cont", submit: "true"), "data-turbo-frame": "modal" do %>
         <%= lucide_icon 'scan-barcode', class: 'w-6 h-6 text-gray-500' %>
       <% end %>
     </div>
@@ -46,4 +46,3 @@
     <% end %>
   </div>
 </div>
-

@@ -13,6 +13,7 @@ class MoneyAccountsController < ApplicationController
 
   def create
     @money_account = MoneyAccount.create(money_account_params.merge(user: current_user))
+
     if @money_account.valid?
       flash.now[:notice] = "Cuenta creada correctamente."
     else

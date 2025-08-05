@@ -15,6 +15,7 @@ class Transaction < ApplicationRecord
 
   validates :amount_cents, presence: true, numericality: { greater_than: 0 }
   validates :frequency, :interval, presence: true
+  before_validation :set_account_id, unless: -> { account_id.present? }
 
   scope :no_fixed, -> { where(fixed: false) }
 
@@ -34,4 +35,9 @@ class Transaction < ApplicationRecord
     %w[account budget expense_participants expense_splits money_account transaction_group user]
   end
 
+  private
+
+  def set_account_id
+    raise "redifined method called"
+  end
 end

@@ -4,7 +4,7 @@
   </div>
 
   <div class="w-full" data-controller="barcode-scanner">
-    <div id="reader" data-barcode-scanner-target="scanner" data-input="<%= params[:input_id] %>" data-submit="<%= params[:submit] %>" class="viewport"></div>
+    <div id="reader" data-barcode-scanner-target="scanner" data-auto_start="<%= params[:auto_start] %>" data-input="<%= params[:input_id] %>" data-submit="<%= params[:submit] %>" class="viewport"></div>
     <p data-barcode-scanner-target="output" class="text-center w-full mt-2"></p>
   </div>
 <% end %>

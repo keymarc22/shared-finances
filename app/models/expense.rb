@@ -50,6 +50,10 @@ class Expense < Transaction
     amount.format
   end
 
+  def parent
+    money_account || budget || user || transaction_group
+  end
+
   private
 
   def splits_sum_to_100_percent
@@ -58,5 +62,9 @@ class Expense < Transaction
     unless total_splits_percentage == 100
       errors.add(:percentage, "Los porcentajes deben sumar exactamente 100%")
     end
+  end
+
+  def set_account_id
+    self.account_id = parent.account_id
   end
 end

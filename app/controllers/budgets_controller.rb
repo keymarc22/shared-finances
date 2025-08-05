@@ -5,7 +5,7 @@ class BudgetsController < ApplicationController
   end
 
   def create
-    @budget = current_account.budgets.new(budget_params)
+    @budget = current_account.budgets.new(budget_params.merge(account_id: current_account.id))
     @budget.user_id = current_user.id if @budget.personal?
 
     if @budget.save && @budget.valid?
