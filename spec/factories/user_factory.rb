@@ -3,7 +3,8 @@ FactoryBot.define do
     name { Faker::Name.name }
     email { Faker::Internet.email }
     percentage { rand(1..100) }
-    password { 'password' }
-    password_confirmation { 'password' }
+    password { '12345678' }
+    password_confirmation { '12345678' }
+    account
   end
 end

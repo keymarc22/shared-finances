@@ -6,6 +6,7 @@ FactoryBot.define do
     status { :active }
     plan_type { :personal }
     association :money_account
+    account
 
     trait :with_users do
       after(:create) do |savings_plan|
