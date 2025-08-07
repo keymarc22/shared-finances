@@ -19,7 +19,7 @@ module CoupleFinances
     config.time_zone = "Caracas"
 
 
-    config.autoload_paths << Rails.root.join('app/views/components')
+    config.autoload_paths << Rails.root.join("app/views/components")
 
     Money.locale_backend = :i18n
 
@@ -28,7 +28,7 @@ module CoupleFinances
         origins "http://localhost:3000"
         resource "*",
           headers: :any,
-          methods: [:get, :post, :put, :patch, :delete, :options, :head]
+          methods: [ :get, :post, :put, :patch, :delete, :options, :head ]
       end
     end
 

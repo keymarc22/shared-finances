@@ -45,6 +45,6 @@ class RemoveTables < ActiveRecord::Migration[8.0]
     change_column_null :savings_plans, :account_id, false
     change_column_null :transaction_groups, :account_id, false
 
-    add_index :users, [:account_id, :email], unique: true
+    add_index :users, [ :account_id, :email ], unique: true
   end
 end

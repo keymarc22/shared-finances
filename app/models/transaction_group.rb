@@ -1,5 +1,4 @@
 class TransactionGroup < ApplicationRecord
-
   belongs_to :account
 
   has_many :expenses, class_name: "Expense", counter_cache: true

@@ -12,8 +12,8 @@ RSpec.describe "StoreItems", type: :request, sign_in: true do
         package: "unit",
         barcode: "654321",
         account_id: account.id,
-        store: { name: 'Nueva'},
-        item_prices_attributes: { "0" => { amount: "15.5" } },
+        store: { name: 'Nueva' },
+        item_prices_attributes: { "0" => { amount: "15.5" } }
       } }
     }.to change(StoreItem, :count).by(1)
   end

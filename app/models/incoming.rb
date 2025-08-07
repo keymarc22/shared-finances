@@ -1,5 +1,4 @@
 class Incoming < Transaction
-
   belongs_to :money_account
   belongs_to :user, optional: true
   # belongs_to :category, optional: true

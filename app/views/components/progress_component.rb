@@ -23,6 +23,6 @@ class ProgressComponent < Phlex::HTML
   end
 
   def calc_pixels
-    [@value.to_i, 100].min
+    [ @value.to_i, 100 ].min
   end
 end

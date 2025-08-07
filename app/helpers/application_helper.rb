@@ -1,5 +1,4 @@
 module ApplicationHelper
-
   def to_money_format(amount)
     if amount.is_a?(Money)
       amount.format

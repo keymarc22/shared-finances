@@ -11,5 +11,4 @@ class MoneyAccount < ApplicationRecord
   def balance
     incomings.sum(&:amount) - expenses.sum(&:amount)
   end
-
 end
