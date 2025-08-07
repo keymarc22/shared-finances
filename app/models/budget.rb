@@ -13,6 +13,7 @@ class Budget < ApplicationRecord
   validates :user_id, presence: true, if: :personal?
 
   ICONS = %w[
+    flame
     alarm-clock
     armchair
     award
@@ -40,7 +41,7 @@ class Budget < ApplicationRecord
     music
   ].freeze
 
-  validates :icon, inclusion: { in: ICONS }, allow_blank: true
+  validates :icon, presence: true, inclusion: { in: ICONS }
 
   def total_expenses
     @total_expenses ||= expenses.no_fixed.sum(&:amount)

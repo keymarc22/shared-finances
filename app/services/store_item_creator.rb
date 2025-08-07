@@ -11,7 +11,7 @@ class StoreItemCreator
       attributes[:item_prices_attributes]["0"][:store_attributes] = store_data
     end
 
-    if attributes[:item_prices_attributes]["0"][:store_attributes]
+    if attributes.dig(:item_prices_attributes, "0", :store_attributes)
       attributes[:item_prices_attributes]["0"][:store_attributes][:account_id] = account.id
     end
 
