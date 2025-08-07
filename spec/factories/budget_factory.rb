@@ -4,6 +4,7 @@ FactoryBot.define do
     amount_cents  { Faker::Number.decimal(l_digits: 2, r_digits: 2) }
     budget_type   { :personal }
     account
+    user
 
     factory :shared_budget do
       budget_type { :shared }
