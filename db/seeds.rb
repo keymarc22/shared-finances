@@ -1,3 +1,5 @@
+account = Account.create(name: 'Testing account')
+
 users = [
   { email: 'test@email1.com', name: 'Test User 1' },
   { email: 'test2@email1.com', name: 'Test User 2' }
@@ -6,9 +8,10 @@ users = [
     user.name = attrs[:name]
     user.password = 'password123'
     user.password_confirmation = 'password123'
+    user.account = account
   end
 
-  MoneyAccount.create!(name: "Account #[user.id]", user: user)
+  MoneyAccount.create!(name: "Account #{user.id}", user: user, account:)
   user
 end
 
@@ -23,6 +26,7 @@ expenses = [
     money_account_id: MoneyAccount.first.id,
     transaction_type: :personal,
     transaction_date: Date.today,
+    account: account
   )
 end
 
@@ -41,8 +45,3 @@ expenses_splits.each do |attrs|
     percentage: 50
   )
 end
-
-budgets = [
-  { user: users[0], amount: 500.0, month: Date.today.beginning_of_month },
-  { user: users[1], amount: 400.0, month: Date.today.beginning_of_month }
-]

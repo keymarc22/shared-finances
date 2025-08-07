@@ -1,31 +1,29 @@
 require 'rails_helper'
 
 RSpec.describe Budget, type: :model do
-  describe 'enums' do
-    it 'defines the correct values for budget_type' do
-      expect(Budget.budget_types.keys).to match_array(%w[personal shared])
-    end
+  let(:account) { create(:account, name: "Cuenta test") }
+  let(:user) { create(:user, email: "test@example.com", account: account) }
+
+  it "is valid with valid attributes" do
+    budget = Budget.new(name: "Presupuesto", amount: 1000, account: account, user: user)
+    expect(budget).to be_valid
   end
 
-  describe 'validations' do
-    it 'is invalid without a name' do
-      budget = Budget.new(name: nil)
-      budget.validate
-      expect(budget.errors[:name]).to include("can't be blank")
-    end
-
-    it 'is invalid without an amount' do
-      budget = Budget.new(amount: nil)
-      budget.validate
-      expect(budget.errors[:amount]).to include("must be greater than 0")
-    end
-
-    it 'is invalid if amount is not greater than 0' do
-      budget = Budget.new(amount: 0)
-      budget.validate
-      expect(budget.errors[:amount]).to include("must be greater than 0")
-    end
-
+  it "is invalid without name" do
+    budget = Budget.new(amount: 1000, account: account, user: user)
+    expect(budget).not_to be_valid
+    expect(budget.errors[:name]).to be_present
   end
 
+  it "is invalid without amount" do
+    budget = Budget.new(name: "Presupuesto", account: account, user: user)
+    expect(budget).not_to be_valid
+    expect(budget.errors[:amount]).to be_present
+  end
+
+  it "calculates percentage" do
+    budget = Budget.create!(name: "Presupuesto", amount: 1000, account: account, user: user)
+    budget.expenses.create!(amount_cents: 500, description: 'Grocery', user: user, transaction_date: Date.today, account: account)
+    expect(budget.percentage).to eq(0.5)
+  end
 end

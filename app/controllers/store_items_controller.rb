@@ -49,7 +49,7 @@ class StoreItemsController < ApplicationController
       :name,
       :package,
       :barcode,
-      store: [:name, :account_id],
+      store: [ :name, :account_id ],
       item_prices_attributes: [
         :id,
         :amount,

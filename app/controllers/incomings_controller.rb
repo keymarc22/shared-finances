@@ -46,10 +46,10 @@ class IncomingsController < ApplicationController
   end
 
   def find_money_account
-    @money_account = MoneyAccount.find(params[:money_account_id])
+    @money_account = current_account.money_accounts.find(params[:money_account_id])
   end
 
   def find_incoming
-    @incoming = Incoming.find(params[:id])
+    @incoming = current_account.incomings.find(params[:id])
   end
 end

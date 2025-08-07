@@ -10,10 +10,10 @@ class ItemPrice < ApplicationRecord
   accepts_nested_attributes_for :store, allow_destroy: true, reject_if: :all_blank
 
   def self.ransackable_attributes(auth_object = nil)
-    ["amount_cents", "amount_currency", "created_at", "id", "store_id", "store_item_id", "updated_at"]
+    [ "amount_cents", "amount_currency", "created_at", "id", "store_id", "store_item_id", "updated_at" ]
   end
 
   def self.ransackable_associations(auth_object = nil)
-    ["store", "store_item"]
+    [ "store", "store_item" ]
   end
 end

@@ -9,7 +9,6 @@ class MoneyAccount < ApplicationRecord
   accepts_nested_attributes_for :incomings, allow_destroy: true
 
   def balance
-    incomings.sum(:amount_cents) - expenses.sum(:amount_cents)
+    incomings.sum(&:amount) - expenses.sum(&:amount)
   end
-
 end

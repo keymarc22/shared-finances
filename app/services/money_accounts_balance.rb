@@ -8,7 +8,7 @@ class MoneyAccountsBalance
   end
 
   def name
-    'Balance total'
+    "Balance total"
   end
 
   def balance

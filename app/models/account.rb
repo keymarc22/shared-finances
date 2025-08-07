@@ -5,8 +5,8 @@ class Account < ApplicationRecord
   has_many :budgets, dependent: :destroy
   has_many :transaction_groups, dependent: :destroy
   has_many :transactions, dependent: :destroy
-  has_many :incomings, class_name: "Incoming"
-  has_many :expenses, class_name: "Expense"
+  has_many :incomings
+  has_many :expenses
   has_many :store_items, dependent: :destroy
   has_many :stores, dependent: :destroy
   has_many :item_prices, through: :store_items

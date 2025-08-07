@@ -1,5 +1,4 @@
 class Expense < Transaction
-
   enum :transaction_type, { personal: 0, shared: 1 }
 
   enum :frequency, {

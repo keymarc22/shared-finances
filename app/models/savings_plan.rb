@@ -39,7 +39,6 @@ class SavingsPlan < ApplicationRecord
     amount = incomings.sum(:amount) - expenses.sum(:amount)
     Money.new(amount)
   end
-
 end
 
 # == Schema Information

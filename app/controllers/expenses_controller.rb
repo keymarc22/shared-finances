@@ -72,7 +72,7 @@ class ExpensesController < ApplicationController
   end
 
   def find_expense
-    @expense = Expense.find(params[:id])
+    @expense = current_account.expenses.find(params[:id])
   end
 
   def find_budgets
