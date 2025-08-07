@@ -101,4 +101,4 @@ jobs:
       - name: Run tests
         env:
           RAILS_ENV: test
-        run: bin/rails rspec
+        run: bin/rspec
