@@ -96,9 +96,10 @@ jobs:
           PGUSER: postgres
           PGPASSWORD: postgres
           RAILS_ENV: test
-        run: |
-          sudo service postgresql start
-          psql -U postgres -c "CREATE DATABASE finances_test;" || true
+        run: bin/rails db:setup
+
+      - name: Prepare DB
+        run: bin/rails db:test:prepare
 
       - name: Run tests
         env:

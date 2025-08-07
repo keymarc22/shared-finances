@@ -18,8 +18,10 @@ production:
 test:
   <<: *default
   database: finances_test
-  username: <%= Rails.application.credentials.dig(:development, :database, :db_username) %>
-  password: <%= Rails.application.credentials.dig(:development, :database, :db_password) %>
+  username: postgres
+  password: postgres
+  host: localhost
+  port: 5432
 
 cable:
   adapter: postgresql
