@@ -7,6 +7,7 @@
 
       <div class="hidden absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-hidden" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
         <div class="py-1" role="none">
+          <%= link_to 'Transferir fondos', new_money_account_transfer_path(account), class: "block px-4 py-2 text-sm text-gray-700", 'data-turbo-frame': "modal" %>
           <%= link_to 'Editar', money_account_path(account), class: "block px-4 py-2 text-sm text-gray-700", 'data-turbo-frame': "modal"  %>
           <%= link_to 'Eliminar', money_account_path(account), class: "block px-4 py-2 text-sm text-gray-700", data: { 'turbo-method': 'delete', "turbo-confirm": '¿Estas seguro? No se podrá revertir' }  %>
         </div>

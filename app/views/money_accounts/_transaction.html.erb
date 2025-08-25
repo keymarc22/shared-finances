@@ -57,6 +57,9 @@
             <% if transaction.expense? %>
               <%= link_to 'Editar', edit_expense_path(transaction), class: "block px-4 py-2 text-sm text-gray-700", 'data-turbo-frame': "modal" %>
               <%= link_to 'Eliminar', expense_path(transaction), class: "block px-4 py-2 text-sm text-gray-700", data: { 'turbo-method': 'delete', "turbo-confirm": '¿Estas seguro? No se podrá revertir' }  %>
+            <% elsif transaction.transfer? %>
+              <%= link_to 'Editar', edit_money_account_transfer_path(money_account_id: transaction.money_account_id, id: transaction.id), class: "block px-4 py-2 text-sm text-gray-700", 'data-turbo-frame': "modal" %>
+              <%= link_to 'Eliminar', transfer_path(transaction), class: "block px-4 py-2 text-sm text-gray-700", data: { 'turbo-method': 'delete', "turbo-confirm": '¿Estas seguro? No se podrá revertir' }  %>
             <% else %>
               <%= link_to 'Editar', edit_money_account_incoming_path(money_account_id: transaction.money_account_id, id: transaction.id),class: "block px-4 py-2 text-sm text-gray-700", 'data-turbo-frame': "modal"  %>
               <%= link_to 'Eliminar', money_account_incoming_path(money_account_id: transaction.money_account_id, id: transaction.id), class: "block px-4 py-2 text-sm text-gray-700", data: { 'turbo-method': 'delete', "turbo-confirm": '¿Estas seguro? No se podrá revertir' }  %>

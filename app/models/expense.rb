@@ -10,8 +10,8 @@ class Expense < Transaction
     annually: 5
   }, default: :monthly
 
-  belongs_to :user, optional: true
-  belongs_to :money_account, optional: true
+  belongs_to :user
+  belongs_to :money_account
   belongs_to :budget, optional: true
   belongs_to :transaction_group, optional: true
 
@@ -24,6 +24,10 @@ class Expense < Transaction
   validate :splits_sum_to_100_percent, if: :shared?
 
   scope :fixed, -> { where(fixed: true) }
+
+  def expense?
+    true
+  end
 
   def total_splits_percentage
     expense_splits.sum(&:percentage)

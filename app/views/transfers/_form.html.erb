@@ -1,0 +1,13 @@
+<div class="mb-6">
+  <%= f.input :description %>
+
+  <%= f.input :amount %>
+
+  <label class="block text-sm font-medium leading-6 text-gray-900" for="transfer_to_account_id">Cuenta destino</label>
+  <select name="transfer[to_money_account_id]" class="<%= select_classes %>">
+    <% current_account.money_accounts.each do |account| %>
+      <% next if account.id == @money_account.id %>
+      <option value="<%= account.id %>"><%= account.name %></option>
+    <% end %>
+  </select>
+</div>
