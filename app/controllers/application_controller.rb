@@ -11,7 +11,8 @@ class ApplicationController < ActionController::Base
     @current_account ||= current_user.account
   end
 
-  def current_date_rage
-    @current_date_rage ||= Date.current.beginning_of_month.. Date.current.end_of_month
+  helper_method :current_date_range
+  def current_date_range
+    @current_date_range ||= Date.current.beginning_of_month.. Date.current.end_of_month
   end
 end

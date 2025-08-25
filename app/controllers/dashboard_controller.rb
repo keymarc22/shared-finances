@@ -17,7 +17,7 @@ class DashboardController < ApplicationController
       .expenses
       .no_fixed
       .includes(:budget, :user, :expense_splits)
-      .created_between(current_date_rage.first, current_date_rage.last)
+      .created_between(current_date_range.first, current_date_range.last)
 
     @expenses = case params[:filter]
     when "recent"
