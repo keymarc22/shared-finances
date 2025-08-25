@@ -20,11 +20,15 @@ class Transaction < ApplicationRecord
   scope :no_fixed, -> { where(fixed: false) }
 
   def expense?
-    is_a?(Expense)
+    false
   end
 
   def incoming?
-    is_a?(Incoming)
+    false
+  end
+
+  def transfer?
+    false
   end
 
   def self.ransackable_attributes(auth_object = nil)

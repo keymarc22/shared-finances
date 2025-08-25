@@ -8,12 +8,10 @@ FactoryBot.define do
     association :money_account
     account
 
-    factory :expense do
-      type { 'Expense' }
+    factory :expense, class: 'Expense' do
     end
 
-    factory :incoming do
-      type { 'Incoming' }
+    factory :incoming, class: 'Incoming' do
     end
   end
 

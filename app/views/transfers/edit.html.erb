@@ -1,0 +1,23 @@
+<%= turbo_frame_tag 'modal' do %>
+  <div class="mb-5 flex flex-col space-y-1.5 text-start sm:text-left">
+    <h2 class="text-lg font-semibold leading-none tracking-tight">Editar transferencia de fondos</h2>
+    <p class="text-xs text-muted-foreground">
+      Transferencia de cuenta: <%= @money_account.name %>
+    </p>
+  </div>
+
+  <%= simple_form_for @transfer, url: money_account_transfer_path(money_account_id: @money_account, id: @transfer.id) do |f| %>
+    <%= render 'form', f: f %>
+
+    <div class="flex justify-end gap-1">
+      <%= render ButtonComponent.new(variant: :secondary, "data-action": "click->modal#close") do %>
+        Cancelar
+      <% end %>
+
+      <%= render ButtonComponent.new(variant: :primary, type: 'submit') do %>
+        Actualizar
+      <% end %>
+    </div>
+
+  <% end %>
+<% end %>

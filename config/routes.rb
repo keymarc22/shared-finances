@@ -10,7 +10,10 @@ Rails.application.routes.draw do
 
   resources :money_accounts, except: :edit do
     resources :incomings
+    resources :transfers, except: :destroy
   end
+
+  resources :transfers, only: :destroy
 
   resources :item_prices, only: %i[index destroy] do
     get :barcode_reader, on: :collection
