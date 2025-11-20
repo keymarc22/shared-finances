@@ -1,12 +1,4 @@
 <div class="space-y-6" data-controller="dashboard">
-  <!-- Header -->
-  <%= content_for :header_button do %>
-    <a href="<%= new_budget_path %>" data-turbo-frame="modal" class="flex <%= link_as_button_classes %>">
-      <%= lucide_icon 'plus' %>
-      Agregar budget
-    </a>
-  <% end %>
-
   <% content_for :mobile_primary_action do %>
     <a href="<%= new_budget_path %>"
       data-turbo-frame="modal"
@@ -15,8 +7,6 @@
       <%= lucide_icon 'plus', class: "w-7 h-7" %>
     </a>
   <% end %>
-
-  <%= render partial: 'layouts/header' %>
 
   <div id="budgets" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
     <% @budgets.each do |budget| %>

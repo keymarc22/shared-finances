@@ -1,0 +1,23 @@
+<div class="page-header mb-6 flex justify-between items-center">
+  <div>
+    <h1 class="text-2xl font-semibold text-gray-900">Expenses</h1>
+    <small>Here you can manage your expenses.</small>
+  </div>
+
+  <a href="<%= new_expense_path %>" data-turbo-frame="modal" class="hidden md:inline-flex <%= link_as_button_classes %>">
+    <%= lucide_icon 'plus' %>
+    Agregar Gasto
+  </a>
+</div>
+
+<%= turbo_frame_tag 'expenses_list' do %>
+  <%= render_card(class: 'w-full') do %>
+    <%= render 'filters' %>
+
+    <% if @expenses.any? %>
+      <%= render @expenses %>
+    <% else %>
+      <p class="text-center">No hay gatos este mes</p>
+    <% end %>
+  <% end %>
+<% end %>

@@ -1,6 +1,27 @@
+require_relative "../queries/account_expenses"
+
 class ExpensesController < ApplicationController
   before_action :find_expense, only: %i[edit update destroy]
   before_action :find_budgets, onlu: %i[update create destroy]
+
+  def index
+    params[:filter] ||= "recent"
+
+    scope = Queries::AccountExpenses
+      .new(current_account, start_date: Date.today.beginning_of_week, end_date: Date.today.end_of_week)
+      .call
+
+    @expenses = case params[:filter]
+    when "recent"
+      scope
+    when /\Aby_user:(\d+)\z/
+      scope.where(user_id: $1)
+    when /\Aby_budget:(\d+)\z/
+      scope.where(budget_id: $1)
+    when /\Aby_money_account:(\d+)\z/
+      scope.where(money_account_id: $1)
+    end.order(transaction_date: :desc, created_at: :desc)
+  end
 
   def new
     @expense = Expense.new(user: current_user, transaction_date: Date.current)
@@ -11,7 +32,7 @@ class ExpensesController < ApplicationController
 
     if @expense.valid?
       flash.now[:notice] = "Gasto creado correctamente."
-      load_dashboard_summary_data
+      load_dashboard_data
     else
       flash.now[:error] = @expense.errors.full_messages.to_sentence
     end
@@ -21,7 +42,7 @@ class ExpensesController < ApplicationController
     if @expense.update(expense_params) && @expense.valid?
       flash.now[:notice] = "Gasto actualizado correctamente."
       if @expense.valid?
-        load_dashboard_summary_data
+        load_dashboard_data
       end
     else
       flash.now[:error] = @expense.errors.full_messages.to_sentence
@@ -79,7 +100,7 @@ class ExpensesController < ApplicationController
     @budgets = current_account.budgets.includes(:user)
   end
 
-  def load_dashboard_summary_data
-    @summary = DashboardSummaryService.new(current_account).call
+  def load_dashboard_data
+    @summary = Dashboard.new(current_account).call
   end
 end
