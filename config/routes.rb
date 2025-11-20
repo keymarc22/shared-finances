@@ -22,7 +22,7 @@ Rails.application.routes.draw do
   resources :store_items, except: %i[index edit destroy] do
     get :store_fields, on: :collection
   end
-  resources :expenses, except: :index
+  resources :expenses
   resources :incomings, except: %i[new create]
   resources :budgets, except: :edit
   resources :transaction_groups do

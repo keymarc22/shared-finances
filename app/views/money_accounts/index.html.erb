@@ -16,8 +16,6 @@
     </a>
   <% end %>
 
-  <%= render partial: 'layouts/header' %>
-
   <div id="money_accounts" class="md:flex flex-col md:flex-row gap-3" style="overflow: hidden;overflow-x: auto;padding-bottom: 11px;">
     <%= render partial: 'money_accounts/total_balance', locals: { account: @global_account } %>
 

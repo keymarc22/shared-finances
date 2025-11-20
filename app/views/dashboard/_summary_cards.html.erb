@@ -1,60 +1,29 @@
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+<%= turbo_frame_tag 'totals' do %>
+  <%= render_card(
+      title: 'Balance total',
+      icon: 'badge-dollar-sign',
+      class: 'bg-blue-500 text-white w-70') do %>
 
-  <%= turbo_frame_tag 'totals' do %>
+    <div class="p-6 pt-0">
+      <p class="text-2xl mb-2"><%= to_money_format @dashboard.account_balance %></p>
+      <small class="flex font-size-xxs">
+        <%= lucide_icon @dashboard.balances_higher_than_previous_period? ? 'move-up-right' : 'move-down-left' %>
+        <%= to_money_format @dashboard.prev_account_balance %>
+      </small>
+    </div>
+  <% end %>
+<% end %>
+
+<% @money_accounts.each do |account| %>
+  <%= turbo_frame_tag "account_#{account.id}" do %>
     <%= render_card(
-        title: 'Balance total',
-        icon: 'badge-dollar-sign',
-        class: 'w-full',
-        subtitle: "#{to_money_format(@summary[:total_budgets])} presupuestados") do %>
+        title: account.name,
+        class: 'w-70',
+        subtitle: account.user.name) do %>
 
-      <div class="p-6 pt-0">
-        <p class="text-2xl mb-2"><%= to_money_format @summary[:total_expenses] %></p>
-        <%= render_progress value: @summary[:total_expenses_percentage] %>
-      </div>
-
-    <% end %>
-  <% end %>
-
-  <%= turbo_frame_tag 'shared_expenses' do %>
-    <%= render_card(
-        title: 'Gastos Compartidos',
-        icon: 'boxes',
-        class: 'w-full',
-        subtitle: "#{@summary[:total_shared_budgets].format} presupuestados") do %>
-
-      <div class="p-6 pt-0">
-        <p class="text-2xl mb-2"><%= @summary[:total_shared_expenses].format %></p>
-        <%= render_progress value: @summary[:shared_expenses_percentage] %>
-      </div>
-
-    <% end %>
-  <% end %>
-
-  <%= turbo_frame_tag 'balance' do %>
-    <%= render_card(class: 'w-full',) do %>
-      <div class="p-6">
-        <h3 class="text-2xl font-semibold leading-none tracking-tight mb-2">Balance</h3>
-        <p class="mb-2 text-sm text-muted-foreground">Gastos efectivos de cada usuario</p>
-
-        <% total = 0 %>
-        <% @summary[:users_summary].each do |user| %>
-          <div class="flex justify-between items-center">
-            <span class="text-sm"><%= user[:name] %></span>
-            <span class="text-sm font-medium">
-              <%= user[:total_expenses].format %>
-              <% total += user[:total_expenses] %>
-            </span>
-          </div>
-        <% end %>
-
-        <div class="flex justify-between items-center border-t pt-2 border-gray-200">
-          <span class="text-sm">Total</span>
-          <span class="text-sm font-medium">
-            <%= total.format %>
-          </span>
-        </div>
+      <div class="p-5 pt-0">
+        <p class="text-2xl mb-2"><%= to_money_format account.balance %></p>
       </div>
     <% end %>
   <% end %>
-
-</div>
+<% end %>

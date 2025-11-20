@@ -16,8 +16,6 @@
     </a>
   <% end %>
 
-  <%= render partial: 'layouts/header' %>
-
   <div id="budgets" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
     <% @transaction_groups.each do |transaction_group| %>
       <%= render partial: 'transaction_groups/transaction_group', locals: { transaction_group: } %>
