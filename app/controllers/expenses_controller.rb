@@ -1,5 +1,3 @@
-require_relative "../queries/account_expenses"
-
 class ExpensesController < ApplicationController
   before_action :find_expense, only: %i[edit update destroy]
   before_action :find_budgets, onlu: %i[update create destroy]
