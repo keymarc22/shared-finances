@@ -47,7 +47,7 @@ class Budget < ApplicationRecord
     @total_expenses ||= expenses.no_fixed.sum(&:amount)
   end
 
-  def total_expenses_by_period(date_range)
+  def total_expenses_in_period(date_range = Date.today.beginning_of_week..Date.today.end_of_week)
     expenses.no_fixed.created_between(date_range.first, date_range.last).sum(&:amount)
   end
 
